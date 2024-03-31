@@ -7,30 +7,13 @@ public class astro : MonoBehaviour
 {
     
 
-
-
-
-
-
-
-
-    // Start is called before the first frame update
-    void Start()
+   
+     void OnTriggerEnter(Collider co )
     {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-    void OnCollisionEnter(Collision collision )
-    {
-        if ( collision.gameObject.tag == "despawner" ) 
+        if ( co.gameObject.tag == "despawner") 
         {
 
-            Debug.Log("FF");
+            Destroy(this.gameObject);
         
         
         }

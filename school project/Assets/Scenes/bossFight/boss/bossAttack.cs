@@ -24,16 +24,18 @@ public class bossAttack : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(cdStarFall > 0) 
+        if(cdStarFall >= 0) 
         {
             isStarFall = false;
             cdStarFall-= Time.deltaTime;
+            Debug.Log(cdStarFall);
         }
         else
         {
             isStarFall = true;
+            
             cdStarFall = 10;
-            Debug.Log("gay");
+            
         }
         
 

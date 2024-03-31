@@ -6,22 +6,32 @@ using UnityEngine;
 public class starF : MonoBehaviour
 {
     public Object stars;
-    private int StarSpeed;
+   
 
-    public bool ifSF = true;
+    public bool ifSF;
 
-    public Object player;
+    
 
     public int x;
     public int z;
     // Start is called before the first frame update
     void Start()
     {
-        if (ifSF)
+        
+        
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        
+        ifSF = FindObjectOfType<bossAttack>().isStarFall;
+        while (ifSF == true)
         {
+            
             for(int i = 0; i < 3; i++)
             {
-                //Vector3 pp = player.GetComponent<Vector3>();
+                
                 Vector3 randomPos = new Vector3(Random.Range( - x , + x) ,  100 ,Random.Range( -z,  +z));
 
 
@@ -29,15 +39,8 @@ public class starF : MonoBehaviour
             
             
             }
-
+            ifSF = false;
         }
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-        
 
     }
 
