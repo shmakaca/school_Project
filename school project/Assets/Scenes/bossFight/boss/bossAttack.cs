@@ -5,6 +5,8 @@ using UnityEngine;
 public class bossAttack : MonoBehaviour
 {
     public Object starFall;
+    private float cdStarFall = 10;
+    public bool isStarFall = false;
 
 
 
@@ -22,7 +24,23 @@ public class bossAttack : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        starFall.
+        if(cdStarFall > 0) 
+        {
+            isStarFall = false;
+            cdStarFall-= Time.deltaTime;
+        }
+        else
+        {
+            isStarFall = true;
+            cdStarFall = 10;
+            Debug.Log("gay");
+        }
+        
+
+
+
+
+
 
     }
 }
