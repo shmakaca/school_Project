@@ -32,7 +32,7 @@ public class starF : MonoBehaviour
             for(int i = 0; i < 3; i++)
             {
                 
-                Vector3 randomPos = new Vector3(Random.Range( - x , + x) ,  100 ,Random.Range( -z,  +z));
+                Vector3 randomPos = new Vector3(Random.Range( - x , + x) ,  Random.Range(90 ,130) ,Random.Range( -z,  +z));
 
 
                 Instantiate(stars, randomPos, Quaternion.identity);

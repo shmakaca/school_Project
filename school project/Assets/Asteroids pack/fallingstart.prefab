@@ -12,6 +12,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: fallingstart
       objectReference: {fileID: 0}
+    - target: {fileID: 1975959190090480, guid: eca000ab44c908d4dab395f654753038, type: 3}
+      propertyPath: m_TagString
+      value: death
+      objectReference: {fileID: 0}
     - target: {fileID: 4261880491290870, guid: eca000ab44c908d4dab395f654753038, type: 3}
       propertyPath: m_LocalPosition.y
       value: -13.400001
@@ -390,12 +394,12 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 19.673265, y: 20.225197, z: 0.9999999}
-  m_Center: {x: 0.04599003, y: -9.612598, z: 0.00000005399772}
+  m_Size: {x: 19.673265, y: 19.896229, z: 15.186445}
+  m_Center: {x: 0.04599003, y: -9.777089, z: -0.15091628}
 --- !u!54 &-239228047531082255
 Rigidbody:
   m_ObjectHideFlags: 0

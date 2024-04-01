@@ -28,7 +28,7 @@ public class bossAttack : MonoBehaviour
         {
             isStarFall = false;
             cdStarFall-= Time.deltaTime;
-            Debug.Log(cdStarFall);
+            
         }
         else
         {
