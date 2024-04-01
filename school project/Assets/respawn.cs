@@ -1,3 +1,4 @@
+
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -7,9 +8,9 @@ using UnityEngine.UIElements;
 
 public class respawn : MonoBehaviour
 {
-    public Transform player ,res;
+    public Transform player, res;
     public GameObject Player;
-    
+
     public void OnTriggerEnter(Collider co)
     {
         if (co.gameObject.tag == "death")

@@ -29,7 +29,7 @@ public class starF : MonoBehaviour
         while (ifSF == true)
         {
             
-            for(int i = 0; i < 3; i++)
+            for(int i = 0; i < 20; i++)
             {
                 
                 Vector3 randomPos = new Vector3(Random.Range( - x , + x) ,  Random.Range(90 ,130) ,Random.Range( -z,  +z));
