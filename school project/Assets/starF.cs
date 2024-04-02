@@ -14,6 +14,7 @@ public class starF : MonoBehaviour
 
     public int x;
     public int z;
+    public int numFall = 5;
     // Start is called before the first frame update
     void Start()
     {
@@ -29,7 +30,7 @@ public class starF : MonoBehaviour
         while (ifSF == true)
         {
             
-            for(int i = 0; i < 20; i++)
+            for(int i = 0; i < numFall; i++)
             {
                 
                 Vector3 randomPos = new Vector3(Random.Range( - x , + x) ,  Random.Range(90 ,130) ,Random.Range( -z,  +z));
