@@ -8,13 +8,13 @@ using Palmmedia.ReportGenerator.Core;
 public class PlayerMovement : MonoBehaviour
 {
     public CharacterController Controller;
-
+    
     private void Start()
     {
         Controller = GetComponent<CharacterController>();
         standingHighet = transform.localScale.y + 0.5f;
         crouchingHighet = transform.localScale.y - 1f;
-        
+            
     }
 
     Vector3 moveDirection;// player z and x direction
@@ -35,7 +35,8 @@ public class PlayerMovement : MonoBehaviour
     private float standingHighet;
     public static float walkSpeed = 9f;// the deafult walking speed
     private float SideWaySpeed = walkSpeed * 0.8f;// when you walk sideways (A ans D)
-    private float moveSpeed;// moveSpeed is 
+    private float moveSpeed;
+        
 
     [Header("Sprinting")]
     private float sprintSpeed = walkSpeed * 1.4f;  
@@ -56,10 +57,27 @@ public class PlayerMovement : MonoBehaviour
     public Transform groundcheck;
     public LayerMask groundMask;
 
+    [Header("hadi")]
+    public bool notMoving;
+    private float horizontal;
+    private float Vertical;
+
+    private void Notmoving()
+    {
+        if (horizontal == 0 && Vertical == 0)
+        {
+            notMoving = true;
+        }
+        else
+        {
+            notMoving = false;
+        }
+
+    }
     private void PlayerMove()
     {
-        float horizontal = Input.GetAxisRaw("Horizontal");
-        float Vertical = Input.GetAxisRaw("Vertical");
+        horizontal = Input.GetAxisRaw("Horizontal");
+        Vertical = Input.GetAxisRaw("Vertical");
         moveDirection = transform.right * horizontal + transform.forward * Vertical;
 
         Controller.Move(moveDirection * moveSpeed * Time.deltaTime);
@@ -201,6 +219,7 @@ public class PlayerMovement : MonoBehaviour
             state = MovementState.air;
         }
     }
+    
 
     private void Update()
     {
@@ -224,6 +243,6 @@ public class PlayerMovement : MonoBehaviour
 
         GravityForce();
 
-        
+        Notmoving();
     }
 }

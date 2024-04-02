@@ -32,9 +32,7 @@ public class respawn : MonoBehaviour
     {
         if (co.gameObject.tag == "death")
         {
-            Player.SetActive(false);
-            player.position = res.position;
-            Player.SetActive(true);
+            respon();
             if (isDeathReady)
             {
                 dCount++;
@@ -43,5 +41,11 @@ public class respawn : MonoBehaviour
             
             
         }
+    }
+    public void respon()
+    {
+        Player.SetActive(false);
+        player.position = res.position;
+        Player.SetActive(true);
     }
 }
