@@ -13,12 +13,9 @@ public class Laser : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-
-        laserCD = Random.Range(10, 15);
+        laserCD = Random.Range(15, 20);
         laserCDtemp = laserCD; 
 
-
-   
     }
     private void Update()
     {
@@ -32,9 +29,6 @@ public class Laser : MonoBehaviour
             laserCDtemp = laserCD;
         }
 
-
-
-
     }
     private void LaserSummon()
     {
@@ -42,7 +36,6 @@ public class Laser : MonoBehaviour
         isntMoving = FindAnyObjectByType<PlayerMovement>().notMoving;
 
         Invoke("kill", 1);
-        
     }
     private void kill()
     {
