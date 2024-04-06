@@ -7,7 +7,7 @@ using UnityEngine.EventSystems;
 public class PlayerMovement : MonoBehaviour
 {
     [Header("Movement")]
-    private float MoveSpeed;
+    public float MoveSpeed;
     public float WalkSpeed;
     public float SprintSpeed;
 
@@ -138,7 +138,7 @@ public class PlayerMovement : MonoBehaviour
 
     }
 
-    private MovementState  LastState;
+    private MovementState LastState;
     private bool KeepMomentum;
 
     private void StateHandle()
@@ -150,14 +150,14 @@ public class PlayerMovement : MonoBehaviour
             DesireMoveSpeed = AirDashSpeed;
             SpeedIncreaseMultiplier = DashSpeedChangeFactror;
         }
-        else if(Dashing && OnGround)
+        else if (Dashing && OnGround)
         {
             State = MovementState.Dashing;
             DesireMoveSpeed = GroundDashSpeed;
             SpeedIncreaseMultiplier = GroundDashSpeedChangeFactror;
         }
 
-         else if(sliding)
+        else if (sliding)
         {
             State = MovementState.Sliding;
 
@@ -209,21 +209,21 @@ public class PlayerMovement : MonoBehaviour
             if (Input.GetKeyDown(JumpKey) && ReadyToDoubleJump)
             {
                 DoubleJump();
-                ReadyToDoubleJump = false;  
+                ReadyToDoubleJump = false;
             }
-                
+
         }
         bool DesireMoveSpeedHasChanged = DesireMoveSpeed != LastDesireMoveSpeed;
 
-        if (Mathf.Abs(DesireMoveSpeed - LastDesireMoveSpeed) > (SprintSpeed - WalkSpeed) && MoveSpeed != 0 )
+        if (Mathf.Abs(DesireMoveSpeed - LastDesireMoveSpeed) > (SprintSpeed - WalkSpeed) && MoveSpeed != 0)
         {
             StopAllCoroutines();
             StartCoroutine(SmoothlyLerpMoveSpeed());
         }
         else if (DesireMoveSpeedHasChanged && KeepMomentum)
         {
-                StopAllCoroutines();
-                SmoothlyLerpMoveSpeed();
+            StopAllCoroutines();
+            SmoothlyLerpMoveSpeed();
         }
         else
         {
@@ -234,7 +234,7 @@ public class PlayerMovement : MonoBehaviour
         if ((LastState == MovementState.Dashing)) KeepMomentum = true;
 
         LastDesireMoveSpeed = DesireMoveSpeed;
-        LastState = State;  
+        LastState = State;
     }
 
 
@@ -305,7 +305,7 @@ public class PlayerMovement : MonoBehaviour
         // limit speed on slope
         if (OnSlope() && !ExitingSlope)
         {
-            if(rb.velocity.magnitude > MoveSpeed)
+            if (rb.velocity.magnitude > MoveSpeed)
             {
                 rb.velocity = rb.velocity.normalized * MoveSpeed;
             }
@@ -322,7 +322,7 @@ public class PlayerMovement : MonoBehaviour
     }
     private void Jump()
     {
-        ExitingSlope = true;   
+        ExitingSlope = true;
 
         rb.velocity = new Vector3(rb.velocity.x, 0f, rb.velocity.z);
 
@@ -344,7 +344,7 @@ public class PlayerMovement : MonoBehaviour
 
         ReadyToDoubleJump = true;
 
-        ExitingSlope = false;   
+        ExitingSlope = false;
     }
 
     public bool OnSlope()
@@ -363,5 +363,3 @@ public class PlayerMovement : MonoBehaviour
     }
 
 }
-    
-
