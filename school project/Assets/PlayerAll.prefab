@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 5373788628079966344}
   - component: {fileID: 362487438838018983}
   m_Layer: 0
-  m_Name: Player Object
+  m_Name: PlayerObject
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -120,7 +120,7 @@ GameObject:
   - component: {fileID: 8455721849495702660}
   - component: {fileID: 6349054678268292515}
   m_Layer: 0
-  m_Name: Camera
+  m_Name: Player Cam
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -226,6 +226,8 @@ GameObject:
   - component: {fileID: 5780743176874775026}
   - component: {fileID: 5495024021923302129}
   - component: {fileID: 8089511559679149532}
+  - component: {fileID: 8894456856296379718}
+  - component: {fileID: 7653523214638001932}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -290,6 +292,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2673c4622655f76409556c7812f9d000, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  MoveSpeed: 0
   WalkSpeed: 6
   SprintSpeed: 10
   GroundDrag: 7
@@ -319,6 +322,53 @@ MonoBehaviour:
   State: 0
   sliding: 0
   Dashing: 0
+--- !u!114 &8894456856296379718
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6658418228287316576}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f59f2a992c0d2f047bd1ab0df8356fb1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Orientation: {fileID: 1725723393556213530}
+  PlayerObject: {fileID: 4861507615365779388}
+  MaxSlideTime: 0.75
+  SlideForce: 200
+  SlideHieght: 0
+  SlideKey: 306
+  PlayerHeight: 2
+  Ground:
+    serializedVersion: 2
+    m_Bits: 64
+--- !u!114 &7653523214638001932
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6658418228287316576}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b497d6d1f14b3654299342f3d346628a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Orientation: {fileID: 1725723393556213530}
+  PlayerCam: {fileID: 3980589600901607519}
+  AirDashForce: 20
+  GroundDashForce: 40
+  GroundDashSpeedChangeFactor: 100
+  DashUpwardForce: 0.2
+  DashDuration: 0.5
+  DashCoolDown: 1.5
+  DashKey: 101
+  PlayerHeight: 2
+  Ground:
+    serializedVersion: 2
+    m_Bits: 64
 --- !u!1 &7348806146482530638
 GameObject:
   m_ObjectHideFlags: 0
