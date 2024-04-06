@@ -1631,10 +1631,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4ae4dffd660313641a917603479109ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  timeLaser: 0
+  timeLaser: 25
   imageUI: {fileID: 6238552836929961655, guid: 35359c051a4d9ea4b92b4f79f6e4bed9, type: 3}
-  laserCD: 0
-  laserCDtemp: 0
+  laserCD: 3
+  laserCDtemp: 2
   x: 0
 --- !u!4 &807873994
 Transform:
@@ -5639,7 +5639,7 @@ Rigidbody:
   m_GameObject: {fileID: 6658418227026954072}
   serializedVersion: 4
   m_Mass: 1
-  m_Drag: 0
+  m_Drag: 7
   m_AngularDrag: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
@@ -5851,6 +5851,7 @@ GameObject:
   - component: {fileID: 8089511558552953060}
   - component: {fileID: 8089511558552953062}
   - component: {fileID: 8089511558552953061}
+  - component: {fileID: 8089511558552953063}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -6145,6 +6146,31 @@ MonoBehaviour:
   laserCD: 20
   laserCDtemp: 2
   x: 0
+--- !u!114 &8089511558552953063
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6658418227026954072}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b497d6d1f14b3654299342f3d346628a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Orientation: {fileID: 1725723392283200034}
+  PlayerCam: {fileID: 3980589599901226343}
+  AirDashForce: 20
+  GroundDashForce: 40
+  GroundDashSpeedChangeFactor: 100
+  DashUpwardForce: 0.2
+  DashDuration: 0.25
+  DashCoolDown: 0
+  DashKey: 101
+  PlayerHeight: 0
+  Ground:
+    serializedVersion: 2
+    m_Bits: 0
 --- !u!4 &8117671255080020989
 Transform:
   m_ObjectHideFlags: 0
