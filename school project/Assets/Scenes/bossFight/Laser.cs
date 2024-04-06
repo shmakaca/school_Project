@@ -8,7 +8,7 @@ public class Laser : MonoBehaviour
     public GameObject imageUI;
     public float laserCD;
     public float laserCDtemp;
-    private bool isntMoving;
+    
     public float x;
     // Start is called before the first frame update
     void Start()
@@ -33,7 +33,7 @@ public class Laser : MonoBehaviour
     private void LaserSummon()
     {
         Instantiate(imageUI, imageUI.transform);
-        x = FindAnyObjectByType<PlayerMovement>().MoveSpeed;
+        
 
         Invoke("kill", 2);
     }
@@ -41,6 +41,7 @@ public class Laser : MonoBehaviour
     {
         if ( x!= 0 )
         {
+            x = FindAnyObjectByType<PlayerMovement>().MoveSpeed;
             FindAnyObjectByType<respawn>().respon();
         }
 
