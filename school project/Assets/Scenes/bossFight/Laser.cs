@@ -33,7 +33,7 @@ public class Laser : MonoBehaviour
     private void LaserSummon()
     {
         Instantiate(imageUI, imageUI.transform);
-        isntMoving = FindAnyObjectByType<PlayerMovement>().notMoving;
+        isntMoving = FindAnyObjectByType<PlayerMovement>();
 
         Invoke("kill", 1);
     }
