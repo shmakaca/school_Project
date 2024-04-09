@@ -12,10 +12,7 @@ public class Dash : MonoBehaviour
     private PlayerMovement PlayerMovement;
 
     [Header("Dash")]
-    private float DashForce;
-    public float AirDashForce;
-    public float GroundDashForce;
-    public float GroundDashSpeedChangeFactor;
+    public float DashForce;
     public float DashUpwardForce;
     public float DashDuration;
 
@@ -49,14 +46,6 @@ public class Dash : MonoBehaviour
         Horizontal = Input.GetAxisRaw("Horizontal");
         Vertical = Input.GetAxisRaw("Vertical");
 
-        if (OnGround)
-        {
-            DashForce = GroundDashForce;
-        }
-        else
-        {
-            DashForce = AirDashForce;
-        }
         if (Input.GetKeyDown(DashKey))
         {
             dash();

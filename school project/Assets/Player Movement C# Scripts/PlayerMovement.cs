@@ -14,10 +14,9 @@ public class PlayerMovement : MonoBehaviour
 
     public float GroundDrag;
 
-    public float AirDashSpeed;
-    public float GroundDashSpeed;
+    public float DashSpeed;
     public float DashSpeedChangeFactror;
-    public float GroundDashSpeedChangeFactror;
+
 
     public float SlideSpeed;
     public float SlideSpeedChangeFactror;
@@ -138,25 +137,16 @@ public class PlayerMovement : MonoBehaviour
 
     }
 
-    private MovementState LastState;
-    private bool KeepMomentum;
 
     private void StateHandle()
     {
 
-        if (Dashing && !OnGround)
+        if (Dashing)
         {
             State = MovementState.Dashing;
-            DesireMoveSpeed = AirDashSpeed;
+            DesireMoveSpeed = DashSpeed;
             SpeedIncreaseMultiplier = DashSpeedChangeFactror;
         }
-        else if (Dashing && OnGround)
-        {
-            State = MovementState.Dashing;
-            DesireMoveSpeed = GroundDashSpeed;
-            SpeedIncreaseMultiplier = GroundDashSpeedChangeFactror;
-        }
-
         else if (sliding)
         {
             State = MovementState.Sliding;
@@ -173,6 +163,12 @@ public class PlayerMovement : MonoBehaviour
         {
             State = MovementState.Crouching;
             DesireMoveSpeed = CrouchSpeed;
+            if (Dashing)
+            {
+                State = MovementState.Dashing;
+                DesireMoveSpeed = DashSpeed;
+                SpeedIncreaseMultiplier = DashSpeedChangeFactror;
+            }
         }
 
         // Sprinting Mode
@@ -180,6 +176,12 @@ public class PlayerMovement : MonoBehaviour
         {
             State = MovementState.Sprinting;
             DesireMoveSpeed = SprintSpeed;
+            if (Dashing)
+            {
+                State = MovementState.Dashing;
+                DesireMoveSpeed = DashSpeed;
+                SpeedIncreaseMultiplier = DashSpeedChangeFactror;
+            }
         }
 
         // Walking Mode
@@ -187,6 +189,12 @@ public class PlayerMovement : MonoBehaviour
         {
             State = MovementState.Walking;
             DesireMoveSpeed = WalkSpeed;
+            if (Dashing)
+            {
+                State = MovementState.Dashing;
+                DesireMoveSpeed = DashSpeed;
+                SpeedIncreaseMultiplier = DashSpeedChangeFactror;
+            }
         }
 
         //  in Air
@@ -213,17 +221,11 @@ public class PlayerMovement : MonoBehaviour
             }
 
         }
-        bool DesireMoveSpeedHasChanged = DesireMoveSpeed != LastDesireMoveSpeed;
 
         if (Mathf.Abs(DesireMoveSpeed - LastDesireMoveSpeed) > (SprintSpeed - WalkSpeed) && MoveSpeed != 0)
         {
             StopAllCoroutines();
             StartCoroutine(SmoothlyLerpMoveSpeed());
-        }
-        else if (DesireMoveSpeedHasChanged && KeepMomentum)
-        {
-            StopAllCoroutines();
-            SmoothlyLerpMoveSpeed();
         }
         else
         {
@@ -231,10 +233,7 @@ public class PlayerMovement : MonoBehaviour
             MoveSpeed = DesireMoveSpeed;
         }
 
-        if ((LastState == MovementState.Dashing)) KeepMomentum = true;
-
         LastDesireMoveSpeed = DesireMoveSpeed;
-        LastState = State;
     }
 
 
@@ -265,7 +264,6 @@ public class PlayerMovement : MonoBehaviour
         }
 
         MoveSpeed = DesireMoveSpeed;
-        KeepMomentum = false;
     }
 
 
