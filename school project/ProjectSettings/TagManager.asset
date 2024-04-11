@@ -6,6 +6,7 @@ TagManager:
   tags:
   - despawner
   - death
+  - MUSHROOM
   layers:
   - Default
   - TransparentFX
