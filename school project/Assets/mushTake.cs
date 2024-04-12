@@ -48,6 +48,10 @@ public class mushTake : MonoBehaviour
             mush = other.gameObject;
             readyPickup = true;
         }
+        else
+        {
+            desF = true;
+        }
     }
     
     public void OnTriggerExit(Collider other)
