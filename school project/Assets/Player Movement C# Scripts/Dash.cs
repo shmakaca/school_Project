@@ -12,7 +12,9 @@ public class Dash : MonoBehaviour
     private PlayerMovement PlayerMovement;
 
     [Header("Dash")]
-    public float DashForce;
+    private float DashForce;
+    public float AirDashForce;
+    public float GroundDashForce;
     public float DashUpwardForce;
     public float DashDuration;
 
@@ -46,6 +48,14 @@ public class Dash : MonoBehaviour
         Horizontal = Input.GetAxisRaw("Horizontal");
         Vertical = Input.GetAxisRaw("Vertical");
 
+        if (OnGround)
+        {
+            DashForce = GroundDashForce;
+        }
+        else
+        {
+            DashForce = AirDashForce;
+        }
         if (Input.GetKeyDown(DashKey))
         {
             dash();
@@ -64,7 +74,7 @@ public class Dash : MonoBehaviour
 
         PlayerMovement.Dashing = true;
 
-        Vector3 ForceToApply = Orientation.forward * DashForce * Vertical + Orientation.up * DashUpwardForce ;
+        Vector3 ForceToApply = Orientation.forward * DashForce * Vertical + Orientation.up * DashUpwardForce;
 
         rb.AddForce(ForceToApply, ForceMode.Impulse);
 

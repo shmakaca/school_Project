@@ -12,6 +12,8 @@ public class bot : MonoBehaviour
     public float x=0 ,y=0 ,z=0 ;
     public float Range;
 
+    public float rotatetime = 4;
+
     public bool xStay = false, yStay = false, zStay = false;
     // Start is called before the first frame update
     void Start()
@@ -23,6 +25,18 @@ public class bot : MonoBehaviour
     void Update()
     {
         
+        if(rotatetime < 0)
+        {
+            Quaternion tager = Quaternion.Euler(0,0,0);
+            botRB.angularVelocity = Vector3.zero;
+            transform.rotation = Quaternion.SlerpUnclamped(transform.rotation, tager, 1);
+            
+            rotatetime = 4;
+        }
+        else
+        {
+            rotatetime = rotatetime - Time.deltaTime;
+        }
 
 
 

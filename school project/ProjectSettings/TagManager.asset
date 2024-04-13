@@ -8,6 +8,7 @@ TagManager:
   - death
   - MUSHROOM
   - audioBarn
+  - npc
   layers:
   - Default
   - TransparentFX
@@ -17,7 +18,7 @@ TagManager:
   - UI
   - MAP
   - death
-  - 
+  - wall
   - 
   - 
   - 

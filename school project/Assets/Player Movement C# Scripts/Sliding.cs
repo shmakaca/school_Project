@@ -33,13 +33,13 @@ public class Sliding : MonoBehaviour
     private void Start()
     {
         rb = GetComponent<Rigidbody>();
-        PlayerMovement = GetComponent<PlayerMovement>();    
+        PlayerMovement = GetComponent<PlayerMovement>();
         StandingHieght = PlayerObject.localScale.y;
     }
 
     private void FixedUpdate()
     {
-        if(PlayerMovement.sliding)
+        if (PlayerMovement.sliding)
         {
             SlideMovement();
         }
@@ -58,22 +58,22 @@ public class Sliding : MonoBehaviour
         {
             KeyPressingTime = 0f;
         }
-        if(KeyPressingTime > 0.15f )
+        if (KeyPressingTime > 0.15f)
         {
 
             Input.GetKeyDown(SlideKey);
         }
 
-        if ((Horizontal != 0 || Vertical != 0) && OnGround && KeyPressingTime > 0.15f )
+        if ((Horizontal != 0 || Vertical != 0) && OnGround && KeyPressingTime > 0.15f)
         {
-                StartSlide();
-        }       
+            StartSlide();
+        }
 
         if (Input.GetKeyUp(SlideKey) && PlayerMovement.sliding)
         {
             StopSlide();
         }
-            
+
     }
     private void StartSlide()
     {
@@ -89,7 +89,7 @@ public class Sliding : MonoBehaviour
 
         // sliding on ground
 
-        if(!PlayerMovement.OnSlope() || rb.velocity.y > -0.1f)
+        if (!PlayerMovement.OnSlope() || rb.velocity.y > -0.1f)
         {
             rb.AddForce(Direction.normalized * SlideForce, ForceMode.Force);
 
