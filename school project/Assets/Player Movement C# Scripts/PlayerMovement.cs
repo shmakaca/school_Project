@@ -7,7 +7,7 @@ using UnityEngine.EventSystems;
 public class PlayerMovement : MonoBehaviour
 {
     [Header("Movement")]
-    public float MoveSpeed;
+    private float MoveSpeed;
     public float WalkSpeed;
     public float SprintSpeed;
     private float DesireMoveSpeed;
@@ -83,7 +83,9 @@ public class PlayerMovement : MonoBehaviour
     public bool Dashing;
     public bool WallRunning;
 
+
     
+
     private void Start()
     {
         rb = GetComponent<Rigidbody>();
@@ -107,11 +109,16 @@ public class PlayerMovement : MonoBehaviour
 
     public void Update()
     {
+
         
         
             
             OnGround = Physics.Raycast(transform.position, Vector3.down, PlayerHeight * 0.5f + 0.3f);
             OnJumpPad = Physics.Raycast(transform.position, Vector3.down, PlayerHeight * 0.5f + 0.3f, JumpPad);
+
+        OnGround = Physics.Raycast(transform.position, Vector3.down, PlayerHeight * 0.5f + 0.3f);
+        OnJumpPad = Physics.Raycast(transform.position, Vector3.down, PlayerHeight * 0.5f + 0.3f, JumpPad);
+
 
             MyInput();
             SpeedControl();
@@ -142,7 +149,25 @@ public class PlayerMovement : MonoBehaviour
             }
 
         
-        
+     
+        if (Input.GetKey(CrouchKey) && OnGround)
+        {
+            transform.localScale = new Vector3(transform.localScale.x, CrouchHeight, transform.localScale.z);
+            rb.AddForce(Vector3.down * 5f, ForceMode.Force);
+        }
+        else if (Input.GetKey(CrouchKey) && !OnGround)
+        {
+            transform.localScale = new Vector3(transform.localScale.x, CrouchHeight, transform.localScale.z);
+        }
+        else
+        {
+            transform.localScale = new Vector3(transform.localScale.x, StandingHeight, transform.localScale.z);
+        }
+
+        if (OnJumpPad)
+        {
+            JumPad();
+        }
 
     }
     
