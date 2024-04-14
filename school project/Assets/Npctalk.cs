@@ -10,10 +10,12 @@ public class Npctalk : MonoBehaviour
     public bool isTalking = false;
     
     public bool isDone = false;
-
+    
     bool b1 = true;
     bool b2 = false;
     bool b3 = false;
+
+
     // Start is called before the first frame update
     void Start()
     {
@@ -23,18 +25,22 @@ public class Npctalk : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-       
-        if (isTalking)
-        {
-            player.GetComponent<PlayerMovement>().enabled = false;
-            talk();
-        }
-        else
-        {
-            b1 = true ; b2 = false ; b3 = false ;
-            isDone = true;
-            player.GetComponent<PlayerMovement>().enabled = true;
-        }
+        
+        
+            if (isTalking)
+            {
+              player.GetComponent<PlayerMovement>().enabled = false;
+              talk();
+                
+            }else
+            {
+               b1 = true ; b2 = false ; b3 = false ;
+               isDone = true;
+               player.GetComponent<PlayerMovement>().enabled = true;
+            }
+             
+        
+        
         
         
     }
@@ -92,16 +98,7 @@ public class Npctalk : MonoBehaviour
         
 
     }
-    void Talk()
-    {
-       if (b1)
-        {
-
-        }
-
-
-
-    }
+    
    
     
 }
