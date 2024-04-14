@@ -5,6 +5,7 @@ using UnityEngine.UIElements;
 
 public class bot : MonoBehaviour
 {
+    public GameObject botObj;
     public GameObject player;
     public Transform playerPos;
     public Rigidbody botRB;
@@ -14,7 +15,7 @@ public class bot : MonoBehaviour
     public float x=0 ,y=0 ,z=0 ;
     public float Range;
 
-    public float rotatetime = 4;
+    public float rotatetime = 0.4f;
 
     public bool xStay = false, yStay = false, zStay = false;
     // Start is called before the first frame update
@@ -26,16 +27,16 @@ public class bot : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
 
+        
         if(rotatetime < 0)
         {
-
-
-            var tar = Quaternion.Euler(-90, 0, 0);
             botRB.angularVelocity = Vector3.zero;
-            transform.rotation = Quaternion.SlerpUnclamped(transform.rotation, tar, 1);
-           
+
+            transform.LookAt(playerPos);
+
+            
+
             rotatetime = 4;
         }
         else
@@ -113,4 +114,11 @@ public class bot : MonoBehaviour
         botRB.AddForce(botD * botSpeed *Time.deltaTime ,ForceMode.Force);
 
     }
+    //void LookAt()
+    //{
+    //    var tar = transform.position - player.transform.position;
+
+    //    botObj.Quaternion.LookRotation(tar);
+
+    //}
 }
