@@ -17,6 +17,7 @@ public class camMan : MonoBehaviour
     void Start()
     {
         def();
+        
     }
 
     // Update is called once per frame
@@ -26,15 +27,18 @@ public class camMan : MonoBehaviour
         isNpcDone = FindAnyObjectByType<Npctalk>().isDone;
         if (isNpcCam)
         {
+            
             npc();
         }
         else
         {
+            
             def() ;
         }
 
         if(isNpcDone)
         {
+            
             def();
             isNpcCam = false;
         }

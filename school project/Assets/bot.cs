@@ -1,14 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class bot : MonoBehaviour
 {
     public GameObject player;
     public Transform playerPos;
     public Rigidbody botRB;
+    public Quaternion rotBot;
 
-    public int botSpeed = 50;
+    public int botSpeed = 1500;
     public float x=0 ,y=0 ,z=0 ;
     public float Range;
 
@@ -25,12 +27,15 @@ public class bot : MonoBehaviour
     void Update()
     {
         
+
         if(rotatetime < 0)
         {
-            Quaternion tager = Quaternion.Euler(0,0,0);
+
+
+            var tar = Quaternion.Euler(-90, 0, 0);
             botRB.angularVelocity = Vector3.zero;
-            transform.rotation = Quaternion.SlerpUnclamped(transform.rotation, tager, 1);
-            
+            transform.rotation = Quaternion.SlerpUnclamped(transform.rotation, tar, 1);
+           
             rotatetime = 4;
         }
         else
@@ -42,10 +47,9 @@ public class bot : MonoBehaviour
 
         playerPos = player.GetComponent<Transform>();
 
-        if (Mathf.Abs( transform.position.x - playerPos.position.x ) < Range)
+        if (Mathf.Abs(transform.position.x - playerPos.position.x) < Range)
         {
             x = 0;
-
             xStay = true;
         }
         else
@@ -104,7 +108,7 @@ public class bot : MonoBehaviour
             y = -1;
         }
 
-        Vector3 botD = new Vector3(x, y, z);
+        Vector3 botD = new Vector3(x, y, z).normalized;
 
         botRB.AddForce(botD * botSpeed *Time.deltaTime ,ForceMode.Force);
 
