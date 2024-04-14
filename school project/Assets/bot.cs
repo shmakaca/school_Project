@@ -80,12 +80,12 @@ public class bot : MonoBehaviour
 
         if ( transform.position.x < playerPos.position.x && !xStay)
         {
-            x = 1;
+            x = 7;
 
         }
         else if(!xStay)
         {
-            x = -1;
+            x = -7;
         }
 
         if(transform.position.z < playerPos.position.z && !zStay)
@@ -108,7 +108,7 @@ public class bot : MonoBehaviour
             y = -1;
         }
 
-        Vector3 botD = new Vector3(x, y, z).normalized;
+        Vector3 botD = new Vector3(x, y, z);
 
         botRB.AddForce(botD * botSpeed *Time.deltaTime ,ForceMode.Force);
 
