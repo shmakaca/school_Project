@@ -5,12 +5,15 @@ using UnityEngine.UI;
 
 public class Npctalk : MonoBehaviour
 {
+    public GameObject npcColl;
     public GameObject player;
     public GameObject talk1 , talk2 , talk3;
     public bool isTalking = false;
     
-    public bool isDone = false;
     
+    public bool isDone = false;
+    public bool haveTalked = false;
+
     bool b1 = true;
     bool b2 = false;
     bool b3 = false;
@@ -25,24 +28,19 @@ public class Npctalk : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
-        
             if (isTalking)
             {
               player.GetComponent<PlayerMovement>().enabled = false;
               talk();
                 
-            }else
+            }else 
             {
                b1 = true ; b2 = false ; b3 = false ;
                isDone = true;
                player.GetComponent<PlayerMovement>().enabled = true;
+                
             }
              
-        
-        
-        
-        
     }
 
     private void OnTriggerEnter(Collider other)
@@ -50,7 +48,7 @@ public class Npctalk : MonoBehaviour
         if(other.gameObject.tag == "npc")
         {
             isTalking = true;
-            
+            other.gameObject.tag = "secNpc";
         }
     }
     void talk()
@@ -92,7 +90,8 @@ public class Npctalk : MonoBehaviour
                 talk3.SetActive(false);
                 b3 = false;
                 isTalking = false;
-
+                haveTalked = true;
+                
             }
         }
         

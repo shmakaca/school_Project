@@ -27,7 +27,7 @@ public class bot : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+        playerPos = player.GetComponent<Transform>();
         
         if(rotatetime < 0)
         {
@@ -37,7 +37,7 @@ public class bot : MonoBehaviour
 
             
 
-            rotatetime = 4;
+            rotatetime = 1;
         }
         else
         {

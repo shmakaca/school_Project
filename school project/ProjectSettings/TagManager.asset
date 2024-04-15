@@ -9,6 +9,7 @@ TagManager:
   - MUSHROOM
   - audioBarn
   - npc
+  - secNpc
   layers:
   - Default
   - TransparentFX
