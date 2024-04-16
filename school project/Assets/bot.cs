@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.SearchService;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -27,6 +28,7 @@ public class bot : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        
         playerPos = player.GetComponent<Transform>();
         
         if(rotatetime < 0)
@@ -46,7 +48,7 @@ public class bot : MonoBehaviour
 
 
 
-        playerPos = player.GetComponent<Transform>();
+        
 
         if (Mathf.Abs(transform.position.x - playerPos.position.x) < Range)
         {
@@ -81,12 +83,12 @@ public class bot : MonoBehaviour
 
         if ( transform.position.x < playerPos.position.x && !xStay)
         {
-            x = 7;
+            x = 1;
 
         }
         else if(!xStay)
         {
-            x = -7;
+            x = -1;
         }
 
         if(transform.position.z < playerPos.position.z && !zStay)
