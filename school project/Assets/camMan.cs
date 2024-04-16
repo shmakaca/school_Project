@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class camMan : MonoBehaviour
 {
+    private bool isDef = true;
     public Camera mainCam;
 
     [Header("npc")]
@@ -11,13 +12,16 @@ public class camMan : MonoBehaviour
     public bool isNpcCam = false;
     public Camera npcCam;
 
+    public bool istable = false;
+    private bool isClose = false;
+    public Camera tableCam;
 
 
     // Start is called before the first frame update
     void Start()
     {
+
         def();
-        
     }
 
     // Update is called once per frame
@@ -25,38 +29,56 @@ public class camMan : MonoBehaviour
     {
         isNpcCam = FindAnyObjectByType<Npctalk>().isTalking;
         isNpcDone = FindAnyObjectByType<Npctalk>().isDone;
-        if (isNpcCam)
+        istable = FindAnyObjectByType<table>().tableUse;
+        if (!isNpcCam && !istable)
         {
-            
-            npc();
+            isDef = true;
         }
         else
         {
-            
-            def() ;
+            isDef = false;
         }
 
-        if(isNpcDone)
+
+        if (!isDef)
         {
-            
-            def();
-            isNpcCam = false;
+            if (istable)
+            {
+                table();
+            }
+            else if (isNpcCam)
+            {
+                npc();
+            }
+
+
+
         }
+        else
+        {
+            def();
+        }
+
         
-
-
-
-
-
     }
-    void def()
-    {
-        mainCam.enabled = true;
-        npcCam.enabled = false;
-    }
-    void npc()
-    {
-        npcCam.enabled = true;
-        mainCam.enabled = false;
-    }
+        void def()
+        {
+            mainCam.enabled = true;
+            npcCam.enabled = false;
+            tableCam.enabled = false;
+        }
+        void npc()
+        {
+            npcCam.enabled = true;
+            mainCam.enabled = false;
+            tableCam.enabled = false;
+        }
+        void table()
+        {
+            npcCam.enabled = false;
+            mainCam.enabled = false;
+            tableCam.enabled = true ;
+        }
+
 }
+        

@@ -18,6 +18,7 @@ public class Npctalk : MonoBehaviour
     bool b2 = false;
     bool b3 = false;
 
+    private bool table = false;
 
     // Start is called before the first frame update
     void Start()
@@ -28,12 +29,13 @@ public class Npctalk : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        table = FindAnyObjectByType<table>().tableUse;
             if (isTalking)
             {
               player.GetComponent<PlayerMovement>().enabled = false;
               talk();
                 
-            }else 
+            }else if(!table)
             {
                b1 = true ; b2 = false ; b3 = false ;
                isDone = true;
