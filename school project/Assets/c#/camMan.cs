@@ -13,7 +13,7 @@ public class camMan : MonoBehaviour
     public Camera npcCam;
 
     public bool istable = false;
-    private bool isClose = false;
+    
     public Camera tableCam;
 
 

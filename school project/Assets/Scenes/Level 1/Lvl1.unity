@@ -2063,7 +2063,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7753123984881835866, guid: 20b0185c33492a141840434e10ec72ac, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -2238,6 +2238,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2af02896e687b9a4bb2b4e20a1b8ba3b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  pickup: {fileID: 1210684374}
   player: {fileID: 4145229317404487959}
   tableUse: 0
 --- !u!65 &898875690
@@ -10117,7 +10118,7 @@ Transform:
   m_GameObject: {fileID: 4145229317404487959}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: 0.0000000018626451, w: 1}
-  m_LocalPosition: {x: 837.1924, y: 11.04, z: 561.12756}
+  m_LocalPosition: {x: 859.1, y: 21.6, z: 557.2}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:

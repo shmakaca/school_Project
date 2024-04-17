@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class table : MonoBehaviour
 {
+    public GameObject pickup;
     public GameObject player;
     private bool isCloseTable = false;
     public bool tableUse = false;
@@ -11,12 +12,12 @@ public class table : MonoBehaviour
     void Update()
     {
         if (isCloseTable)
-        {
-
+        {   
+            pickup.SetActive(true);
             if (Input.GetKeyUp(KeyCode.F))
             {
                 player.GetComponent<PlayerMovement>().enabled = false;
-                Debug.Log("ff");
+                
                 tableUse = true;
                 isCloseTable = false;
             }
@@ -28,7 +29,7 @@ public class table : MonoBehaviour
             {
                 player.GetComponent<PlayerMovement>().enabled = true;
                 tableUse = false ;
-
+                pickup.SetActive(false) ;
             }
         }
         

@@ -30,23 +30,25 @@ public class mushTake : MonoBehaviour
                 Destroy(mush);
                 mushNum ++;
                 readyPickup = false;
+                pickUp.SetActive(false);
             }
             canTakeMushroom=false;
         }
         if(desF) 
         {
-           pickUp.SetActive(false);
+           
                 
             desF=false;
         }
     }
-    public void OnTriggerStay(Collider other) 
+    public void OnTriggerStay(Collider other)
     {
         if(other.gameObject.tag == "MUSHROOM")
         {
             canTakeMushroom = true;
             mush = other.gameObject;
             readyPickup = true;
+            
         }
         else
         {
@@ -60,6 +62,7 @@ public class mushTake : MonoBehaviour
         {
             desF = true;
              readyPickup = false;
+            
         }
     }
 }

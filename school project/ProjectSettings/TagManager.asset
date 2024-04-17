@@ -10,6 +10,7 @@ TagManager:
   - audioBarn
   - npc
   - secNpc
+  - checkpoint
   layers:
   - Default
   - TransparentFX
