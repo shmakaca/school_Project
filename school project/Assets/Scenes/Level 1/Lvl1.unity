@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028352, g: 0.22571376, b: 0.30692244, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1903,21 +1903,23 @@ MonoBehaviour:
   m_GameObject: {fileID: 857603525}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 29e838c72f15a6441920b0f11bce69ac, type: 3}
+  m_Script: {fileID: 11500000, guid: 6de6d246f8f6b264fac513322f79b9c8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 4933169368522646180}
-  rb: {fileID: 857603529}
-  speed: 0.7
-  range: 3
+  botObj: {fileID: 857603525}
+  player: {fileID: 4145229317404487959}
+  playerPos: {fileID: 0}
+  botRB: {fileID: 857603529}
+  rotBot: {x: 0, y: 0, z: 0, w: 0}
+  botSpeed: 1500
   x: 0
   y: 0
   z: 0
+  Range: 0
+  rotatetime: 0.4
   xStay: 0
   yStay: 0
   zStay: 0
-  kTime: 1
-  outRange: {x: 50, y: 50, z: 50}
 --- !u!1 &864690868
 GameObject:
   m_ObjectHideFlags: 0
