@@ -11,11 +11,12 @@ TagManager:
   - npc
   - secNpc
   - checkpoint
+  - boss
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - border
   - Water
   - UI
   - MAP
