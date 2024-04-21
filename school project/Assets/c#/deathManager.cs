@@ -6,7 +6,7 @@ public class deathManager : MonoBehaviour
 {
     public Transform resPos;
     public bool ifDead = false;
-
+    public Rigidbody rb;
 
     
 
@@ -25,6 +25,8 @@ public class deathManager : MonoBehaviour
         
         if (ifDead)
         {
+            rb.velocity = Vector3.zero;
+            rb.angularVelocity = Vector3.zero;
             transform.position = resPos.position;
             transform.rotation = resPos.rotation;
 
