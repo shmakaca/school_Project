@@ -17,39 +17,14 @@ public class flameArrow : MonoBehaviour
         playerPos = player.transform.position;
         transform.LookAt(playerPos);
 
-        
+        Vector3 dir = playerPos - transform.position;
+        rb.AddForce(dir * speed / 100 * Random.Range(0.9f ,1.1f), ForceMode.VelocityChange);
     }
 
     // Update is called once per frame
     void Update()
     {
-        int x = 0, y = 0, z = 0;
-        if(transform.position.x < playerPos.x)
-        {
-            x = 1;
-        }
-        else
-        {
-            x = -1;
-        }
-        if (transform.position.y < playerPos.y)
-        {
-            y = 1;
-        }
-        else
-        {
-            y = -1;
-        }
-        if (transform.position.z < playerPos.z)
-        {
-            z = 1;
-        }
-        else
-        {
-            z = -1;
-        }
-        Vector3 dir = new Vector3(x, y, z);
-        rb.AddForce(dir * speed / 100,ForceMode.VelocityChange);
+        
 
 
         if(cd < 0)
@@ -61,9 +36,7 @@ public class flameArrow : MonoBehaviour
         {
             cd = cd - Time.deltaTime;
         }
-        if(transform.position.x > playerPos.x && transform.position.z > playerPos.z)
-        {
-            Destroy(gameObject) ;
-        }
+        
     }
+
 }

@@ -68,7 +68,7 @@ public class fireCircle : MonoBehaviour
 
 
         //if player inside the circle player dies
-        if(Mathf.Abs(player.position.x - transform.position.x) < radius && Mathf.Abs(player.position.z - transform.position.z) < radius && Mathf.Abs(player.position.y - transform.position.y) < radius)
+        if((Mathf.Abs(player.position.x - transform.position.x) < radius && Mathf.Abs(player.position.z - transform.position.z) < radius) && Mathf.Abs(player.position.y - transform.position.y) < radius)
         {
             FindAnyObjectByType<deathManager>().ifDead = true;  
 

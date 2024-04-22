@@ -40,6 +40,7 @@ public class Fall : MonoBehaviour
 
         if (isFall)
         {
+
             for (int i = 0; i < shotsNum; i++)
             {
                 bool can = true;

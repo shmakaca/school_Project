@@ -9842,7 +9842,7 @@ MonoBehaviour:
   MaxSlideTime: 0.8
   SlideForce: 200
   SlideHieght: 0
-  SlideKey: 306
+  SlideKey: 9
   PlayerHeight: 2
   Ground:
     serializedVersion: 2

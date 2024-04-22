@@ -9,6 +9,7 @@ public class PlayerDamaging : MonoBehaviour
 
     public bool canAttack = false;
     public float countDown = 0.7f;
+    public bool isSowrd;
 
     // Start is called before the first frame update
     void Start()
@@ -19,6 +20,9 @@ public class PlayerDamaging : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        isSowrd = FindAnyObjectByType<SwapGun>().Sowrding;//checks if the sowrd is in the hand
+
+
             if(countDown > 0)
             {
                 countDown = countDown - Time.deltaTime;
@@ -33,9 +37,10 @@ public class PlayerDamaging : MonoBehaviour
         
         if(other.gameObject.tag == "boss")
         {
-            
-            if (Input.GetKeyDown(KeyCode.Mouse0) && canAttack)
+            Debug.Log("ff");
+            if (Input.GetKeyDown(KeyCode.Mouse0) && canAttack && isSowrd)
             {
+                
                 FindAnyObjectByType<bossHealth>().Damage(PlayerDamage);
                 countDown = 0.7f;
                 canAttack = false;

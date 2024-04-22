@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 1937856715687089098}
   - component: {fileID: 3765563302090280979}
   - component: {fileID: 8510953473953631246}
-  - component: {fileID: 4804789126433488248}
   m_Layer: 0
   m_Name: flameArrow
   m_TagString: death
@@ -50,7 +49,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 0}
   rb: {fileID: 8510953473953631246}
-  speed: 6
+  speed: 100
 --- !u!54 &8510953473953631246
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -67,38 +66,17 @@ Rigidbody:
   m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
   m_IncludeLayers:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 0
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
   m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 112
   m_CollisionDetection: 0
---- !u!65 &4804789126433488248
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2004421958651111431}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 1
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 0.09095011, y: 0.062192254, z: 2.0447762}
-  m_Center: {x: 0.00971565, y: 0.013776068, z: -0.030911297}
 --- !u!1 &6926969797805360768
 GameObject:
   m_ObjectHideFlags: 0
@@ -4943,7 +4921,7 @@ GameObject:
   - component: {fileID: 7430723704388410764}
   m_Layer: 0
   m_Name: Cylinder
-  m_TagString: Untagged
+  m_TagString: death
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -5028,7 +5006,7 @@ CapsuleCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
