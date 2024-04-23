@@ -11,6 +11,7 @@ public class PlayerDamaging : MonoBehaviour
     public float countDown = 0.7f;
     public bool isSowrd;
 
+    public Animator animator;
     // Start is called before the first frame update
     void Start()
     {
@@ -31,20 +32,29 @@ public class PlayerDamaging : MonoBehaviour
             {
                 canAttack = true;
             }
+            if (Input.GetKeyDown(KeyCode.Mouse0) && canAttack && isSowrd)
+        {
+            animator.SetTrigger("attacking");
+        }
     }
     private void OnTriggerStay(Collider other)
     {
         
         if(other.gameObject.tag == "boss")
         {
-            Debug.Log("ff");
+            
             if (Input.GetKeyDown(KeyCode.Mouse0) && canAttack && isSowrd)
             {
-                
-                FindAnyObjectByType<bossHealth>().Damage(PlayerDamage);
+
+                Invoke("damage", 0.7f);
+                animator.SetTrigger("attacking");
                 countDown = 0.7f;
                 canAttack = false;
             }
         }
+    }
+    private void damage()
+    {
+        FindAnyObjectByType<bossHealth>().Damage(PlayerDamage);
     }
 }

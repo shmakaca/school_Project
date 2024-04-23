@@ -9,6 +9,8 @@ public class bossHealth : MonoBehaviour
     public GameObject boss;
     public int bossHP;
     public ParticleSystem deathPar;
+
+    public GameObject attacks;
    
     public void Damage(int damage)
     {
@@ -17,8 +19,9 @@ public class bossHealth : MonoBehaviour
 
     private void Update()
     {
-        if (bossHP <= 0 && boss != null && healthBar != null)
+        if (bossHP <= 0 && boss != null && healthBar != null && deathPar != null)
         {
+            attacks.SetActive(false);
             deathPar.Play();
             Destroy( boss , 5.4f);
             Destroy(healthBar);
