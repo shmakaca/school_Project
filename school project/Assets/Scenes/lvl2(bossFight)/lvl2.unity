@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18174103, g: 0.22740552, b: 0.30741972, a: 1}
+  m_IndirectSpecularColor: {r: 0.18174115, g: 0.22740585, b: 0.30742034, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -21726,6 +21726,8 @@ MonoBehaviour:
   DashSpeed: 15
   SlideSpeed: 30
   WallRunSpeed: 8.5
+  knockBackSpeed: 0
+  knockBackDiration: 0
   DashSpeedIncreaseMultiplier: 50
   SlopeIncreaseMultiplier: 2.5
   SlideSpeedChangeFactror: 2
@@ -21754,6 +21756,7 @@ MonoBehaviour:
   sliding: 0
   Dashing: 0
   WallRunning: 0
+  Shooting: 0
 --- !u!4 &747618211992988406
 Transform:
   m_ObjectHideFlags: 0
@@ -23518,6 +23521,8 @@ MonoBehaviour:
   animator: {fileID: 9002132112630693748}
   bullText: {fileID: 0}
   bulletHall: {fileID: 1304493428}
+  Player: {fileID: 7273174464215934426}
+  Orientation: {fileID: 2200719075210154078}
   Bullet: {fileID: 3125161593489094475, guid: 4ef7642c1e119484198d2eeaf7f3f9f5, type: 3}
   bullDamage: 1
 --- !u!95 &9002132112630693748

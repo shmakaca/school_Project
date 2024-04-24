@@ -15,6 +15,8 @@ public class PlayerMovement : MonoBehaviour
     public float DashSpeed;
     public float SlideSpeed;
     public float WallRunSpeed;
+    public float knockBackSpeed;
+    public float knockBackDiration;
 
     [Header("keep momentum")]
     private float SpeedIncreaseMultiplier;
@@ -76,13 +78,13 @@ public class PlayerMovement : MonoBehaviour
     public MovementState State;
     public enum MovementState
     {
-        Walking, Sprinting, Air, Crouching, Sliding, Dashing, WallRunning
+        Walking, Sprinting, Air, Crouching, Sliding, Dashing, WallRunning, shooting
     }
 
     public bool sliding;
     public bool Dashing;
     public bool WallRunning;
-
+    public bool Shooting;
 
     
 
@@ -94,25 +96,17 @@ public class PlayerMovement : MonoBehaviour
         StandingHeight = transform.localScale.y;
 
         
-        
     }
 
     private void FixedUpdate()
-    {
-       
-        
+    { 
             PlayerMove();
-        
-        
 
     }
 
     public void Update()
     {
 
-        
-        
-            
             OnGround = Physics.Raycast(transform.position, Vector3.down, PlayerHeight * 0.5f + 0.3f);
             OnJumpPad = Physics.Raycast(transform.position, Vector3.down, PlayerHeight * 0.5f + 0.3f, JumpPad);
 
@@ -192,11 +186,20 @@ public class PlayerMovement : MonoBehaviour
 
     private void StateHandle()
     {
+        if (Shooting)
+        {
+            State = MovementState.shooting;
+            DesireMoveSpeed = knockBackSpeed;
+        }
 
-        if (WallRunning)
+        else if (WallRunning)
         {
             State = MovementState.WallRunning;
             DesireMoveSpeed = WallRunSpeed;
+            if(Shooting)
+            {
+                State = MovementState.shooting;
+            }
         }
         else if (Dashing)
         {
@@ -424,6 +427,19 @@ public class PlayerMovement : MonoBehaviour
         rb.AddForce(transform.up * JumpPadforce, ForceMode.Impulse);
     }
 
+    private void KnockBackWhileShooting()
+    {
+        Vector3 ForceToApply = Oreientation.forward  ;
+
+        rb.AddForce(ForceToApply, ForceMode.Impulse);
+
+        Invoke(nameof(StopKnockBackWhileShooting), knockBackDiration);
+    }
+
+    private void StopKnockBackWhileShooting()
+    {
+        Shooting = false;
+    }
 }
 
 

@@ -10,19 +10,25 @@ public class gunShot : MonoBehaviour
     
     public TextMeshProUGUI bullText;
     public Transform bulletHall;
+    public Transform Player;
+    public Transform Orientation;
+    private Rigidbody rb;
     public GameObject Bullet;
+    private PlayerMovement PlayerMovement;
 
     public int bullDamage;
 
     private bool isGun;
     private bool isReloading;
     private int shotsNum;
-    private int mag = 2;
-    // Start is called before the first frame update
+    private int mag = 3;
+
     void Start()
     {
         isReloading = false;
         shotsNum = mag;
+        PlayerMovement = Player.GetComponent<PlayerMovement>();
+        rb = Player.GetComponent<Rigidbody>();
     }
 
     // Update is called once per frame
@@ -36,7 +42,7 @@ public class gunShot : MonoBehaviour
         }
 
 
-        if (isGun && Input.GetKeyDown(KeyCode.R))
+        if (isGun && Input.GetKeyDown(KeyCode.R) )
         {
             isReloading = true;
             animator.SetTrigger("trReload");
@@ -48,17 +54,17 @@ public class gunShot : MonoBehaviour
     private void shot()
     {
         bool koko = true;
-
         if(koko)
         {
             Instantiate(Bullet, bulletHall);
-            koko = false;
+            PlayerMovement.Shooting  = false;
+            koko = false; PlayerMovement.Shooting = true;
         }
 
     }
     private void Reloading()
-    {
-        
+    {    
         shotsNum = mag;
     }
+
 }
