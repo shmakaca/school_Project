@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18174103, g: 0.22740552, b: 0.30741972, a: 1}
+  m_IndirectSpecularColor: {r: 0.18174115, g: 0.22740585, b: 0.30742034, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -23665,11 +23665,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   WalkSpeed: 7
   SprintSpeed: 10
-  DashSpeed: 15
+  DashSpeed: 25
   SlideSpeed: 30
   WallRunSpeed: 8.5
-  knockBackSpeed: 0
-  knockBackDiration: 0
+  MaxYSpeed: 0
+  KnockBackSpeed: 0
   DashSpeedIncreaseMultiplier: 50
   SlopeIncreaseMultiplier: 2.5
   SlideSpeedChangeFactror: 2
@@ -25987,16 +25987,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Orientation: {fileID: 2200719075210154078}
   PlayerCam: {fileID: 7621869038610693069}
-  AirDashForce: 60
-  GroundDashForce: 50
+  DashForce: 0
   DashUpwardForce: 0.5
+  MaxDashYSpeed: 0
   DashDuration: 1
   DashCoolDown: 5
+  useCameraForward: 1
+  allowAllDirections: 1
+  disableGravity: 0
+  resetVel: 1
   DashKey: 101
-  PlayerHeight: 2
-  Ground:
-    serializedVersion: 2
-    m_Bits: 64
 --- !u!114 &8521355073781606794
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -26185,9 +26185,11 @@ MonoBehaviour:
   bullText: {fileID: 0}
   bulletHall: {fileID: 1304493428}
   Player: {fileID: 7273174464215934426}
-  Orientation: {fileID: 2200719075210154078}
+  PlayerCam: {fileID: 7621869038610693069}
   Bullet: {fileID: 3125161593489094475, guid: 4ef7642c1e119484198d2eeaf7f3f9f5, type: 3}
   bullDamage: 1
+  KnockBackForce: 15
+  KnockBackDuration: 0.5
 --- !u!95 &9002132112630693748
 Animator:
   serializedVersion: 5

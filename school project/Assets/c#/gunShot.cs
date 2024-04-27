@@ -11,7 +11,7 @@ public class gunShot : MonoBehaviour
     public TextMeshProUGUI bullText;
     public Transform bulletHall;
     public Transform Player;
-    public Transform Orientation;
+    public Transform PlayerCam;
     private Rigidbody rb;
     public GameObject Bullet;
     private PlayerMovement PlayerMovement;
@@ -22,6 +22,10 @@ public class gunShot : MonoBehaviour
     private bool isReloading;
     private int shotsNum;
     private int mag = 3;
+
+    [Header("KnockBack")]
+    public float KnockBackForce;
+    public float KnockBackDuration;
 
     void Start()
     {
@@ -41,7 +45,6 @@ public class gunShot : MonoBehaviour
             shotsNum--;
         }
 
-
         if (isGun && Input.GetKeyDown(KeyCode.R) )
         {
             isReloading = true;
@@ -57,10 +60,27 @@ public class gunShot : MonoBehaviour
         if(koko)
         {
             Instantiate(Bullet, bulletHall);
-            PlayerMovement.Shooting  = false;
-            koko = false; PlayerMovement.Shooting = true;
+            koko = false;
+            KnockBAck();
         }
+    }
 
+    private void KnockBAck()
+    {
+        PlayerMovement.Shooting = true;
+
+        Vector3 direction = -PlayerCam.transform.forward;
+
+        Vector3 ForceToApply = direction * KnockBackForce;
+
+        rb.AddForce(ForceToApply, ForceMode.Impulse);
+
+        Invoke(nameof(StopKnockBack), KnockBackDuration);
+    }
+
+    private void StopKnockBack()
+    {
+        PlayerMovement.Shooting = false;
     }
     private void Reloading()
     {    

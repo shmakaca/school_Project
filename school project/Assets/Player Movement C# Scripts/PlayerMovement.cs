@@ -15,8 +15,8 @@ public class PlayerMovement : MonoBehaviour
     public float DashSpeed;
     public float SlideSpeed;
     public float WallRunSpeed;
-    public float knockBackSpeed;
-    public float knockBackDiration;
+    public float MaxYSpeed;
+    public float KnockBackSpeed;
 
     [Header("keep momentum")]
     private float SpeedIncreaseMultiplier;
@@ -101,7 +101,6 @@ public class PlayerMovement : MonoBehaviour
     private void FixedUpdate()
     { 
             PlayerMove();
-
     }
 
     public void Update()
@@ -186,20 +185,16 @@ public class PlayerMovement : MonoBehaviour
 
     private void StateHandle()
     {
-        if (Shooting)
+        if(Shooting)
         {
             State = MovementState.shooting;
-            DesireMoveSpeed = knockBackSpeed;
+            DesireMoveSpeed = KnockBackSpeed;
         }
 
         else if (WallRunning)
         {
             State = MovementState.WallRunning;
             DesireMoveSpeed = WallRunSpeed;
-            if(Shooting)
-            {
-                State = MovementState.shooting;
-            }
         }
         else if (Dashing)
         {
@@ -375,6 +370,9 @@ public class PlayerMovement : MonoBehaviour
                 rb.velocity = new Vector3(Limitedvelocity.x, rb.velocity.y, Limitedvelocity.z);
             }
         }
+
+        if(MaxYSpeed != 0 && rb.velocity.y > MaxYSpeed)
+            rb.velocity = new Vector3(rb.velocity.x, MaxYSpeed, rb.velocity.z);
     }
     private void Jump()
     {
@@ -427,19 +425,6 @@ public class PlayerMovement : MonoBehaviour
         rb.AddForce(transform.up * JumpPadforce, ForceMode.Impulse);
     }
 
-    private void KnockBackWhileShooting()
-    {
-        Vector3 ForceToApply = Oreientation.forward  ;
-
-        rb.AddForce(ForceToApply, ForceMode.Impulse);
-
-        Invoke(nameof(StopKnockBackWhileShooting), knockBackDiration);
-    }
-
-    private void StopKnockBackWhileShooting()
-    {
-        Shooting = false;
-    }
 }
 
 

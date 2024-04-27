@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028352, g: 0.22571376, b: 0.30692244, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -9979,6 +9979,9 @@ MonoBehaviour:
   DashSpeed: 25
   SlideSpeed: 30
   WallRunSpeed: 8.5
+  MaxYSpeed: 0
+  knockBackSpeed: 0
+  knockBackDiration: 0
   DashSpeedIncreaseMultiplier: 70
   SlopeIncreaseMultiplier: 2.5
   SlideSpeedChangeFactror: 2
@@ -10007,6 +10010,7 @@ MonoBehaviour:
   sliding: 0
   Dashing: 0
   WallRunning: 0
+  Shooting: 0
 --- !u!1 &3311629471857456342
 GameObject:
   m_ObjectHideFlags: 0
@@ -10295,16 +10299,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Orientation: {fileID: 4472959066321901344}
   PlayerCam: {fileID: 5287211972219714739}
-  AirDashForce: 60
-  GroundDashForce: 50
+  DashForce: 20
   DashUpwardForce: 0.5
+  MaxDashYSpeed: 15
   DashDuration: 0.3
   DashCoolDown: 2
+  useCameraForward: 1
+  allowAllDirections: 1
+  disableGravity: 1
+  resetVel: 0
   DashKey: 101
-  PlayerHeight: 2
-  Ground:
-    serializedVersion: 2
-    m_Bits: 64
 --- !u!114 &6257836954966077176
 MonoBehaviour:
   m_ObjectHideFlags: 0
