@@ -9842,6 +9842,7 @@ MonoBehaviour:
   MaxSlideTime: 0.8
   SlideForce: 200
   SlideHieght: 0
+  Camera: {fileID: 4147389418333523883}
   SlideKey: 9
   PlayerHeight: 2
   Ground:
@@ -9974,17 +9975,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2673c4622655f76409556c7812f9d000, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  MoveSpeed: 0
   WalkSpeed: 7
   SprintSpeed: 10
   DashSpeed: 25
   SlideSpeed: 30
   WallRunSpeed: 8.5
   MaxYSpeed: 0
-  knockBackSpeed: 0
-  knockBackDiration: 0
+  KnockBackSpeed: 0
   DashSpeedIncreaseMultiplier: 70
   SlopeIncreaseMultiplier: 2.5
   SlideSpeedChangeFactror: 2
+  KnockBackSpeedChangeFactor: 10
   JumpForce: 10
   JumpCoolDown: 0.25
   AirMultiplier: 0.4
@@ -10006,6 +10008,7 @@ MonoBehaviour:
   JumpPadforce: 20
   MaxSlopeAngel: 60
   Oreientation: {fileID: 4472959066321901344}
+  Cam: {fileID: 4147389418333523883}
   State: 0
   sliding: 0
   Dashing: 0
@@ -10087,6 +10090,7 @@ MonoBehaviour:
   sensX: 100
   sensY: 100
   orentation: {fileID: 4472959066321901344}
+  CameraHolder: {fileID: 7131159777490498857}
 --- !u!114 &4381072745426180625
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10181,6 +10185,7 @@ MonoBehaviour:
   UseGarvity: 0
   GravityCounterForce: 15
   Orientation: {fileID: 4472959066321901344}
+  Cam: {fileID: 4147389418333523883}
 --- !u!54 &5154925296567737356
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -10304,6 +10309,8 @@ MonoBehaviour:
   MaxDashYSpeed: 15
   DashDuration: 0.3
   DashCoolDown: 2
+  Cam: {fileID: 4147389418333523883}
+  DashFov: 90
   useCameraForward: 1
   allowAllDirections: 1
   disableGravity: 1
