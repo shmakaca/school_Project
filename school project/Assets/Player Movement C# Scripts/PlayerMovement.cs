@@ -23,6 +23,7 @@ public class PlayerMovement : MonoBehaviour
     public float DashSpeedIncreaseMultiplier;
     public float SlopeIncreaseMultiplier;
     public float SlideSpeedChangeFactror;
+    public float KnockBackSpeedChangeFactor;
 
     [Header("Jump")]
     public float JumpForce;
@@ -189,6 +190,7 @@ public class PlayerMovement : MonoBehaviour
         {
             State = MovementState.shooting;
             DesireMoveSpeed = KnockBackSpeed;
+            SpeedIncreaseMultiplier = KnockBackSpeedChangeFactor;
         }
 
         else if (WallRunning)
@@ -277,7 +279,7 @@ public class PlayerMovement : MonoBehaviour
         }
 
 
-        if (Mathf.Abs(DesireMoveSpeed - LastDesireMoveSpeed) > (SprintSpeed - WalkSpeed) && MoveSpeed != 0)
+        if (Mathf.Abs(DesireMoveSpeed - LastDesireMoveSpeed) > (SprintSpeed - CrouchSpeed) && MoveSpeed != 0)
         {
             StopAllCoroutines();
             StartCoroutine(SmoothlyLerpMoveSpeed());
