@@ -45,6 +45,9 @@ public class WallRunning : MonoBehaviour
     private PlayerMovement PlayerMovement;
     private Rigidbody Rb;
 
+    [Header("Camera Effects")]
+    public playercamera Cam;
+
     private void Start()
     {
         Rb = GetComponent<Rigidbody>();
@@ -141,6 +144,12 @@ public class WallRunning : MonoBehaviour
         WallRunTimer = WallRunStamina;
 
         Rb.velocity = new Vector3(Rb.velocity.x, 0f, Rb.velocity.z);
+
+        Cam.DOFOV(95f);
+        if (LeftWall)
+            Cam.DOTilt(-5f);
+        if (!LeftWall)
+            Cam.DOTilt(5f);
     }
 
     private void WallRunMoveMent()
@@ -184,6 +193,9 @@ public class WallRunning : MonoBehaviour
     private void StopWallRun()
     {
         PlayerMovement.WallRunning = false;
+
+        Cam.DOFOV(80f);
+        Cam.DOTilt(0);
     }
 
     private void Walljump()

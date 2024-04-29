@@ -7,7 +7,7 @@ using UnityEngine.EventSystems;
 public class PlayerMovement : MonoBehaviour
 {
     [Header("Movement")]
-    private float MoveSpeed;
+    public float MoveSpeed;
     public float WalkSpeed;
     public float SprintSpeed;
     private float DesireMoveSpeed;
@@ -68,6 +68,7 @@ public class PlayerMovement : MonoBehaviour
 
     [Header("Refrences")]
     public Transform Oreientation;
+    public playercamera Cam;
 
     float Horizontal;
     float Vertical;
@@ -86,8 +87,6 @@ public class PlayerMovement : MonoBehaviour
     public bool Dashing;
     public bool WallRunning;
     public bool Shooting;
-
-    
 
     private void Start()
     {
@@ -228,6 +227,7 @@ public class PlayerMovement : MonoBehaviour
         {
             State = MovementState.Sprinting;
             DesireMoveSpeed = SprintSpeed;
+            Cam.DOFOV(85f);
             if (Dashing)
             {
                 State = MovementState.Dashing;
@@ -241,6 +241,7 @@ public class PlayerMovement : MonoBehaviour
         {
             State = MovementState.Walking;
             DesireMoveSpeed = WalkSpeed;
+            Cam.DOFOV(80f);
 
             if (Dashing)
             {

@@ -18,12 +18,16 @@ public class Dash : MonoBehaviour
     public float DashDuration;
 
 
-    [Header("DashCoolDown")]
+    [Header("Dash CoolDown")]
     public float DashCoolDown;
     private float DashCoolDownTimer;
 
     private float Horizontal;
     private float Vertical;
+
+    [Header("Camera Effects")]
+    public playercamera Cam;
+    public float DashFov;
 
     [Header("Settings")]
     public bool useCameraForward = true;
@@ -63,6 +67,8 @@ public class Dash : MonoBehaviour
         PlayerMovement.Dashing = true;
         PlayerMovement.MaxYSpeed = MaxDashYSpeed;
 
+        Cam.DOFOV(DashFov);
+
         Transform forwardT;
 
         if (useCameraForward)
@@ -91,6 +97,8 @@ public class Dash : MonoBehaviour
     {
         PlayerMovement.Dashing = false;
         PlayerMovement.MaxYSpeed = 0 ;
+
+        Cam.DOFOV(80f);
     }
 
     private Vector3 GetDirection(Transform forwardT)

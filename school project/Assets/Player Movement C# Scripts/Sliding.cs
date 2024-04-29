@@ -17,6 +17,10 @@ public class Sliding : MonoBehaviour
     public float SlideHieght;
     private float StandingHieght;
 
+    [Header("Camera Effects")]
+    public playercamera Camera;
+    private float SlideFov = 85f;
+
     [Header("Input")]
     public KeyCode SlideKey = KeyCode.LeftControl;
     private float KeyPressingTime = 0f;
@@ -81,6 +85,10 @@ public class Sliding : MonoBehaviour
         PlayerObject.localScale = new Vector3(PlayerObject.localScale.x, SlideHieght, PlayerObject.localScale.z);
 
         rb.AddForce(Vector3.down * 5f, ForceMode.Impulse);
+
+        SlideFov += Time.deltaTime * 5f;
+
+        Camera.DOFOV(SlideFov);
     }
 
     private void SlideMovement()
@@ -111,5 +119,7 @@ public class Sliding : MonoBehaviour
     {
         PlayerMovement.sliding = false;
         PlayerObject.localScale = new Vector3(PlayerObject.localScale.x, StandingHieght, PlayerObject.localScale.z);
+        Camera.DOFOV(80f);
+        SlideFov = 85f;
     }
 }

@@ -27,6 +27,10 @@ public class gunShot : MonoBehaviour
     public float KnockBackForce;
     public float KnockBackDuration;
 
+    [Header("Camera Effects")]
+    public playercamera Cam;
+    public float KnockBackFov;
+
     void Start()
     {
         isReloading = false;
@@ -76,15 +80,22 @@ public class gunShot : MonoBehaviour
         rb.AddForce(ForceToApply, ForceMode.Impulse);
 
         Invoke(nameof(StopKnockBack), KnockBackDuration);
+
+        Cam.DOFOV(KnockBackFov);
     }
 
     private void StopKnockBack()
     {
         PlayerMovement.Shooting = false;
+
+        Cam.DOFOV(80f);
+
     }
     private void Reloading()
     {    
         shotsNum = mag;
+
+       
     }
 
 }

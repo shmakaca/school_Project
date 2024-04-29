@@ -13711,15 +13711,15 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1542227062}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.202, y: 0.46000004, z: 2.631}
+  m_LocalRotation: {x: -0.07110713, y: -0.06821969, z: 0.0056677125, w: 0.99511695}
+  m_LocalPosition: {x: -0.303, y: 0.872, z: 2.146}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 7829177732119577629}
   - {fileID: 1653205578133440619}
-  m_Father: {fileID: 2200719075210154078}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_Father: {fileID: 7621869038610693069}
+  m_LocalEulerAnglesHint: {x: 0, y: -107.825, z: 0}
 --- !u!1 &1565217878 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -516098083770646512, guid: 6316f9960b2aab84781a6c35e25dc898, type: 3}
@@ -24687,11 +24687,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2673c4622655f76409556c7812f9d000, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  MoveSpeed: 0
   WalkSpeed: 7
   SprintSpeed: 10
   DashSpeed: 25
   SlideSpeed: 50
-  WallRunSpeed: 8.5
+  WallRunSpeed: 10
   MaxYSpeed: 0
   KnockBackSpeed: 15
   DashSpeedIncreaseMultiplier: 30
@@ -24719,6 +24720,7 @@ MonoBehaviour:
   JumpPadforce: 10
   MaxSlopeAngel: 60
   Oreientation: {fileID: 2200719075210154078}
+  Cam: {fileID: 1808158380147263701}
   State: 0
   sliding: 0
   Dashing: 0
@@ -25169,6 +25171,7 @@ MonoBehaviour:
   sensX: 100
   sensY: 100
   orentation: {fileID: 2200719075210154078}
+  CameraHolder: {fileID: 4787144762336932439}
 --- !u!1 &1810291875899569769
 GameObject:
   m_ObjectHideFlags: 0
@@ -25312,8 +25315,7 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 1542227063}
+  m_Children: []
   m_Father: {fileID: 7273174464215934426}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!23 &2323185595607369037
@@ -25365,7 +25367,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 111159113482706702}
-  m_Enabled: 0
+  m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -25702,6 +25704,7 @@ MonoBehaviour:
   MaxSlideTime: 0.8
   SlideForce: 200
   SlideHieght: 0.5
+  Camera: {fileID: 1808158380147263701}
   SlideKey: 118
   PlayerHeight: 2
   Ground:
@@ -26573,6 +26576,7 @@ MonoBehaviour:
   UseGarvity: 0
   GravityCounterForce: 15
   Orientation: {fileID: 2200719075210154078}
+  Cam: {fileID: 1808158380147263701}
 --- !u!33 &7392716229774901511
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -26744,10 +26748,11 @@ Transform:
   m_GameObject: {fileID: 6385654954435086314}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: -0.124, y: -0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 1542227063}
   m_Father: {fileID: 4787144762336932439}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &7640070595092675334
@@ -26759,8 +26764,8 @@ Transform:
   m_GameObject: {fileID: 894455698199694703}
   serializedVersion: 2
   m_LocalRotation: {x: 0.000000021855694, y: 0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: -0.02333904, y: -0.02333904, z: -0.02333904}
+  m_LocalPosition: {x: -0, y: -0.12, z: 0.09}
+  m_LocalScale: {x: -0.021688737, y: -0.021688737, z: -0.021688737}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 747618211992988406}
@@ -26874,8 +26879,8 @@ Transform:
   m_GameObject: {fileID: 7488645080712126119}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0.67368025, z: -0, w: 0.739023}
-  m_LocalPosition: {x: 0.48, y: -0.69, z: -1.827732}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: 0.551, y: -0.796, z: -1.89}
+  m_LocalScale: {x: 0.65824395, y: 0.65824395, z: 0.65824395}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1304493428}
@@ -27017,6 +27022,8 @@ MonoBehaviour:
   MaxDashYSpeed: 15
   DashDuration: 0.5
   DashCoolDown: 1.5
+  Cam: {fileID: 1808158380147263701}
+  DashFov: 95
   useCameraForward: 1
   allowAllDirections: 1
   disableGravity: 1
@@ -27215,6 +27222,8 @@ MonoBehaviour:
   bullDamage: 3
   KnockBackForce: 15
   KnockBackDuration: 0.7
+  Cam: {fileID: 1808158380147263701}
+  KnockBackFov: 90
 --- !u!95 &9002132112630693748
 Animator:
   serializedVersion: 5
