@@ -24,7 +24,7 @@ public class deathManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-       // text.text = deathCount.ToString();
+       text.text = deathCount.ToString();
         
         if (ifDead)
         {
