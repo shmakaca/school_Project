@@ -80,7 +80,7 @@ public class PlayerMovement : MonoBehaviour
     public MovementState State;
     public enum MovementState
     {
-        Walking, Sprinting, Air, Crouching, Sliding, Dashing, WallRunning, shooting
+        Walking, Sprinting, Air, Crouching, Sliding, Dashing, WallRunning, shooting, Standing
     }
 
     public bool sliding;

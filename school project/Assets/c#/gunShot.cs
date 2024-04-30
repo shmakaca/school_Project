@@ -17,7 +17,6 @@ public class gunShot : MonoBehaviour
     private Rigidbody rb;
     public GameObject Bullet;
     private PlayerMovement PlayerMovement;
-    public AudioSource ShootSound;
 
     public int bullDamage;
 
@@ -40,7 +39,6 @@ public class gunShot : MonoBehaviour
         shotsNum = mag;
         PlayerMovement = Player.GetComponent<PlayerMovement>();
         rb = Player.GetComponent<Rigidbody>();
-        ShootSound = GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
@@ -49,7 +47,6 @@ public class gunShot : MonoBehaviour
         isGun = FindAnyObjectByType<SwapGun>().Guning;
         if(isGun && Input.GetKeyDown(KeyCode.Mouse0) && !isReloading && shotsNum > 0)
         {
-            ShootSound.Play();
             shot();
             shotsNum--;
         }
