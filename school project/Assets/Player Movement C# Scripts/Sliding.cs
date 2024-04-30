@@ -88,6 +88,9 @@ public class Sliding : MonoBehaviour
 
         SlideFov += Time.deltaTime * 5f;
 
+        if (SlideFov >= 95f)
+            SlideFov = 95f;
+
         Camera.DOFOV(SlideFov);
     }
 

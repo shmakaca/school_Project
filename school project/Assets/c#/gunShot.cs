@@ -4,10 +4,12 @@ using TMPro;
 using UnityEditor.Rendering;
 using UnityEngine;
 
+
 public class gunShot : MonoBehaviour
 {
     public Animator animator;
-    
+
+    [Header("Refrences")]
     public TextMeshProUGUI bullText;
     public Transform bulletHall;
     public Transform Player;
@@ -15,6 +17,7 @@ public class gunShot : MonoBehaviour
     private Rigidbody rb;
     public GameObject Bullet;
     private PlayerMovement PlayerMovement;
+    public AudioSource ShootSound;
 
     public int bullDamage;
 
@@ -37,6 +40,7 @@ public class gunShot : MonoBehaviour
         shotsNum = mag;
         PlayerMovement = Player.GetComponent<PlayerMovement>();
         rb = Player.GetComponent<Rigidbody>();
+        ShootSound = GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
@@ -45,6 +49,7 @@ public class gunShot : MonoBehaviour
         isGun = FindAnyObjectByType<SwapGun>().Guning;
         if(isGun && Input.GetKeyDown(KeyCode.Mouse0) && !isReloading && shotsNum > 0)
         {
+            ShootSound.Play();
             shot();
             shotsNum--;
         }
@@ -94,8 +99,6 @@ public class gunShot : MonoBehaviour
     private void Reloading()
     {    
         shotsNum = mag;
-
-       
     }
 
 }
