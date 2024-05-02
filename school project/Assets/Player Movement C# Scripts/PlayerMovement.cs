@@ -24,6 +24,7 @@ public class PlayerMovement : MonoBehaviour
     public float SlopeIncreaseMultiplier;
     public float SlideSpeedChangeFactror;
     public float KnockBackSpeedChangeFactor;
+    bool MaxSpeed;
 
     [Header("Jump")]
     public float JumpForce;
@@ -309,7 +310,7 @@ public class PlayerMovement : MonoBehaviour
                 float SLopeAngel = Vector3.Angle(Vector3.up, SlopeHit.normal);
                 float SLopeAngelIncrease = 1 + (SLopeAngel / 90f);
 
-                time += Time.deltaTime * SpeedIncreaseMultiplier * SlopeIncreaseMultiplier * SLopeAngelIncrease;
+                time += Time.deltaTime * SpeedIncreaseMultiplier * SLopeAngelIncrease;
             }
             else
                 time += Time.deltaTime * SpeedIncreaseMultiplier;

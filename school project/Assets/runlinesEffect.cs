@@ -6,57 +6,72 @@ public class runlinesEffect : MonoBehaviour
 {
     PlayerMovement PlayerMovement;
     public ParticleSystem SpeedLines;
-    public ParticleSystem SpeedLinesWhileDashing;
     public ParticleSystem SpeedLinesInMomentom;
+    public ParticleSystem SpeedLinesInFastMomentom;
 
     private bool InLoop;
     private void Start()
     {
         PlayerMovement = GetComponent<PlayerMovement>();
 
-        SpeedLines.Pause();
-        SpeedLinesWhileDashing.Pause();
-        SpeedLinesInMomentom.Pause();
+        SpeedLines.Stop();
+        SpeedLinesInMomentom.Stop();
+        SpeedLinesInFastMomentom.Stop();
+
+
     }
     private void Update()
     {
-        EffectToApply();
+        EffectToApplyWhileFastSpeeding();;
+        EffectToApplyWhileWallRunning();
+        EffectToApplyWhileSliding();
     }
-    private void EffectToApply()
+
+    private void EffectToApplyWhileWallRunning()
     {
         var SpeedLinesmain = SpeedLines.main;
-        var SpeedLinesWhileDashingmain = SpeedLinesWhileDashing.main;
-        var SpeedLinesInMomentomain = SpeedLinesInMomentom.main;
 
-        if (PlayerMovement.Dashing)
-        {
-            SpeedLinesWhileDashing.Play();  
-        }
-        else if (PlayerMovement.WallRunning)
+        if (PlayerMovement.WallRunning)
         {
             SpeedLinesmain.loop = true;
             SpeedLines.Play();  
         }
-        else if (PlayerMovement.MoveSpeed > 15f && PlayerMovement.MoveSpeed < 20f)
-        {
-            SpeedLinesInMomentomain.loop = true;  
-            SpeedLinesInMomentom.Play();
-        }
-        else if (PlayerMovement.MoveSpeed >= 20f && PlayerMovement.MoveSpeed < 30f)
-        {
-            SpeedLinesInMomentomain.loop = true;
-            SpeedLinesInMomentom.Play();
-            SpeedLinesWhileDashingmain.loop = true;
-            SpeedLinesWhileDashing.Play();
-
-        }
         else
         {
             SpeedLinesmain.loop = false;
-            SpeedLinesWhileDashingmain.loop = false;
-            SpeedLinesInMomentomain.loop = false;
+        }
+
+    }
+    private void EffectToApplyWhileFastSpeeding()
+    {
+        var SpeedLinesInFastMomentomain = SpeedLinesInFastMomentom.main;
+
+        if (PlayerMovement.MoveSpeed >= 17f && PlayerMovement.sliding && PlayerMovement.OnSlope())
+        {
+            SpeedLinesInFastMomentomain.loop = true;    
+            SpeedLinesInFastMomentom.Play();
+        }
+        else
+        {
+            SpeedLinesInFastMomentomain.loop = false;
         }
     }
+    private void EffectToApplyWhileSliding()
+    {
+        var SpeedLinesInMomentomain = SpeedLinesInMomentom.main;
+
+        if (PlayerMovement.sliding && PlayerMovement.OnSlope()  && PlayerMovement.MoveSpeed >= 12f && PlayerMovement.MoveSpeed < 17f  )
+        {
+            SpeedLinesInMomentomain.loop = true;
+            SpeedLinesInMomentom.Play();    
+        }
+        else
+        {
+            SpeedLinesInMomentomain.loop= false;
+        }
+    }
+    
+
 
 
 }

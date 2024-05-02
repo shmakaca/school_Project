@@ -32,8 +32,6 @@ public class Sliding : MonoBehaviour
     public LayerMask Ground;
     bool OnGround;
 
-
-
     private void Start()
     {
         rb = GetComponent<Rigidbody>();
@@ -64,7 +62,6 @@ public class Sliding : MonoBehaviour
         }
         if (KeyPressingTime > 0.15f)
         {
-
             Input.GetKeyDown(SlideKey);
         }
 
@@ -90,8 +87,11 @@ public class Sliding : MonoBehaviour
 
         if (SlideFov >= 95f)
             SlideFov = 95f;
-
-        Camera.DOFOV(SlideFov);
+        if (PlayerMovement.OnSlope())
+        {
+            Camera.DOFOV(SlideFov);
+        }
+        
     }
 
     private void SlideMovement()
