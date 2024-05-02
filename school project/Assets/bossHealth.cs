@@ -11,7 +11,7 @@ public class bossHealth : MonoBehaviour
     public ParticleSystem deathPar;
 
     public GameObject attacks;
-   
+
     public void Damage(int damage)
     {
         bossHP = bossHP - damage;
@@ -23,9 +23,9 @@ public class bossHealth : MonoBehaviour
         {
             attacks.SetActive(false);
             deathPar.Play();
-            Destroy( boss , 5.4f);
+            Destroy(boss, 5.4f);
             Destroy(healthBar);
         }
-        healthBar.GetComponent<Slider>().value = bossHP ;
+        healthBar.GetComponent<Slider>().value = bossHP;
     }
 }

@@ -18,26 +18,26 @@ public class bossAttack : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        if(cdStarFall >= 0) 
+        if (cdStarFall >= 0)
         {
             isStarFall = false;
-            cdStarFall-= Time.deltaTime;
-            
+            cdStarFall -= Time.deltaTime;
+
         }
         else
         {
             isStarFall = true;
-            
+
             cdStarFall = 10;
-            
+
         }
-        
+
 
 
 

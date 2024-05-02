@@ -24,7 +24,7 @@ public class respawn : MonoBehaviour
         }
         else
         {
-            isDeathReady=true;
+            isDeathReady = true;
 
         }
     }
@@ -36,10 +36,10 @@ public class respawn : MonoBehaviour
             if (isDeathReady)
             {
                 dCount++;
-                isDeathReady = false ;
+                isDeathReady = false;
             }
-            
-            
+
+
         }
     }
     public void respon()

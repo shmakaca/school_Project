@@ -30,14 +30,14 @@ public class SwapGun : MonoBehaviour
         {
             so();
         }
-        if(Guning)
+        if (Guning)
         {
             gu();
         }
 
-        if(Input.GetKeyDown(swapKey))
+        if (Input.GetKeyDown(swapKey))
         {
-            if(Sowrding)
+            if (Sowrding)
             {
                 Sowrding = false;
             }
@@ -55,7 +55,7 @@ public class SwapGun : MonoBehaviour
                 Guning = true;
             }
         }
-        
+
     }
     private void so()
     {

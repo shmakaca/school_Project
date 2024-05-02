@@ -480,7 +480,7 @@ ParticleSystem:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 100296968}
   serializedVersion: 8
-  lengthInSec: 1
+  lengthInSec: 0.5
   simulationSpeed: 1
   stopAction: 0
   cullingMode: 0
@@ -608,7 +608,7 @@ ParticleSystem:
     startSpeed:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 25
+      scalar: 50
       minScalar: 5
       maxCurve:
         serializedVersion: 2
@@ -1104,7 +1104,7 @@ ParticleSystem:
     serializedVersion: 6
     enabled: 1
     type: 4
-    angle: 20
+    angle: 30
     length: 5
     boxThickness: {x: 0, y: 0, z: 0}
     radiusThickness: 0.5
@@ -1309,7 +1309,7 @@ ParticleSystem:
     rateOverTime:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 25
+      scalar: 30
       minScalar: 10
       maxCurve:
         serializedVersion: 2
@@ -5223,7 +5223,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -0, y: 0, z: 0}
-  m_LocalScale: {x: 1.0000001, y: 1, z: 1}
+  m_LocalScale: {x: 1.0000001, y: 1.7824, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 949825302}
@@ -11713,7 +11713,7 @@ ParticleSystem:
     startSpeed:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 15
+      scalar: 30
       minScalar: 5
       maxCurve:
         serializedVersion: 2
@@ -12209,7 +12209,7 @@ ParticleSystem:
     serializedVersion: 6
     enabled: 1
     type: 4
-    angle: 10
+    angle: 30
     length: 5
     boxThickness: {x: 0, y: 0, z: 0}
     radiusThickness: 0.3
@@ -12414,7 +12414,7 @@ ParticleSystem:
     rateOverTime:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 15
+      scalar: 20
       minScalar: 10
       maxCurve:
         serializedVersion: 2
@@ -16596,8 +16596,8 @@ Transform:
   m_GameObject: {fileID: 949825299}
   serializedVersion: 2
   m_LocalRotation: {x: -0.83831143, y: 0.07060842, z: 0.060916636, w: 0.53715694}
-  m_LocalPosition: {x: -112.19, y: 239.08, z: 825.05}
-  m_LocalScale: {x: 1.6953992, y: 9.467177, z: 1.8388021}
+  m_LocalPosition: {x: -112.19, y: 232.53, z: 810.38}
+  m_LocalScale: {x: 0.4401652, y: 39.03301, z: 0.47739592}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 113910317}
@@ -17381,7 +17381,7 @@ ParticleSystem:
     startSpeed:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 20
+      scalar: 40
       minScalar: 5
       maxCurve:
         serializedVersion: 2
@@ -17605,7 +17605,7 @@ ParticleSystem:
     startSizeZ:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 1
+      scalar: 0.1
       minScalar: 1
       maxCurve:
         serializedVersion: 2
@@ -17877,10 +17877,10 @@ ParticleSystem:
     serializedVersion: 6
     enabled: 1
     type: 4
-    angle: 25
+    angle: 30
     length: 5
     boxThickness: {x: 0, y: 0, z: 0}
-    radiusThickness: 0.3
+    radiusThickness: 0.5
     donutRadius: 0.2
     m_Position: {x: 0, y: 0, z: 0}
     m_Rotation: {x: 0, y: 0, z: 0}
@@ -27835,15 +27835,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7e39a0e25cc69b14e905626c3aac2a87, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -113.97
+      value: -121.09
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7e39a0e25cc69b14e905626c3aac2a87, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 237.15
+      value: 215.53
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7e39a0e25cc69b14e905626c3aac2a87, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 816.24
+      value: 774.51
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7e39a0e25cc69b14e905626c3aac2a87, type: 3}
       propertyPath: m_LocalRotation.w
@@ -39381,7 +39381,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0.7071068, y: -0, z: -0, w: 0.7071067}
   m_LocalPosition: {x: -108.93942, y: 246.99898, z: 852.79}
-  m_LocalScale: {x: 9.2205, y: 9.2205, z: 9.2205}
+  m_LocalScale: {x: 1.9674703, y: 1.9674703, z: 1.9674703}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 3745622627503748455}

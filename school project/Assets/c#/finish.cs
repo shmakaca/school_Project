@@ -14,29 +14,29 @@ public class finish : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+
         mushCount = FindAnyObjectByType<mushTake>().mushNum;
-        canFinish = FindAnyObjectByType<Npctalk>().haveTalked; 
+        canFinish = FindAnyObjectByType<Npctalk>().haveTalked;
 
 
         if (isClose)
         {
-           if(canFinish && mushCount >= 5)
-           {
-            missionComplete();
+            if (canFinish && mushCount >= 5)
+            {
+                missionComplete();
 
-            mushCount = mushCount - 5;
+                mushCount = mushCount - 5;
 
-           } 
+            }
 
         }
-        
+
     }
 
     void missionComplete()
@@ -49,7 +49,7 @@ public class finish : MonoBehaviour
         if (other.gameObject.tag == "secNpc")
         {
             isClose = true;
-        }    
+        }
     }
     private void OnTriggerExit(Collider other)
     {

@@ -5,14 +5,18 @@ using UnityEngine;
 public class runlinesEffect : MonoBehaviour
 {
     PlayerMovement PlayerMovement;
-    Dash Dash;
     public ParticleSystem SpeedLines;
     public ParticleSystem SpeedLinesWhileDashing;
     public ParticleSystem SpeedLinesInMomentom;
+
+    private bool InLoop;
     private void Start()
     {
         PlayerMovement = GetComponent<PlayerMovement>();
-        Dash = GetComponent<Dash>();
+
+        SpeedLines.Pause();
+        SpeedLinesWhileDashing.Pause();
+        SpeedLinesInMomentom.Pause();
     }
     private void Update()
     {
@@ -20,48 +24,37 @@ public class runlinesEffect : MonoBehaviour
     }
     private void EffectToApply()
     {
+        var SpeedLinesmain = SpeedLines.main;
+        var SpeedLinesWhileDashingmain = SpeedLinesWhileDashing.main;
+        var SpeedLinesInMomentomain = SpeedLinesInMomentom.main;
+
         if (PlayerMovement.Dashing)
         {
+            SpeedLinesWhileDashing.Play();  
+        }
+        else if (PlayerMovement.WallRunning)
+        {
+            SpeedLinesmain.loop = true;
+            SpeedLines.Play();  
+        }
+        else if (PlayerMovement.MoveSpeed > 15f && PlayerMovement.MoveSpeed < 20f)
+        {
+            SpeedLinesInMomentomain.loop = true;  
+            SpeedLinesInMomentom.Play();
+        }
+        else if (PlayerMovement.MoveSpeed >= 20f && PlayerMovement.MoveSpeed < 30f)
+        {
+            SpeedLinesInMomentomain.loop = true;
+            SpeedLinesInMomentom.Play();
+            SpeedLinesWhileDashingmain.loop = true;
             SpeedLinesWhileDashing.Play();
 
         }
-        if(PlayerMovement.WallRunning)
-        {
-            SpeedLines.loop = true;
-            SpeedLines.Play();
-        }
         else
         {
-            SpeedLines.loop = false;
-        }
-        if(PlayerMovement.MoveSpeed > 15f && PlayerMovement.MoveSpeed <20f)
-        {
-            SpeedLinesInMomentom.Play();
-            SpeedLinesInMomentom.loop = true;
-        }
-        else if(PlayerMovement.MoveSpeed >= 20f && PlayerMovement.MoveSpeed < 30f)
-        {
-            SpeedLinesInMomentom.loop = true;
-            SpeedLinesWhileDashing.loop = true;
-            SpeedLinesInMomentom.Play();
-            SpeedLinesWhileDashing.Play();
-            
-        }
-        else if ( PlayerMovement.MoveSpeed >= 30f)
-        {
-            SpeedLinesInMomentom.loop = true;
-            SpeedLines.loop = true;
-            SpeedLinesWhileDashing.loop = true;
-            SpeedLinesInMomentom.Play();
-            SpeedLinesWhileDashing.Play();
-            SpeedLines.Play();
-            
-        }
-        else
-        {
-            SpeedLines.loop = false;
-            SpeedLinesWhileDashing.loop = false;
-            SpeedLinesInMomentom.loop = false;
+            SpeedLinesmain.loop = false;
+            SpeedLinesWhileDashingmain.loop = false;
+            SpeedLinesInMomentomain.loop = false;
         }
     }
 

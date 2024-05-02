@@ -8,11 +8,11 @@ public class AudioManager : MonoBehaviour
 {
 
     public AudioSource music;
-    
+
     public AudioClip def;
     public AudioClip barn;
 
-    
+
     public bool isDef = true;
 
 
@@ -20,22 +20,22 @@ public class AudioManager : MonoBehaviour
     void Start()
     {
         music.clip = def;
-         music.Play();
-        
+        music.Play();
 
-       
+
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        
-        
-            
+
+
+
     }
     private void OnTriggerEnter(Collider other)
     {
-        if(other.gameObject.tag == "audioBarn")
+        if (other.gameObject.tag == "audioBarn")
         {
             isDef = true;
             music.Pause();
@@ -45,7 +45,7 @@ public class AudioManager : MonoBehaviour
     }
     private void OnTriggerExit(Collider other)
     {
-        if(other.gameObject.tag == "audioBarn")
+        if (other.gameObject.tag == "audioBarn")
         {
             music.Pause();
             music.clip = def;

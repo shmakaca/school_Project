@@ -79,7 +79,7 @@ public class Dash : MonoBehaviour
         Vector3 direction = GetDirection(forwardT);
 
 
-        Vector3 ForceToApply = direction * DashForce  + Orientation.up * DashUpwardForce;
+        Vector3 ForceToApply = direction * DashForce + Orientation.up * DashUpwardForce;
 
         DelayForceToApply = ForceToApply;
 
@@ -96,7 +96,7 @@ public class Dash : MonoBehaviour
     private void ResetDash()
     {
         PlayerMovement.Dashing = false;
-        PlayerMovement.MaxYSpeed = 0 ;
+        PlayerMovement.MaxYSpeed = 0;
 
         Cam.DOFOV(80f);
     }

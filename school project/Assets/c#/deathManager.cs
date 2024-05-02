@@ -16,7 +16,7 @@ public class deathManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+
 
     }
 
@@ -24,8 +24,8 @@ public class deathManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-       text.text = deathCount.ToString();
-        
+        text.text = deathCount.ToString();
+
         if (ifDead)
         {
             rb.velocity = Vector3.zero;
@@ -39,11 +39,11 @@ public class deathManager : MonoBehaviour
     }
     private void OnTriggerEnter(Collider other)
     {
-        if(other.gameObject.tag == "death")
+        if (other.gameObject.tag == "death")
         {
             ifDead = true;
         }
-        if(other.gameObject.tag == "checkpoint")
+        if (other.gameObject.tag == "checkpoint")
         {
             resPos = other.transform;
         }

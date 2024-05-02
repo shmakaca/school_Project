@@ -14,55 +14,55 @@ public class mushTake : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+
     }
 
     // Update is called once per frame
-    void Update()   
+    void Update()
     {
-        if (canTakeMushroom )//&& this.transform.forward == mush.position
+        if (canTakeMushroom)//&& this.transform.forward == mush.position
         {
-            pickUp.SetActive( true );
-            
+            pickUp.SetActive(true);
 
-            if( Input.GetKey(KeyCode.F) && readyPickup) 
+
+            if (Input.GetKey(KeyCode.F) && readyPickup)
             {
                 Destroy(mush);
-                mushNum ++;
+                mushNum++;
                 readyPickup = false;
                 pickUp.SetActive(false);
             }
-            canTakeMushroom=false;
+            canTakeMushroom = false;
         }
-        if(desF) 
+        if (desF)
         {
-           
-                
-            desF=false;
+
+
+            desF = false;
         }
     }
     public void OnTriggerStay(Collider other)
     {
-        if(other.gameObject.tag == "MUSHROOM")
+        if (other.gameObject.tag == "MUSHROOM")
         {
             canTakeMushroom = true;
             mush = other.gameObject;
             readyPickup = true;
-            
+
         }
         else
         {
             desF = true;
         }
     }
-    
+
     public void OnTriggerExit(Collider other)
     {
-        if(other.gameObject.tag == "MUSHROOM")
+        if (other.gameObject.tag == "MUSHROOM")
         {
             desF = true;
-             readyPickup = false;
-            
+            readyPickup = false;
+
         }
     }
 }

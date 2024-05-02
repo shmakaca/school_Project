@@ -6,7 +6,7 @@ public class bullet : MonoBehaviour
 {
     private Rigidbody rb;
     private float speed = 100;
-    private int damage ;
+    private int damage;
     private Transform Oreientation;
 
     // Start is called before the first frame update
@@ -23,9 +23,9 @@ public class bullet : MonoBehaviour
 
         if (other.gameObject.tag == "boss")
         {
-                FindAnyObjectByType<bossHealth>().Damage(damage);
-                Destroy(gameObject);
-                
+            FindAnyObjectByType<bossHealth>().Damage(damage);
+            Destroy(gameObject);
+
         }
     }
 }

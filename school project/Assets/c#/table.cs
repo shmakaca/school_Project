@@ -12,31 +12,31 @@ public class table : MonoBehaviour
     void Update()
     {
         if (isCloseTable)
-        {   
+        {
             pickup.SetActive(true);
             if (Input.GetKeyUp(KeyCode.F))
             {
                 player.GetComponent<PlayerMovement>().enabled = false;
-                
+
                 tableUse = true;
                 isCloseTable = false;
             }
 
         }
-        else if(tableUse)
+        else if (tableUse)
         {
-            if(Input.GetKeyUp(KeyCode.F))
+            if (Input.GetKeyUp(KeyCode.F))
             {
                 player.GetComponent<PlayerMovement>().enabled = true;
-                tableUse = false ;
-                pickup.SetActive(false) ;
+                tableUse = false;
+                pickup.SetActive(false);
             }
         }
-        
+
     }
     private void OnTriggerEnter(Collider other)
     {
-        if(other.gameObject.tag == "Player")
+        if (other.gameObject.tag == "Player")
         {
             isCloseTable = true;
         }

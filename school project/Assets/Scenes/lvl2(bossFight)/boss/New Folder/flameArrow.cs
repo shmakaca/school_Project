@@ -13,21 +13,21 @@ public class flameArrow : MonoBehaviour
     void Start()
     {
         player = FindAnyObjectByType<Fall>().player;
-        
+
         playerPos = player.transform.position;
         transform.LookAt(playerPos);
 
         Vector3 dir = playerPos - transform.position;
-        rb.AddForce(dir * speed / 100 * Random.Range(0.9f ,1.1f), ForceMode.VelocityChange);
+        rb.AddForce(dir * speed / 100 * Random.Range(0.9f, 1.1f), ForceMode.VelocityChange);
     }
 
     // Update is called once per frame
     void Update()
     {
-        
 
 
-        if(cd < 0)
+
+        if (cd < 0)
         {
             Destroy(gameObject);
 
@@ -36,7 +36,7 @@ public class flameArrow : MonoBehaviour
         {
             cd = cd - Time.deltaTime;
         }
-        
+
     }
 
 }

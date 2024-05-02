@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PlayerDamaging : MonoBehaviour
 {
-    
+
     public int PlayerDamage;
 
     public bool canAttack = false;
@@ -15,7 +15,7 @@ public class PlayerDamaging : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+
     }
 
     // Update is called once per frame
@@ -24,25 +24,25 @@ public class PlayerDamaging : MonoBehaviour
         isSowrd = FindAnyObjectByType<SwapGun>().Sowrding;//checks if the sowrd is in the hand
 
 
-            if(countDown > 0)
-            {
-                countDown = countDown - Time.deltaTime;
-            }
-            else
-            {
-                canAttack = true;
-            }
-            if (Input.GetKeyDown(KeyCode.Mouse0) && canAttack && isSowrd)
+        if (countDown > 0)
+        {
+            countDown = countDown - Time.deltaTime;
+        }
+        else
+        {
+            canAttack = true;
+        }
+        if (Input.GetKeyDown(KeyCode.Mouse0) && canAttack && isSowrd)
         {
             animator.SetTrigger("attacking");
         }
     }
     private void OnTriggerStay(Collider other)
     {
-        
-        if(other.gameObject.tag == "boss")
+
+        if (other.gameObject.tag == "boss")
         {
-            
+
             if (Input.GetKeyDown(KeyCode.Mouse0) && canAttack && isSowrd)
             {
 

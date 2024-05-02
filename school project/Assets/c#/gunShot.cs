@@ -45,25 +45,25 @@ public class gunShot : MonoBehaviour
     void Update()
     {
         isGun = FindAnyObjectByType<SwapGun>().Guning;
-        if(isGun && Input.GetKeyDown(KeyCode.Mouse0) && !isReloading && shotsNum > 0)
+        if (isGun && Input.GetKeyDown(KeyCode.Mouse0) && !isReloading && shotsNum > 0)
         {
             shot();
             shotsNum--;
         }
 
-        if (isGun && Input.GetKeyDown(KeyCode.R) )
+        if (isGun && Input.GetKeyDown(KeyCode.R))
         {
             isReloading = true;
             animator.SetTrigger("trReload");
             Invoke("Reloading", 2f);
-            isReloading =false;
+            isReloading = false;
         }
-        
+
     }
     private void shot()
     {
         bool koko = true;
-        if(koko)
+        if (koko)
         {
             Instantiate(Bullet, bulletHall);
             koko = false;
@@ -94,7 +94,7 @@ public class gunShot : MonoBehaviour
 
     }
     private void Reloading()
-    {    
+    {
         shotsNum = mag;
     }
 

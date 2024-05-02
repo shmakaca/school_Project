@@ -11,15 +11,15 @@ public class RndWall : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+
     }
 
     // Update is called once per frame
     void Update()
     {
 
-         
-        
+
+
         if (wallCountDown > 0)
         {
 
@@ -27,16 +27,16 @@ public class RndWall : MonoBehaviour
         }
         else
         {
-            for(int i = 0;i < 3;i++)
+            for (int i = 0; i < 3; i++)
             {
-            wallPos = new Vector3 (1, 15, Random.Range(-110 ,110));
+                wallPos = new Vector3(1, 15, Random.Range(-110, 110));
                 Instantiate(wall, wallPos, Quaternion.identity);
             }
-            
+
             wallCountDown = 5;
 
-            
+
         }
     }
-    
+
 }

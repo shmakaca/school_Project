@@ -8,13 +8,13 @@ public class Fall : MonoBehaviour
     public GameObject player;
     bool isFall;
 
-    [Header ("stats")]
+    [Header("stats")]
     public int shotsNum;
-    
+
     public float CD;
 
-    private float FcountDown ;
-    
+    private float FcountDown;
+
 
 
     // Start is called before the first frame update
@@ -26,7 +26,7 @@ public class Fall : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+
         if (FcountDown < 0)
         {
             isFall = true;
@@ -46,17 +46,17 @@ public class Fall : MonoBehaviour
                 bool can = true;
                 if (can)
                 {
-                   summon();
+                    summon();
                     can = false;
                 }
-                
+
             }
             isFall = false;
         }
     }
     void summon()
     {
-        Instantiate(Farrows, transform.position * Random.Range(0.9f ,1.3f), Quaternion.identity);
+        Instantiate(Farrows, transform.position * Random.Range(0.9f, 1.3f), Quaternion.identity);
     }
-    
+
 }

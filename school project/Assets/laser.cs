@@ -9,7 +9,7 @@ public class laser : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+
     }
 
     // Update is called once per frame
@@ -20,7 +20,7 @@ public class laser : MonoBehaviour
             Vector3 space = transform.position - player.position;
             Laser.SetActive(true);
             Laser.transform.LookAt(player.position);
-            
+
 
         }
     }

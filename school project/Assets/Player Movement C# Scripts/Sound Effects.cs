@@ -15,7 +15,7 @@ public class SoundEffects : MonoBehaviour
 
     void Start()
     {
-        PlayerMovement = GetComponent<PlayerMovement>(); 
+        PlayerMovement = GetComponent<PlayerMovement>();
     }
 
     // Update is called once per frame

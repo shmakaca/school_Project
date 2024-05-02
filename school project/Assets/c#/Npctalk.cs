@@ -7,10 +7,10 @@ public class Npctalk : MonoBehaviour
 {
     public GameObject npcColl;
     public GameObject player;
-    public GameObject talk1 , talk2 , talk3;
+    public GameObject talk1, talk2, talk3;
     public bool isTalking = false;
-    
-    
+
+
     public bool isDone = false;
     public bool haveTalked = false;
 
@@ -23,31 +23,32 @@ public class Npctalk : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+
     }
 
     // Update is called once per frame
     void Update()
     {
         table = FindAnyObjectByType<table>().tableUse;
-            if (isTalking)
-            {
-              player.GetComponent<PlayerMovement>().enabled = false;
-              talk();
-                
-            }else if(!table)
-            {
-               b1 = true ; b2 = false ; b3 = false ;
-               isDone = true;
-               player.GetComponent<PlayerMovement>().enabled = true;
-                
-            }
-             
+        if (isTalking)
+        {
+            player.GetComponent<PlayerMovement>().enabled = false;
+            talk();
+
+        }
+        else if (!table)
+        {
+            b1 = true; b2 = false; b3 = false;
+            isDone = true;
+            player.GetComponent<PlayerMovement>().enabled = true;
+
+        }
+
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        if(other.gameObject.tag == "npc")
+        if (other.gameObject.tag == "npc")
         {
             isTalking = true;
             other.gameObject.tag = "secNpc";
@@ -55,7 +56,7 @@ public class Npctalk : MonoBehaviour
     }
     void talk()
     {
-        
+
         isDone = false;
 
         if (b1)
@@ -67,9 +68,10 @@ public class Npctalk : MonoBehaviour
                 talk1.SetActive(false);
                 b1 = false;
                 b2 = true;
-                
+
             }
-        }else if (b2)
+        }
+        else if (b2)
         {
 
             talk2.SetActive(true);
@@ -82,8 +84,9 @@ public class Npctalk : MonoBehaviour
 
 
             }
-        
-        }else if (b3)
+
+        }
+        else if (b3)
         {
 
             talk3.SetActive(true);
@@ -93,13 +96,13 @@ public class Npctalk : MonoBehaviour
                 b3 = false;
                 isTalking = false;
                 haveTalked = true;
-                
+
             }
         }
-        
+
 
     }
-    
-   
-    
+
+
+
 }

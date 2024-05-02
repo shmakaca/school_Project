@@ -5,21 +5,21 @@ using UnityEngine;
 
 public class astro : MonoBehaviour
 {
-    
 
-   
-     void OnTriggerEnter(Collider co )
+
+
+    void OnTriggerEnter(Collider co)
     {
         if (co.gameObject.tag == "player")
         {
             Destroy(this.gameObject);
         }
-        if ( co.gameObject.tag == "despawner") 
+        if (co.gameObject.tag == "despawner")
         {
 
             Destroy(this.gameObject);
-        
-        
+
+
         }
     }
 }

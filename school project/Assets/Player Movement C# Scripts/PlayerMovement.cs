@@ -95,54 +95,54 @@ public class PlayerMovement : MonoBehaviour
         ReadyToJump = true;
         StandingHeight = transform.localScale.y;
 
-        
+
     }
 
     private void FixedUpdate()
-    { 
-            PlayerMove();
+    {
+        PlayerMove();
     }
 
     public void Update()
     {
 
-            OnGround = Physics.Raycast(transform.position, Vector3.down, PlayerHeight * 0.5f + 0.3f);
-            OnJumpPad = Physics.Raycast(transform.position, Vector3.down, PlayerHeight * 0.5f + 0.3f, JumpPad);
+        OnGround = Physics.Raycast(transform.position, Vector3.down, PlayerHeight * 0.5f + 0.3f);
+        OnJumpPad = Physics.Raycast(transform.position, Vector3.down, PlayerHeight * 0.5f + 0.3f, JumpPad);
 
         OnGround = Physics.Raycast(transform.position, Vector3.down, PlayerHeight * 0.5f + 0.3f);
         OnJumpPad = Physics.Raycast(transform.position, Vector3.down, PlayerHeight * 0.5f + 0.3f, JumpPad);
 
 
-            MyInput();
-            SpeedControl();
-            StateHandle();
+        MyInput();
+        SpeedControl();
+        StateHandle();
 
-            if (State == MovementState.Walking || State == MovementState.Sprinting || State == MovementState.Crouching)
-                rb.drag = GroundDrag;
-            else
-                rb.drag = 0;
+        if (State == MovementState.Walking || State == MovementState.Sprinting || State == MovementState.Crouching)
+            rb.drag = GroundDrag;
+        else
+            rb.drag = 0;
 
-            if (Input.GetKey(CrouchKey) && OnGround)
-            {
-                transform.localScale = new Vector3(transform.localScale.x, CrouchHeight, transform.localScale.z);
-                rb.AddForce(Vector3.down * 5f, ForceMode.Force);
-            }
-            else if (Input.GetKey(CrouchKey) && !OnGround)
-            {
-                transform.localScale = new Vector3(transform.localScale.x, CrouchHeight, transform.localScale.z);
-            }
-            else
-            {
-                transform.localScale = new Vector3(transform.localScale.x, StandingHeight, transform.localScale.z);
-            }
+        if (Input.GetKey(CrouchKey) && OnGround)
+        {
+            transform.localScale = new Vector3(transform.localScale.x, CrouchHeight, transform.localScale.z);
+            rb.AddForce(Vector3.down * 5f, ForceMode.Force);
+        }
+        else if (Input.GetKey(CrouchKey) && !OnGround)
+        {
+            transform.localScale = new Vector3(transform.localScale.x, CrouchHeight, transform.localScale.z);
+        }
+        else
+        {
+            transform.localScale = new Vector3(transform.localScale.x, StandingHeight, transform.localScale.z);
+        }
 
-            if (OnJumpPad)
-            {
-                JumPad();
-            }
+        if (OnJumpPad)
+        {
+            JumPad();
+        }
 
-        
-     
+
+
         if (Input.GetKey(CrouchKey) && OnGround)
         {
             transform.localScale = new Vector3(transform.localScale.x, CrouchHeight, transform.localScale.z);
@@ -163,7 +163,7 @@ public class PlayerMovement : MonoBehaviour
         }
 
     }
-    
+
 
     private void MyInput()
     {
@@ -185,7 +185,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void StateHandle()
     {
-        if(Shooting)
+        if (Shooting)
         {
             State = MovementState.shooting;
             DesireMoveSpeed = KnockBackSpeed;
@@ -374,7 +374,7 @@ public class PlayerMovement : MonoBehaviour
             }
         }
 
-        if(MaxYSpeed != 0 && rb.velocity.y > MaxYSpeed)
+        if (MaxYSpeed != 0 && rb.velocity.y > MaxYSpeed)
             rb.velocity = new Vector3(rb.velocity.x, MaxYSpeed, rb.velocity.z);
     }
     private void Jump()

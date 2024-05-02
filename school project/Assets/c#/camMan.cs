@@ -13,7 +13,7 @@ public class camMan : MonoBehaviour
     public Camera npcCam;
 
     public bool istable = false;
-    
+
     public Camera tableCam;
 
 
@@ -59,26 +59,25 @@ public class camMan : MonoBehaviour
             def();
         }
 
-        
+
     }
-        void def()
-        {
-            mainCam.enabled = true;
-            npcCam.enabled = false;
-            tableCam.enabled = false;
-        }
-        void npc()
-        {
-            npcCam.enabled = true;
-            mainCam.enabled = false;
-            tableCam.enabled = false;
-        }
-        void table()
-        {
-            npcCam.enabled = false;
-            mainCam.enabled = false;
-            tableCam.enabled = true ;
-        }
+    void def()
+    {
+        mainCam.enabled = true;
+        npcCam.enabled = false;
+        tableCam.enabled = false;
+    }
+    void npc()
+    {
+        npcCam.enabled = true;
+        mainCam.enabled = false;
+        tableCam.enabled = false;
+    }
+    void table()
+    {
+        npcCam.enabled = false;
+        mainCam.enabled = false;
+        tableCam.enabled = true;
+    }
 
 }
-        
