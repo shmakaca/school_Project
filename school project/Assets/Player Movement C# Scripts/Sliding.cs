@@ -13,6 +13,7 @@ public class Sliding : MonoBehaviour
     [Header("Sliding")]
     public float MaxSlideTime;
     public float SlideForce;
+    private float SlieTimer;
 
     public float SlideHieght;
     private float StandingHieght;
@@ -23,7 +24,6 @@ public class Sliding : MonoBehaviour
 
     [Header("Input")]
     public KeyCode SlideKey = KeyCode.LeftControl;
-    private float KeyPressingTime = 0f;
     private float Horizontal;
     private float Vertical;
 
@@ -54,18 +54,7 @@ public class Sliding : MonoBehaviour
         Horizontal = Input.GetAxisRaw("Horizontal");
         Vertical = Input.GetAxisRaw("Vertical");
 
-        if (Input.GetKey(SlideKey))
-            KeyPressingTime += Time.deltaTime;
-        else
-        {
-            KeyPressingTime = 0f;
-        }
-        if (KeyPressingTime > 0.15f)
-        {
-            Input.GetKeyDown(SlideKey);
-        }
-
-        if ((Horizontal != 0 || Vertical != 0) && OnGround && KeyPressingTime > 0.15f)
+        if ((Horizontal != 0 || Vertical != 0) && OnGround && !PlayerMovement.sliding && Input.GetKeyDown(SlideKey))
         {
             StartSlide();
         }
@@ -84,6 +73,8 @@ public class Sliding : MonoBehaviour
         rb.AddForce(Vector3.down * 5f, ForceMode.Impulse);
 
         SlideFov += Time.deltaTime * 5f;
+
+        SlieTimer= MaxSlideTime;
 
         if (SlideFov >= 95f)
             SlideFov = 95f;
@@ -104,15 +95,15 @@ public class Sliding : MonoBehaviour
         {
             rb.AddForce(Direction.normalized * SlideForce, ForceMode.Force);
 
+            SlieTimer -= Time.deltaTime;
         }
         // slidng on slope
         else
         {
             rb.AddForce(PlayerMovement.GetSlopeMoveDirection(Direction) * SlideForce, ForceMode.Force);
-            KeyPressingTime = 0.15f;
         }
 
-        if (KeyPressingTime > 0.15 + MaxSlideTime && PlayerMovement.sliding)
+        if (SlieTimer <= 0)
         {
             StopSlide();
         }

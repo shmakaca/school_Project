@@ -46,7 +46,7 @@ public class runlinesEffect : MonoBehaviour
     {
         var SpeedLinesInFastMomentomain = SpeedLinesInFastMomentom.main;
 
-        if (PlayerMovement.MoveSpeed >= 17f && PlayerMovement.sliding && PlayerMovement.OnSlope())
+        if (PlayerMovement.MoveSpeed >= 17f  )
         {
             SpeedLinesInFastMomentomain.loop = true;    
             SpeedLinesInFastMomentom.Play();
@@ -60,7 +60,7 @@ public class runlinesEffect : MonoBehaviour
     {
         var SpeedLinesInMomentomain = SpeedLinesInMomentom.main;
 
-        if (PlayerMovement.sliding && PlayerMovement.OnSlope()  && PlayerMovement.MoveSpeed >= 12f && PlayerMovement.MoveSpeed < 17f  )
+        if ( PlayerMovement.MoveSpeed >= 13f && PlayerMovement.MoveSpeed < 17f  )
         {
             SpeedLinesInMomentomain.loop = true;
             SpeedLinesInMomentom.Play();    
