@@ -31,21 +31,17 @@ public class SoundEffects : MonoBehaviour
             Src.clip = Walking;
             Src.Play();
         }
-        else if (PlayerMovement.State == PlayerMovement.MovementState.Dashing)
+        else if (PlayerMovement.Dashing)
         {
             Src.clip = Dashing;
             Src.Play();
         }
-        else if (PlayerMovement.State == PlayerMovement.MovementState.Sliding)
+        else if (PlayerMovement.sliding || PlayerMovement.WallRunning)
         {
             Src.clip = Wind;
             Src.Play();
         }
-        else if (PlayerMovement.State == PlayerMovement.MovementState.WallRunning)
-        {
-            Src.clip = Wind;
-            Src.Play();
-        }
+
 
     }
 }

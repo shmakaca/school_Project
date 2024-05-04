@@ -31,7 +31,7 @@ public class runlinesEffect : MonoBehaviour
     {
         var SpeedLinesmain = SpeedLines.main;
 
-        if (PlayerMovement.WallRunning)
+        if (PlayerMovement.State == PlayerMovement.MovementState.WallRunning)
         {
             SpeedLinesmain.loop = true;
             SpeedLines.Play();  
