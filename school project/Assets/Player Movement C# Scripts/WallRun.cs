@@ -143,8 +143,6 @@ public class WallRun : MonoBehaviour
 
         WallRunTimer = WallRunStamina;
 
-        ExitWallTimer = 0f;
-
         Rb.velocity = new Vector3(Rb.velocity.x, 0f, Rb.velocity.z);
 
         Cam.DOFOV(95f);

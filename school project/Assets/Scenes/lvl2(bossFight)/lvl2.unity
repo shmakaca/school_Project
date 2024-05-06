@@ -27662,7 +27662,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: c6cbefb0c4952a3498b08da802804608, type: 2}
+  - {fileID: 2100000, guid: 44d7e86e8f807554e967ae845fec0512, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -42810,10 +42810,10 @@ MonoBehaviour:
   DashCoolDown: 5
   Cam: {fileID: 1808158380147263701}
   DashFov: 95
-  useCameraForward: 1
+  useCameraForward: 0
   allowAllDirections: 1
   disableGravity: 1
-  resetVel: 0
+  resetVel: 1
   DashKey: 101
 --- !u!114 &8521355073781606794
 MonoBehaviour:
