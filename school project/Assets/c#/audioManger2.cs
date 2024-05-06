@@ -9,14 +9,18 @@ public class audioManger2 : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        AS.clip = bossMusic;
-        AS.Play();
+        PlayThis(bossMusic);
     }
 
     // Update is called once per frame
     void Update()
     {
+        
 
-
+    }
+    public void PlayThis(AudioClip clip)
+    {
+        AS.clip = clip;
+        AS.Play();
     }
 }

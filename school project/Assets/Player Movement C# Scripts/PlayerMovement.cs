@@ -6,6 +6,13 @@ using UnityEngine.EventSystems;
 
 public class PlayerMovement : MonoBehaviour
 {
+
+    [Header("AudioClips")]
+    public AudioClip Sattack;
+    public AudioClip Sdash;
+    public AudioClip Swalking;
+    public AudioClip Sshot;
+    public AudioClip SinAir;
     [Header("Movement")]
     public float MoveSpeed;
     public float WalkSpeed;
@@ -191,18 +198,31 @@ public class PlayerMovement : MonoBehaviour
             State = MovementState.shooting;
             DesireMoveSpeed = KnockBackSpeed;
             SpeedIncreaseMultiplier = KnockBackSpeedChangeFactor;
+            
+                FindAnyObjectByType<audioManger2>().PlayThis(Sshot);
+            
+           
         }
+
 
         else if (WallRunning)
         {
             State = MovementState.WallRunning;
             DesireMoveSpeed = WallRunSpeed;
+            
+                FindAnyObjectByType<audioManger2>().PlayThis(SinAir);
+            
         }
         else if (Dashing)
         {
+
             State = MovementState.Dashing;
             DesireMoveSpeed = DashSpeed;
             SpeedIncreaseMultiplier = DashSpeedIncreaseMultiplier;
+            
+                 FindAnyObjectByType<audioManger2>().PlayThis(Sdash);
+            
+            
         }
 
         else if (sliding)
@@ -214,6 +234,10 @@ public class PlayerMovement : MonoBehaviour
             else
                 DesireMoveSpeed = SprintSpeed;
             SpeedIncreaseMultiplier = SlideSpeedChangeFactror;
+            
+            
+                FindAnyObjectByType<audioManger2>().PlayThis(SinAir);
+            
 
         }
         // Crouching Mode
@@ -235,6 +259,9 @@ public class PlayerMovement : MonoBehaviour
                 DesireMoveSpeed = DashSpeed;
                 SpeedIncreaseMultiplier = DashSpeedIncreaseMultiplier;
             }
+            
+                FindAnyObjectByType<audioManger2>().PlayThis(Swalking);
+            
         }
 
         // Walking Mode

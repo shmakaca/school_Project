@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18174115, g: 0.22740585, b: 0.30742034, a: 1}
+  m_IndirectSpecularColor: {r: 0.18174103, g: 0.22740552, b: 0.30741972, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -35510,7 +35510,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!82 &1837190389
 AudioSource:
   m_ObjectHideFlags: 0
@@ -41173,6 +41173,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2673c4622655f76409556c7812f9d000, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Sattack: {fileID: 8300000, guid: afbd395bcdd5d8e47bf09597fa0272ba, type: 3}
+  Sdash: {fileID: 8300000, guid: fd95a9c7d8a231848bc55d1864e96fb7, type: 3}
+  Swalking: {fileID: 8300000, guid: 2fb003c0b7be1784da54297c2a3135a1, type: 3}
+  Sshot: {fileID: 8300000, guid: 40eeeda9fff032b428e448c79e5a67c3, type: 3}
+  SinAir: {fileID: 8300000, guid: d87fd9c644da0da40ae6e2effcefaee8, type: 3}
   MoveSpeed: 0
   WalkSpeed: 7
   SprintSpeed: 10
@@ -42877,7 +42882,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1810291875899569769}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ace190b7e10d3724a9eb77904ffb389f, type: 3}
   m_Name: 
