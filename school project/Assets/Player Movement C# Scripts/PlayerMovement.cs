@@ -200,8 +200,6 @@ public class PlayerMovement : MonoBehaviour
             SpeedIncreaseMultiplier = KnockBackSpeedChangeFactor;
             
                 FindAnyObjectByType<audioManger2>().PlayThis(Sshot);
-            
-           
         }
 
 
