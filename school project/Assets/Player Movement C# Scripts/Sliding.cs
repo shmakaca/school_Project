@@ -20,7 +20,7 @@ public class Sliding : MonoBehaviour
 
     [Header("Camera Effects")]
     public playercamera Camera;
-    private float SlideFov = 85f;
+    private float SlideFov;
 
     [Header("Input")]
     public KeyCode SlideKey = KeyCode.LeftControl;
@@ -37,6 +37,7 @@ public class Sliding : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         PlayerMovement = GetComponent<PlayerMovement>();
         StandingHieght = PlayerObject.localScale.y;
+        SlideFov = PlayerMovement.NormalPov + 5f;
     }
 
     private void FixedUpdate()
@@ -76,8 +77,8 @@ public class Sliding : MonoBehaviour
 
         SlieTimer= MaxSlideTime;
 
-        if (SlideFov >= 95f)
-            SlideFov = 95f;
+        if (SlideFov >= PlayerMovement.NormalPov + 15f)
+            SlideFov = PlayerMovement.NormalPov + 15f;
         if (PlayerMovement.OnSlope())
         {
             Camera.DOFOV(SlideFov);
@@ -113,7 +114,7 @@ public class Sliding : MonoBehaviour
     {
         PlayerMovement.sliding = false;
         PlayerObject.localScale = new Vector3(PlayerObject.localScale.x, StandingHieght, PlayerObject.localScale.z);
-        Camera.DOFOV(80f);
-        SlideFov = 85f;
+        Camera.DOFOV(PlayerMovement.NormalPov);
+        SlideFov = PlayerMovement.NormalPov + 5f;
     }
 }

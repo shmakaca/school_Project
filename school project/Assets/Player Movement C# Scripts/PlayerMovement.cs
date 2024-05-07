@@ -7,12 +7,6 @@ using UnityEngine.EventSystems;
 public class PlayerMovement : MonoBehaviour
 {
 
-    [Header("AudioClips")]
-    public AudioClip Sattack;
-    public AudioClip Sdash;
-    public AudioClip Swalking;
-    public AudioClip Sshot;
-    public AudioClip SinAir;
     [Header("Movement")]
     public float MoveSpeed;
     public float WalkSpeed;
@@ -76,10 +70,16 @@ public class PlayerMovement : MonoBehaviour
 
     [Header("Refrences")]
     public Transform Oreientation;
+    public GameObject PlayerObject;
+    public GameObject CameraHolder;
     public playercamera Cam;
+    public Camera PlayerCamera;
 
-    float Horizontal;
-    float Vertical;
+    [Header("Pov")]
+    public float NormalPov;
+
+    public float Horizontal;
+    public float Vertical;
 
     Vector3 MoveDirection;
 
@@ -102,8 +102,9 @@ public class PlayerMovement : MonoBehaviour
         rb.freezeRotation = true;
         ReadyToJump = true;
         StandingHeight = transform.localScale.y;
+        PlayerCamera = CameraHolder.GetComponent<Camera>();
 
-
+        NormalPov = PlayerCamera.fieldOfView;
     }
 
     private void FixedUpdate()
@@ -199,7 +200,6 @@ public class PlayerMovement : MonoBehaviour
             DesireMoveSpeed = KnockBackSpeed;
             SpeedIncreaseMultiplier = KnockBackSpeedChangeFactor;
             
-                FindAnyObjectByType<audioManger2>().PlayThis(Sshot);
         }
 
 
@@ -208,7 +208,6 @@ public class PlayerMovement : MonoBehaviour
             State = MovementState.WallRunning;
             DesireMoveSpeed = WallRunSpeed;
             
-                FindAnyObjectByType<audioManger2>().PlayThis(SinAir);
             
         }
         else if (Dashing)
@@ -217,10 +216,9 @@ public class PlayerMovement : MonoBehaviour
             State = MovementState.Dashing;
             DesireMoveSpeed = DashSpeed;
             SpeedIncreaseMultiplier = DashSpeedIncreaseMultiplier;
-            
-                 FindAnyObjectByType<audioManger2>().PlayThis(Sdash);
-            
-            
+
+            PlayerObject.GetComponent<CapsuleCollider>().enabled = false;
+
         }
 
         else if (sliding)
@@ -233,10 +231,6 @@ public class PlayerMovement : MonoBehaviour
                 DesireMoveSpeed = SprintSpeed;
             SpeedIncreaseMultiplier = SlideSpeedChangeFactror;
             
-            
-                FindAnyObjectByType<audioManger2>().PlayThis(SinAir);
-            
-
         }
         // Crouching Mode
         else if (Input.GetKey(CrouchKey) && OnGround)
@@ -250,30 +244,29 @@ public class PlayerMovement : MonoBehaviour
         {
             State = MovementState.Sprinting;
             DesireMoveSpeed = SprintSpeed;
-            Cam.DOFOV(85f);
+            Cam.DOFOV(NormalPov + 5f);
             if (Dashing)
             {
                 State = MovementState.Dashing;
                 DesireMoveSpeed = DashSpeed;
                 SpeedIncreaseMultiplier = DashSpeedIncreaseMultiplier;
+                PlayerObject.GetComponent<CapsuleCollider>().enabled = false;
             }
-            
-                FindAnyObjectByType<audioManger2>().PlayThis(Swalking);
-            
+                  
         }
-
         // Walking Mode
         else if (OnGround)
         {
             State = MovementState.Walking;
             DesireMoveSpeed = WalkSpeed;
-            Cam.DOFOV(80f);
+            Cam.DOFOV(NormalPov);
 
             if (Dashing)
             {
                 State = MovementState.Dashing;
                 DesireMoveSpeed = DashSpeed;
                 SpeedIncreaseMultiplier = DashSpeedIncreaseMultiplier;
+                PlayerObject.GetComponent<CapsuleCollider>().enabled = false;
             }
         }
 
@@ -291,6 +284,7 @@ public class PlayerMovement : MonoBehaviour
                 State = MovementState.Dashing;
                 DesireMoveSpeed = DashSpeed;
                 SpeedIncreaseMultiplier = DashSpeedIncreaseMultiplier;
+                PlayerObject.GetComponent<CapsuleCollider>().enabled = false;
             }
             else
             {
@@ -303,6 +297,8 @@ public class PlayerMovement : MonoBehaviour
                 DoubleJump();
                 ReadyToDoubleJump = false;
             }
+
+            PlayerObject.GetComponent<CapsuleCollider>().enabled = true;
         }
 
 

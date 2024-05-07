@@ -1,26 +1,114 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class audioManger2 : MonoBehaviour
 {
-    public AudioSource AS;
+    [Header(" Aduio Source Refrences")]
+    public AudioSource BackGroundAduioSource;
+    public AudioSource PlayerMovementEffectsAduioSource;
+    public AudioSource WeaponsEffectsAduioSource;
+    public AudioSource SpeedingEffectsAduioSource;
+
+    [Header("Aduio Clips  Refrences")]
     public AudioClip bossMusic;
-    // Start is called before the first frame update
+    public AudioClip WalkingSoundEffect;
+    public AudioClip DashingSoundEffect;
+    public AudioClip SpeedingSoundEffect;
+    public AudioClip GunShotSoundEffect;
+    public AudioClip SwingSoundEffect;
+    public float SprintingSoundEffectPitch;
+    public float WalkingSoundEffectPitch;
+
+    [Header("Script  Refrences")]
+
+    public GameObject Player;
+    public GameObject Pestol;
+    public GameObject Sword;
+
+    private PlayerMovement PlayerMovement;
+    private gunShot gunShot;
+    private PlayerDamaging Swing;
+
     void Start()
     {
-        PlayThis(bossMusic);
+        PlayBackGroundMusic(bossMusic);
+        PlayerMovement = Player.GetComponent<PlayerMovement>();
+        gunShot = Pestol.GetComponent<gunShot>();
+        Swing = Sword.GetComponent<PlayerDamaging>();
+    }
+    private void Update()
+    {
+        PlayPlayerMovementSoundEffect();
+        WeaponsSoundEffects();
+        SpeedingSoundEffects();
+
+        SpeedingEffectsAduioSource.Play();
+        WeaponsEffectsAduioSource.Play();
+        PlayerMovementEffectsAduioSource.Play();
+    }
+    public void PlayBackGroundMusic(AudioClip clip)
+    {
+        BackGroundAduioSource.clip = clip;
+        BackGroundAduioSource.Play();
     }
 
-    // Update is called once per frame
-    void Update()
+    public void PlayPlayerMovementSoundEffect()
     {
+        if(PlayerMovement.State == PlayerMovement.MovementState.Walking && (PlayerMovement.Horizontal !=0 || PlayerMovement.Vertical != 0))
+        {
+            PlayerMovementEffectsAduioSource.pitch = WalkingSoundEffectPitch;
+            PlayerMovementEffectsAduioSource.clip = WalkingSoundEffect;
+
+        }
+        else if(PlayerMovement.State == PlayerMovement.MovementState.Sprinting && (PlayerMovement.Horizontal != 0 || PlayerMovement.Vertical != 0))
+        {
+           PlayerMovementEffectsAduioSource.pitch = SprintingSoundEffectPitch;
+           PlayerMovementEffectsAduioSource.clip = WalkingSoundEffect;
+
+        }
+
+        else if (PlayerMovement.Dashing)
+        {
+            PlayerMovementEffectsAduioSource.clip = DashingSoundEffect;
+            PlayerMovementEffectsAduioSource.loop = false;
+        }
+        else
+        {
+            PlayerMovementEffectsAduioSource.clip = null;
+            PlayerMovementEffectsAduioSource.loop = true;
+        }
+
+    }
+
+    public void WeaponsSoundEffects()
+    {
+        if (gunShot.shooting)
+        {
+            WeaponsEffectsAduioSource.clip = GunShotSoundEffect;
+        }
+        else if (Swing.Swinging)
+        {
+            WeaponsEffectsAduioSource.clip = SwingSoundEffect;
+        }
+        else
+        {
+            WeaponsEffectsAduioSource.clip = null;
+        }
+
         
-
     }
-    public void PlayThis(AudioClip clip)
+
+    public void SpeedingSoundEffects()
     {
-        AS.clip = clip;
-        AS.Play();
+        if ((PlayerMovement.State == PlayerMovement.MovementState.Sliding && PlayerMovement.OnSlope() && PlayerMovement.MoveSpeed > 13))
+        {
+            SpeedingEffectsAduioSource.clip = SpeedingSoundEffect;
+        }
+        else
+        {
+            SpeedingEffectsAduioSource.Pause();
+        }
     }
 }

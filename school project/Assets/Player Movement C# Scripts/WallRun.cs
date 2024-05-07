@@ -145,7 +145,7 @@ public class WallRun : MonoBehaviour
 
         Rb.velocity = new Vector3(Rb.velocity.x, 0f, Rb.velocity.z);
 
-        Cam.DOFOV(95f);
+        Cam.DOFOV(PlayerMovement.NormalPov + 15f);
         if (LeftWall)
             Cam.DOTilt(-5f);
         if (!LeftWall)
@@ -193,7 +193,7 @@ public class WallRun : MonoBehaviour
     private void StopWallRun()
     {
         PlayerMovement.WallRunning = false;
-        Cam.DOFOV(80f);
+        Cam.DOFOV(PlayerMovement.NormalPov);
         Cam.DOTilt(0);
     }
 

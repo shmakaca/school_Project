@@ -8,6 +8,7 @@ public class Dash : MonoBehaviour
     [Header("References")]
     public Transform Orientation;
     public Transform PlayerCam;
+    public GameObject PlayerObject;
     private Rigidbody rb;
     private PlayerMovement PlayerMovement;
 
@@ -27,7 +28,7 @@ public class Dash : MonoBehaviour
 
     [Header("Camera Effects")]
     public playercamera Cam;
-    public float DashFov;
+    public float DashFovChange;
 
     [Header("Settings")]
     public bool useCameraForward = true;
@@ -59,6 +60,7 @@ public class Dash : MonoBehaviour
 
     private void dash()
     {
+
         if (DashCoolDownTimer > 0)
             return;
         else
@@ -67,7 +69,7 @@ public class Dash : MonoBehaviour
         PlayerMovement.Dashing = true;
         PlayerMovement.MaxYSpeed = MaxDashYSpeed;
 
-        Cam.DOFOV(DashFov);
+        Cam.DOFOV(DashFovChange + PlayerMovement.NormalPov);
 
         Transform forwardT;
 
@@ -95,10 +97,12 @@ public class Dash : MonoBehaviour
     }
     private void ResetDash()
     {
+        PlayerObject.GetComponent<CapsuleCollider>().enabled = true;
+
         PlayerMovement.Dashing = false;
         PlayerMovement.MaxYSpeed = 0;
 
-        Cam.DOFOV(80f);
+        Cam.DOFOV(PlayerMovement.NormalPov);
     }
 
     private Vector3 GetDirection(Transform forwardT)

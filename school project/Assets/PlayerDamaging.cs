@@ -10,6 +10,7 @@ public class PlayerDamaging : MonoBehaviour
     public bool canAttack = false;
     public float countDown = 0.7f;
     public bool isSowrd;
+    public  bool Swinging;
 
     public Animator animator;
     // Start is called before the first frame update
@@ -34,7 +35,12 @@ public class PlayerDamaging : MonoBehaviour
         }
         if (Input.GetKeyDown(KeyCode.Mouse0) && canAttack && isSowrd)
         {
+            Swinging = true;
             animator.SetTrigger("attacking");
+        }
+        else
+        {
+            Swinging = false;
         }
     }
     private void OnTriggerStay(Collider other)

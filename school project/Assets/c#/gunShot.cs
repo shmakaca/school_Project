@@ -22,6 +22,7 @@ public class gunShot : MonoBehaviour
 
     private bool isGun;
     private bool isReloading;
+    public bool shooting;
     private int shotsNum;
     private int mag = 3;
 
@@ -31,7 +32,7 @@ public class gunShot : MonoBehaviour
 
     [Header("Camera Effects")]
     public playercamera Cam;
-    public float KnockBackFov;
+    public float KnockBackFovChange;
 
     void Start()
     {
@@ -47,8 +48,13 @@ public class gunShot : MonoBehaviour
         isGun = FindAnyObjectByType<SwapGun>().Guning;
         if (isGun && Input.GetKeyDown(KeyCode.Mouse0) && !isReloading && shotsNum > 0)
         {
+            shooting = true;
             shot();
             shotsNum--;
+        }
+        else
+        {
+            shooting=false;
         }
 
         if (isGun && Input.GetKeyDown(KeyCode.R))
@@ -62,6 +68,7 @@ public class gunShot : MonoBehaviour
     }
     private void shot()
     {
+        
         bool koko = true;
         if (koko)
         {
@@ -83,14 +90,14 @@ public class gunShot : MonoBehaviour
 
         Invoke(nameof(StopKnockBack), KnockBackDuration);
 
-        Cam.DOFOV(KnockBackFov);
+        Cam.DOFOV(KnockBackFovChange + PlayerMovement.NormalPov);
     }
 
     private void StopKnockBack()
     {
         PlayerMovement.Shooting = false;
 
-        Cam.DOFOV(80f);
+        Cam.DOFOV(PlayerMovement.NormalPov);
 
     }
     private void Reloading()
