@@ -92,23 +92,16 @@ public class audioManger2 : MonoBehaviour
         {
             WeaponsEffectsAduioSource.clip = SwingSoundEffect;
         }
-        else
-        {
-            WeaponsEffectsAduioSource.clip = null;
-        }
 
         
     }
 
     public void SpeedingSoundEffects()
     {
-        if ((PlayerMovement.State == PlayerMovement.MovementState.Sliding && PlayerMovement.OnSlope() && PlayerMovement.MoveSpeed > 13))
+        if ((PlayerMovement.sliding && PlayerMovement.OnSlope() && PlayerMovement.MoveSpeed > 13))
         {
             SpeedingEffectsAduioSource.clip = SpeedingSoundEffect;
         }
-        else
-        {
-            SpeedingEffectsAduioSource.Pause();
-        }
+
     }
 }
