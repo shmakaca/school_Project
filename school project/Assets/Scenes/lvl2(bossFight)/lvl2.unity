@@ -27741,6 +27741,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 6f99e6314046dc24fb0596f6037d5802, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 2.0808
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 6f99e6314046dc24fb0596f6037d5802, type: 3}
       propertyPath: m_LocalScale.z
       value: 3.5857
       objectReference: {fileID: 0}
@@ -27888,7 +27892,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 0
-  m_Volume: 1
+  m_Volume: 0.703
   m_Pitch: 1
   Loop: 1
   Mute: 0
@@ -30600,7 +30604,7 @@ AudioSource:
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
-  Loop: 1
+  Loop: 0
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
@@ -42702,8 +42706,8 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
-  m_PlayOnAwake: 1
-  m_Volume: 0.065
+  m_PlayOnAwake: 0
+  m_Volume: 0
   m_Pitch: 1
   Loop: 1
   Mute: 0
@@ -43345,7 +43349,7 @@ Transform:
   m_GameObject: {fileID: 1810291875899569769}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -107.35, y: 303.97, z: 841.57}
+  m_LocalPosition: {x: -126.84, y: 308.1, z: 858.69}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -43455,6 +43459,7 @@ MonoBehaviour:
   WallJumpSlideForce: 12
   WallCimbSpeed: 3
   WallRunStamina: 2
+  WallRunTimer: 0
   UpWardsRunKey: 101
   DownWardsRunKey: 113
   WallJumpkey: 32
@@ -43744,24 +43749,35 @@ MonoBehaviour:
   m_GameObject: {fileID: 3205356029682509498}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe7316b3d4245a24fb4ed3bf643ca4a3, type: 3}
+  m_Script: {fileID: 11500000, guid: 7fdad5913cb058c4fbba5a446ae1d3ba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   BackGroundAduioSource: {fileID: 4487889887265074112}
   PlayerMovementEffectsAduioSource: {fileID: 1609496289}
   WeaponsEffectsAduioSource: {fileID: 555827746}
   SpeedingEffectsAduioSource: {fileID: 1422528279}
-  bossMusic: {fileID: 8300000, guid: 01ca68242606d7a4f9b8965da5e2882e, type: 3}
-  WalkingSoundEffect: {fileID: 8300000, guid: 2fb003c0b7be1784da54297c2a3135a1, type: 3}
-  DashingSoundEffect: {fileID: 8300000, guid: fd95a9c7d8a231848bc55d1864e96fb7, type: 3}
+  bossMusic: {fileID: 8300000, guid: efd8c487d927db3418039b1aa5d7c35d, type: 3}
+  WalkingSoundEffect: {fileID: 8300000, guid: ee2a14ad6db4ec94b88532d55b71ae81, type: 3}
+  DashingSoundEffect: {fileID: 8300000, guid: 3b5a8fc85ab1c0e46a3628da593b62f7, type: 3}
   SpeedingSoundEffect: {fileID: 8300000, guid: d87fd9c644da0da40ae6e2effcefaee8, type: 3}
-  GunShotSoundEffect: {fileID: 8300000, guid: 40eeeda9fff032b428e448c79e5a67c3, type: 3}
+  GunShotSoundEffect: {fileID: 8300000, guid: 8db7f99704ce25243bc01cbf93aa9326, type: 3}
   SwingSoundEffect: {fileID: 8300000, guid: afbd395bcdd5d8e47bf09597fa0272ba, type: 3}
+  RealodSoundEffect: {fileID: 8300000, guid: da1c0a660d1832e45a86552ce60e1f76, type: 3}
+  ErrorSoundEffect: {fileID: 8300000, guid: 82ce0f99aac67eb44a98a863fc2dc713, type: 3}
   SprintingSoundEffectPitch: 1.2
   WalkingSoundEffectPitch: 1
+  WallRunningSoundEffectPitch: 1.3
+  WallRunningSpeedingSoundEffectPitch: 0.8
+  NormalSlidingSpeedingSoundEffectPitch: 1
   Player: {fileID: 1810291875899569769}
   Pestol: {fileID: 7488645080712126119}
   Sword: {fileID: 2142179716715958993}
+  bossMusicVolume: 0
+  WalkingVolume: 0
+  DashingVolume: 0
+  SprintingVolume: 0
+  SwingVolume: 0
+  GunShotVolume: 0
 --- !u!222 &8268346286018891945
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -43946,7 +43962,7 @@ MonoBehaviour:
   DashForce: 10
   DashUpwardForce: 0.5
   MaxDashYSpeed: 15
-  DashDuration: 0.5
+  DashDuration: 0.7
   DashCoolDown: 5
   Cam: {fileID: 1808158380147263701}
   DashFovChange: 15
@@ -44085,8 +44101,11 @@ MonoBehaviour:
   Player: {fileID: 7273174464215934426}
   PlayerCam: {fileID: 7621869038610693069}
   Bullet: {fileID: 3125161593489094475, guid: 4ef7642c1e119484198d2eeaf7f3f9f5, type: 3}
+  AudioManger: {fileID: 3205356029682509498}
   bullDamage: 3
+  isReloading: 0
   shooting: 0
+  ErrorFullMag: 0
   KnockBackForce: 7
   KnockBackDuration: 0.5
   Cam: {fileID: 1808158380147263701}

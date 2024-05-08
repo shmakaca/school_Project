@@ -16,14 +16,18 @@ public class gunShot : MonoBehaviour
     public Transform PlayerCam;
     private Rigidbody rb;
     public GameObject Bullet;
+    public GameObject AudioManger;
     private PlayerMovement PlayerMovement;
+    private AudioAplly Am;
 
     public int bullDamage;
 
     private bool isGun;
-    private bool isReloading;
+    public bool isReloading;
     public bool shooting;
+    public bool ErrorFullMag;
     private int shotsNum;
+    private float ShotsUsed;
     private int mag = 3;
 
     [Header("KnockBack")]
@@ -38,8 +42,10 @@ public class gunShot : MonoBehaviour
     {
         isReloading = false;
         shotsNum = mag;
+        ShotsUsed = 0;
         PlayerMovement = Player.GetComponent<PlayerMovement>();
         rb = Player.GetComponent<Rigidbody>();
+        Am = AudioManger.GetComponent<AudioAplly>();
     }
 
     // Update is called once per frame
@@ -50,25 +56,33 @@ public class gunShot : MonoBehaviour
         {
             shooting = true;
             shot();
-            shotsNum--;
         }
         else
         {
             shooting=false;
         }
 
-        if (isGun && Input.GetKeyDown(KeyCode.R))
+        if (isGun && Input.GetKeyDown(KeyCode.R) && !IsfullMag())
         {
-            isReloading = true;
-            animator.SetTrigger("trReload");
-            Invoke("Reloading", 2f);
-            isReloading = false;
+            Reloading();
+
+        }
+
+        if (isGun && Input.GetKeyDown(KeyCode.R) && IsfullMag())
+        {
+            ErrorFullMag = true;
+        }
+        else
+        {
+            ErrorFullMag = false;
         }
 
     }
     private void shot()
     {
-        
+        shotsNum--;
+        ShotsUsed++;
+
         bool koko = true;
         if (koko)
         {
@@ -100,9 +114,30 @@ public class gunShot : MonoBehaviour
         Cam.DOFOV(PlayerMovement.NormalPov);
 
     }
-    private void Reloading()
+    public void Reloading()
     {
+        isReloading = true;
         shotsNum = mag;
+        animator.SetTrigger("trReload");
+
+        Invoke(nameof(StopRelaoding), Am.RealodSoundEffect.length * ShotsUsed);
+
     }
 
+    private bool IsfullMag()
+    {
+        if(shotsNum != mag)
+        {
+            return false;
+        }
+        else
+        {
+            return true;
+        }
+    }
+    public void StopRelaoding()
+    {
+        isReloading = false ;
+        ShotsUsed = 0;
+    }
 }

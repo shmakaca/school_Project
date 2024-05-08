@@ -79,6 +79,7 @@ public class Sliding : MonoBehaviour
 
         if (SlideFov >= PlayerMovement.NormalPov + 15f)
             SlideFov = PlayerMovement.NormalPov + 15f;
+
         if (PlayerMovement.OnSlope())
         {
             Camera.DOFOV(SlideFov);

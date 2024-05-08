@@ -118,10 +118,6 @@ public class PlayerMovement : MonoBehaviour
         OnGround = Physics.Raycast(transform.position, Vector3.down, PlayerHeight * 0.5f + 0.3f);
         OnJumpPad = Physics.Raycast(transform.position, Vector3.down, PlayerHeight * 0.5f + 0.3f, JumpPad);
 
-        OnGround = Physics.Raycast(transform.position, Vector3.down, PlayerHeight * 0.5f + 0.3f);
-        OnJumpPad = Physics.Raycast(transform.position, Vector3.down, PlayerHeight * 0.5f + 0.3f, JumpPad);
-
-
         MyInput();
         SpeedControl();
         StateHandle();
@@ -130,27 +126,6 @@ public class PlayerMovement : MonoBehaviour
             rb.drag = GroundDrag;
         else
             rb.drag = 0;
-
-        if (Input.GetKey(CrouchKey) && OnGround)
-        {
-            transform.localScale = new Vector3(transform.localScale.x, CrouchHeight, transform.localScale.z);
-            rb.AddForce(Vector3.down * 5f, ForceMode.Force);
-        }
-        else if (Input.GetKey(CrouchKey) && !OnGround)
-        {
-            transform.localScale = new Vector3(transform.localScale.x, CrouchHeight, transform.localScale.z);
-        }
-        else
-        {
-            transform.localScale = new Vector3(transform.localScale.x, StandingHeight, transform.localScale.z);
-        }
-
-        if (OnJumpPad)
-        {
-            JumPad();
-        }
-
-
 
         if (Input.GetKey(CrouchKey) && OnGround)
         {
@@ -443,6 +418,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void JumPad()
     {
+
         ExitingSlope = true;
 
         rb.velocity = new Vector3(rb.velocity.x, 0f, rb.velocity.z);

@@ -37,16 +37,14 @@ public class audioManger2 : MonoBehaviour
         PlayerMovement = Player.GetComponent<PlayerMovement>();
         gunShot = Pestol.GetComponent<gunShot>();
         Swing = Sword.GetComponent<PlayerDamaging>();
-    }
-    private void Update()
-    {
+
         PlayPlayerMovementSoundEffect();
         WeaponsSoundEffects();
         SpeedingSoundEffects();
+    }
+    private void Update()
+    {
 
-        SpeedingEffectsAduioSource.Play();
-        WeaponsEffectsAduioSource.Play();
-        PlayerMovementEffectsAduioSource.Play();
     }
     public void PlayBackGroundMusic(AudioClip clip)
     {
@@ -60,23 +58,23 @@ public class audioManger2 : MonoBehaviour
         {
             PlayerMovementEffectsAduioSource.pitch = WalkingSoundEffectPitch;
             PlayerMovementEffectsAduioSource.clip = WalkingSoundEffect;
-
+            PlayerMovementEffectsAduioSource.Play();
         }
         else if(PlayerMovement.State == PlayerMovement.MovementState.Sprinting && (PlayerMovement.Horizontal != 0 || PlayerMovement.Vertical != 0))
         {
            PlayerMovementEffectsAduioSource.pitch = SprintingSoundEffectPitch;
            PlayerMovementEffectsAduioSource.clip = WalkingSoundEffect;
-
+            PlayerMovementEffectsAduioSource.Play();
         }
 
         else if (PlayerMovement.Dashing)
         {
             PlayerMovementEffectsAduioSource.clip = DashingSoundEffect;
             PlayerMovementEffectsAduioSource.loop = false;
+            PlayerMovementEffectsAduioSource.Play();
         }
         else
         {
-            PlayerMovementEffectsAduioSource.clip = null;
             PlayerMovementEffectsAduioSource.loop = true;
         }
 

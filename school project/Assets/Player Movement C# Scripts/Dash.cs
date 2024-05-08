@@ -18,7 +18,6 @@ public class Dash : MonoBehaviour
     public float MaxDashYSpeed;
     public float DashDuration;
 
-
     [Header("Dash CoolDown")]
     public float DashCoolDown;
     private float DashCoolDownTimer;
@@ -43,7 +42,6 @@ public class Dash : MonoBehaviour
     {
         rb = GetComponent<Rigidbody>();
         PlayerMovement = GetComponent<PlayerMovement>();
-
     }
 
     private void Update()
