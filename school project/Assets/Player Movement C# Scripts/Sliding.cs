@@ -73,17 +73,7 @@ public class Sliding : MonoBehaviour
 
         rb.AddForce(Vector3.down * 5f, ForceMode.Impulse);
 
-        SlideFov += Time.deltaTime * 5f;
-
         SlieTimer= MaxSlideTime;
-
-        if (SlideFov >= PlayerMovement.NormalPov + 15f)
-            SlideFov = PlayerMovement.NormalPov + 15f;
-
-        if (PlayerMovement.OnSlope())
-        {
-            Camera.DOFOV(SlideFov);
-        }
         
     }
 
@@ -102,6 +92,16 @@ public class Sliding : MonoBehaviour
         // slidng on slope
         else
         {
+            SlideFov += Time.deltaTime * 5f;
+
+            if (SlideFov >= PlayerMovement.NormalPov + 15f)
+                SlideFov = PlayerMovement.NormalPov + 15f;
+
+            if (PlayerMovement.OnSlope())
+            {
+                Camera.DOFOV(SlideFov);
+            }
+
             rb.AddForce(PlayerMovement.GetSlopeMoveDirection(Direction) * SlideForce, ForceMode.Force);
         }
 

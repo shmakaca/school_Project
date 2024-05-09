@@ -23,11 +23,13 @@ public class gunShot : MonoBehaviour
     public int bullDamage;
 
     private bool isGun;
+    private bool ReadyToShootAgain;
     public bool isReloading;
-    public bool shooting;
+    public bool IsShooting;
     public bool ErrorFullMag;
     private int shotsNum;
     private float ShotsUsed;
+    public float DelayBtweenShooting;
     private int mag = 3;
 
     [Header("KnockBack")]
@@ -41,8 +43,11 @@ public class gunShot : MonoBehaviour
     void Start()
     {
         isReloading = false;
+        ReadyToShootAgain = true;
+
         shotsNum = mag;
         ShotsUsed = 0;
+
         PlayerMovement = Player.GetComponent<PlayerMovement>();
         rb = Player.GetComponent<Rigidbody>();
         Am = AudioManger.GetComponent<AudioAplly>();
@@ -52,20 +57,19 @@ public class gunShot : MonoBehaviour
     void Update()
     {
         isGun = FindAnyObjectByType<SwapGun>().Guning;
-        if (isGun && Input.GetKeyDown(KeyCode.Mouse0) && !isReloading && shotsNum > 0)
+        if (isGun && Input.GetKeyDown(KeyCode.Mouse0) && !isReloading && shotsNum > 0 && ReadyToShootAgain)
         {
-            shooting = true;
+            IsShooting = true;
             shot();
         }
         else
         {
-            shooting=false;
+            IsShooting = false;
         }
 
         if (isGun && Input.GetKeyDown(KeyCode.R) && !IsfullMag())
         {
             Reloading();
-
         }
 
         if (isGun && Input.GetKeyDown(KeyCode.R) && IsfullMag())
@@ -83,13 +87,22 @@ public class gunShot : MonoBehaviour
         shotsNum--;
         ShotsUsed++;
 
+        ReadyToShootAgain = false;
+
         bool koko = true;
         if (koko)
         {
             Instantiate(Bullet, bulletHall);
-            koko = false;
             KnockBAck();
+            koko = false;
+
         }
+        Invoke(nameof(StopShot), DelayBtweenShooting);
+    }
+
+    private void StopShot()
+    {
+        ReadyToShootAgain = true;
     }
 
     private void KnockBAck()
