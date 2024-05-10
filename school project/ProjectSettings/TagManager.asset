@@ -12,6 +12,7 @@ TagManager:
   - secNpc
   - checkpoint
   - boss
+  - Slides
   layers:
   - Default
   - TransparentFX

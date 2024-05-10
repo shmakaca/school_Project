@@ -29,7 +29,7 @@ public class gunShot : MonoBehaviour
     public bool ErrorFullMag;
     private int shotsNum;
     private float ShotsUsed;
-    public float DelayBtweenShooting;
+    public float FireRate;
     private int mag = 3;
 
     [Header("KnockBack")]
@@ -97,7 +97,7 @@ public class gunShot : MonoBehaviour
             koko = false;
 
         }
-        Invoke(nameof(StopShot), DelayBtweenShooting);
+        Invoke(nameof(StopShot), FireRate);
     }
 
     private void StopShot()

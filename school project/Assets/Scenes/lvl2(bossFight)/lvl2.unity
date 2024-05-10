@@ -16546,6 +16546,134 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!1 &871652592
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 871652593}
+  - component: {fileID: 871652594}
+  m_Layer: 9
+  m_Name: JumpAs
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &871652593
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 871652592}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8253853119179969233}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!82 &871652594
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 871652592}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 0}
+  m_PlayOnAwake: 1
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &879056350
 GameObject:
   m_ObjectHideFlags: 0
@@ -27932,6 +28060,10 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 6
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 6f99e6314046dc24fb0596f6037d5802, type: 3}
+      propertyPath: m_TagString
+      value: Slides
+      objectReference: {fileID: 0}
     - target: {fileID: 8416272007918961125, guid: 6f99e6314046dc24fb0596f6037d5802, type: 3}
       propertyPath: m_Layer
       value: 6
@@ -30850,27 +30982,27 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 87c30ad9d8af1104a925764e5be7f72f, type: 3}
       propertyPath: m_LocalScale.x
-      value: 4.531533
+      value: 3.4901412
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 87c30ad9d8af1104a925764e5be7f72f, type: 3}
       propertyPath: m_LocalScale.y
-      value: 4.531533
+      value: 3.4901412
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 87c30ad9d8af1104a925764e5be7f72f, type: 3}
       propertyPath: m_LocalScale.z
-      value: 4.531533
+      value: 3.4901412
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 87c30ad9d8af1104a925764e5be7f72f, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -5.8
+      value: 1.76
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 87c30ad9d8af1104a925764e5be7f72f, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.5
+      value: 0.37
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 87c30ad9d8af1104a925764e5be7f72f, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 5.3
+      value: 11.5
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 87c30ad9d8af1104a925764e5be7f72f, type: 3}
       propertyPath: m_LocalRotation.w
@@ -41728,7 +41860,7 @@ MonoBehaviour:
   SlideSpeed: 50
   WallRunSpeed: 10
   MaxYSpeed: 0
-  KnockBackSpeed: 15
+  KnockBackSpeed: 20
   DashSpeedIncreaseMultiplier: 30
   SlopeIncreaseMultiplier: 3
   SlideSpeedChangeFactror: 4
@@ -41750,8 +41882,9 @@ MonoBehaviour:
   GroundDrag: 7
   JumpPad:
     serializedVersion: 2
-    m_Bits: 1024
-  JumpPadforce: 10
+    m_Bits: 0
+  JumpPadforce: 0
+  OnJumpPad: 0
   MaxSlopeAngel: 60
   Oreientation: {fileID: 2200719075210154078}
   PlayerObject: {fileID: 111159113482706702}
@@ -41759,6 +41892,7 @@ MonoBehaviour:
   Cam: {fileID: 1808158380147263701}
   PlayerCamera: {fileID: 6740792673851997321}
   NormalPov: 0
+  JumPadPov: 7
   Horizontal: 0
   Vertical: 0
   State: 0
@@ -43782,7 +43916,7 @@ Transform:
   m_GameObject: {fileID: 7488645080712126119}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0.67368025, z: -0, w: 0.739023}
-  m_LocalPosition: {x: 0.551, y: -0.796, z: -1.89}
+  m_LocalPosition: {x: 0.536, y: -0.796, z: -1.905}
   m_LocalScale: {x: 0.65824395, y: 0.65824395, z: 0.65824395}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -43868,6 +44002,7 @@ Transform:
   - {fileID: 1422528278}
   - {fileID: 555827745}
   - {fileID: 919445025}
+  - {fileID: 871652593}
   m_Father: {fileID: 7273174464215934426}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &8253853119179969234
@@ -43887,6 +44022,7 @@ MonoBehaviour:
   WeaponsAduioSource: {fileID: 555827746}
   SpeedingAduioSource: {fileID: 1422528279}
   ParticlesAudioSource: {fileID: 919445026}
+  JumpsAudioSource: {fileID: 871652594}
   bossMusic: {fileID: 8300000, guid: efd8c487d927db3418039b1aa5d7c35d, type: 3}
   WalkingSoundEffect: {fileID: 8300000, guid: ed6bb89be19053b4abdfe85ac7daf25f, type: 3}
   DashingSoundEffect: {fileID: 8300000, guid: 3b5a8fc85ab1c0e46a3628da593b62f7, type: 3}
@@ -43896,13 +44032,19 @@ MonoBehaviour:
   RealodSoundEffect: {fileID: 8300000, guid: da1c0a660d1832e45a86552ce60e1f76, type: 3}
   ErrorSoundEffect: {fileID: 8300000, guid: 82ce0f99aac67eb44a98a863fc2dc713, type: 3}
   SlidingOnGroundSoundEffect: {fileID: 8300000, guid: 4a2772599b7a7d64b98ba0c3ffbc6c19, type: 3}
-  SloMoSoundEffect: {fileID: 8300000, guid: 5cee82438d9d94c04a46c94ddcb45835, type: 3}
-  SprintingPitch: 1.3
-  WalkingPitch: 1.1
-  WallRunningPitch: 1.6
-  WallRunningSpeedingPitch: 0.7
-  CrouchingPitch: 0.5
+  EnterSloMoSoundEffect: {fileID: 8300000, guid: 05e7eda8333a5574993dc9eb7cf800db, type: 3}
+  ExitSloMoSoundEffect: {fileID: 8300000, guid: e22ca5b16b845174286fca05e8e7ae5a, type: 3}
+  JumPadSoundEffect: {fileID: 8300000, guid: 8e687d5868394fb45a80ac4d9fb61be0, type: 3}
+  NormalSprintingPitch: 1.3
+  NormalWalkingPitch: 1.1
+  NormalWallRunningPitch: 1.6
+  NormalWallRunningSpeedingPitch: 1.2
+  NormalCrouchingPitch: 0.5
   NormalSlidingSpeedingPitch: 1.2
+  NormalDashingPitch: 1
+  NormalReloadPitch: 1
+  NormalGunShotPitch: 1
+  NormalJumpPadPitch: 1
   Player: {fileID: 1810291875899569769}
   Pestol: {fileID: 7488645080712126119}
   Sword: {fileID: 2142179716715958993}
@@ -44098,7 +44240,7 @@ MonoBehaviour:
   MaxDashYSpeed: 15
   DashDuration: 0.7
   DashCoolDown: 5
-  Cam: {fileID: 1808158380147263701}
+  Camera: {fileID: 1808158380147263701}
   DashFovChange: 15
   useCameraForward: 0
   allowAllDirections: 1
@@ -44188,10 +44330,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   SlowDownFactor: 0.5
-  BackToNormalTime: 1
   Focus: 5
   InSlowMotion: 0
   SLowMotionKey: 1
+  AM: {fileID: 3205356029682509498}
 --- !u!23 &9002132112630693746
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -44257,7 +44399,7 @@ MonoBehaviour:
   isReloading: 0
   IsShooting: 0
   ErrorFullMag: 0
-  DelayBtweenShooting: 0.5
+  FireRate: 0.5
   KnockBackForce: 7
   KnockBackDuration: 0.5
   Cam: {fileID: 1808158380147263701}

@@ -60,7 +60,8 @@ public class PlayerMovement : MonoBehaviour
     [Header("JumpPads Check")]
     public LayerMask JumpPad;
     public float JumpPadforce;
-    private bool OnJumpPad;
+    public bool OnJumpPad;
+
 
 
     [Header("Slope Handel")]
@@ -77,6 +78,7 @@ public class PlayerMovement : MonoBehaviour
 
     [Header("Pov")]
     public float NormalPov;
+    public float JumPadPov;
 
     public float Horizontal;
     public float Vertical;
@@ -181,19 +183,15 @@ public class PlayerMovement : MonoBehaviour
         else if (WallRunning)
         {
             State = MovementState.WallRunning;
-            DesireMoveSpeed = WallRunSpeed;
-            
-            
+            DesireMoveSpeed = WallRunSpeed;        
         }
+
         else if (Dashing)
         {
-
             State = MovementState.Dashing;
             DesireMoveSpeed = DashSpeed;
             SpeedIncreaseMultiplier = DashSpeedIncreaseMultiplier;
-
             PlayerObject.GetComponent<CapsuleCollider>().enabled = false;
-
         }
 
         else if (sliding)
@@ -418,12 +416,25 @@ public class PlayerMovement : MonoBehaviour
 
     private void JumPad()
     {
+        JumpPadPov();
 
         ExitingSlope = true;
 
         rb.velocity = new Vector3(rb.velocity.x, 0f, rb.velocity.z);
 
         rb.AddForce(transform.up * JumpPadforce, ForceMode.Impulse);
+
+        Invoke(nameof(ResetPov), 1f);
+    }
+
+    private void JumpPadPov()
+    {
+        Cam.DOFOV(JumPadPov + NormalPov);
+    }
+
+    private void ResetPov()
+    {
+        Cam.DOFOV(NormalPov);
     }
 
 }

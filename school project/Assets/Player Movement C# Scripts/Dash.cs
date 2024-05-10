@@ -26,7 +26,7 @@ public class Dash : MonoBehaviour
     private float Vertical;
 
     [Header("Camera Effects")]
-    public playercamera Cam;
+    public playercamera Camera;
     public float DashFovChange;
 
     [Header("Settings")]
@@ -67,8 +67,8 @@ public class Dash : MonoBehaviour
         PlayerMovement.Dashing = true;
         PlayerMovement.MaxYSpeed = MaxDashYSpeed;
 
-        Cam.DOFOV(DashFovChange + PlayerMovement.NormalPov);
-
+        Camera.DOFOV(DashFovChange + PlayerMovement.NormalPov);
+                
         Transform forwardT;
 
         if (useCameraForward)
@@ -100,7 +100,7 @@ public class Dash : MonoBehaviour
         PlayerMovement.Dashing = false;
         PlayerMovement.MaxYSpeed = 0;
 
-        Cam.DOFOV(PlayerMovement.NormalPov);
+        Camera.DOFOV(PlayerMovement.NormalPov);
     }
 
     private Vector3 GetDirection(Transform forwardT)

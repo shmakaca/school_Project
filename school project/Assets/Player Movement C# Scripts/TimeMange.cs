@@ -7,7 +7,7 @@ public class TimeMange : MonoBehaviour
 {
     [Header("Time Mange")]
     public float SlowDownFactor;// how much time willslow down
-    public float BackToNormalTime;
+    private float BackToNormalTime;
     public float Focus;
     private float SlowDownLenght;
     public bool InSlowMotion;
@@ -16,6 +16,16 @@ public class TimeMange : MonoBehaviour
     [Header("Inputs")]
     public MouseButton SLowMotionKey = MouseButton.RightMouse;
 
+    [Header("Reafrences")]
+    private AudioAplly AudioAplly;
+    public GameObject AM;
+
+    private void Start()
+    {
+        AudioAplly = AM.GetComponent<AudioAplly>();
+
+        BackToNormalTime = AudioAplly.ExitSloMoSoundEffect.length;
+    }
     private void FixedUpdate()
     {
         if (Input.GetMouseButton((int)SLowMotionKey))
@@ -33,16 +43,18 @@ public class TimeMange : MonoBehaviour
         if (SlowDownLenght < 0)
             SlowDownLenght = 0;
 
-        if (SlowDownLenght >= Focus)
+        if (SlowDownLenght >= Focus )
         {
             ReadyToSlowMotion = false;
-            Input.GetMouseButtonUp((int)SLowMotionKey);
             SlowDownLenght = Focus;
         }
-
-        if (ReadyToSlowMotion && SlowDownLenght < Focus)
+        if(Input.GetMouseButtonUp((int)SLowMotionKey))
         {
-            InSlowMotion = true;
+            ReadyToSlowMotion = false;
+        }
+
+        if (ReadyToSlowMotion && SlowDownLenght <= Focus)
+        {
             SlowMotion();
         }
         else
@@ -59,7 +71,7 @@ public class TimeMange : MonoBehaviour
 
     private void SlowMotion()
     {
-
+        InSlowMotion = true;
         Time.timeScale = SlowDownFactor;
         Time.fixedDeltaTime = Time.timeScale * 0.02f;
 
