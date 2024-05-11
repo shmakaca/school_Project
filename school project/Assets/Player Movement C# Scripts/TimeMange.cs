@@ -12,6 +12,7 @@ public class TimeMange : MonoBehaviour
     private float SlowDownLenght;
     public bool InSlowMotion;
     private bool ReadyToSlowMotion;
+    public bool WasInSlowmotion = false;
 
     [Header("Inputs")]
     public MouseButton SLowMotionKey = MouseButton.RightMouse;
@@ -60,7 +61,17 @@ public class TimeMange : MonoBehaviour
         else
             InSlowMotion = false;
 
+        if (Time.timeScale == 1f && WasInSlowmotion)
+        {
+            WasInSlowmotion = false;
 
+            AudioAplly.ParticlesAudioSource.PlayOneShot(AudioAplly.ExitSloMoSoundEffect, 0.1f);
+        }
+
+        else if (Time.timeScale < 1f)
+        {
+            WasInSlowmotion = true; 
+        }
 
     }
     void Update()
@@ -77,3 +88,4 @@ public class TimeMange : MonoBehaviour
 
     }
 }
+

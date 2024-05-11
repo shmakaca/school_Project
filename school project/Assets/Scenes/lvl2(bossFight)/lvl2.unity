@@ -41869,7 +41869,9 @@ MonoBehaviour:
   JumpCoolDown: 0.25
   AirMultiplier: 0.4
   JumpPadCheckDistance: 0.1
+  ReadyToJump: 0
   DoubleJumpforce: 8
+  ReadyToDoubleJump: 0
   CrouchSpeed: 3
   CrouchHeight: 0.5
   JumpKey: 32
@@ -41880,6 +41882,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 64
   GroundDrag: 7
+  OnGround: 0
   JumpPad:
     serializedVersion: 2
     m_Bits: 1024
@@ -44333,6 +44336,7 @@ MonoBehaviour:
   SlowDownFactor: 0.5
   Focus: 5
   InSlowMotion: 0
+  WasInSlowmotion: 0
   SLowMotionKey: 1
   AM: {fileID: 3205356029682509498}
 --- !u!23 &9002132112630693746

@@ -32,12 +32,12 @@ public class PlayerMovement : MonoBehaviour
     public float JumpCoolDown;
     public float AirMultiplier;
     public float JumpPadCheckDistance;
-    bool ReadyToJump;
+    public bool ReadyToJump;
 
 
     [Header("DoubleJump")]
     public float DoubleJumpforce;
-    bool ReadyToDoubleJump;
+    public bool ReadyToDoubleJump;
 
 
     [Header("Crouch")]
@@ -55,7 +55,7 @@ public class PlayerMovement : MonoBehaviour
     public float PlayerHeight;
     public LayerMask Ground;
     public float GroundDrag;
-    bool OnGround;
+    public bool OnGround;
 
     [Header("JumpPads Check")]
     public LayerMask JumpPad;
@@ -75,6 +75,8 @@ public class PlayerMovement : MonoBehaviour
     public GameObject CameraHolder;
     public playercamera Cam;
     public Camera PlayerCamera;
+
+
 
     [Header("Pov")]
     public float NormalPov;
@@ -379,6 +381,8 @@ public class PlayerMovement : MonoBehaviour
         rb.velocity = new Vector3(rb.velocity.x, 0f, rb.velocity.z);
 
         rb.AddForce(transform.up * JumpForce, ForceMode.Impulse);
+
+
     }
 
     private void DoubleJump()
@@ -388,6 +392,7 @@ public class PlayerMovement : MonoBehaviour
         rb.velocity = new Vector3(rb.velocity.x, 0f, rb.velocity.z);
 
         rb.AddForce(transform.up * DoubleJumpforce, ForceMode.Impulse);
+
     }
 
     private void ResetJump()
@@ -416,7 +421,6 @@ public class PlayerMovement : MonoBehaviour
 
     private void JumPad()
     {
-        JumpPadPov();
 
         ExitingSlope = true;
 
@@ -424,12 +428,6 @@ public class PlayerMovement : MonoBehaviour
 
         rb.AddForce(transform.up * JumpPadforce, ForceMode.Impulse);
 
-        Invoke(nameof(ResetPov), 1f);
-    }
-
-    private void JumpPadPov()
-    {
-        Cam.DOFOV(JumPadPov + NormalPov);
     }
 
     private void ResetPov()
