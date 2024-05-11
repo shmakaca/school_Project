@@ -41882,8 +41882,8 @@ MonoBehaviour:
   GroundDrag: 7
   JumpPad:
     serializedVersion: 2
-    m_Bits: 0
-  JumpPadforce: 0
+    m_Bits: 1024
+  JumpPadforce: 10
   OnJumpPad: 0
   MaxSlopeAngel: 60
   Oreientation: {fileID: 2200719075210154078}
@@ -44299,9 +44299,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Gun: {fileID: 7488645080712126119}
   Sowrd: {fileID: 2142179716715958993}
-  swapKey: 9
-  Guning: 0
-  Sowrding: 0
+  SwordSlotkey: 256
+  GunSlotKey: 257
+  InGunSlot: 0
+  InSowrdSlot: 0
 --- !u!114 &8521355073781606799
 MonoBehaviour:
   m_ObjectHideFlags: 0

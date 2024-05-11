@@ -56,7 +56,7 @@ public class gunShot : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        isGun = FindAnyObjectByType<SwapGun>().Guning;
+        isGun = FindAnyObjectByType<SwapGun>().InGunSlot;
         if (isGun && Input.GetKeyDown(KeyCode.Mouse0) && !isReloading && shotsNum > 0 && ReadyToShootAgain)
         {
             IsShooting = true;

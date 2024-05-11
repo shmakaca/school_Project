@@ -22,7 +22,7 @@ public class PlayerDamaging : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        isSowrd = FindAnyObjectByType<SwapGun>().Sowrding;//checks if the sowrd is in the hand
+        isSowrd = FindAnyObjectByType<SwapGun>().InSowrdSlot;//checks if the sowrd is in the hand
 
 
         if (countDown > 0)

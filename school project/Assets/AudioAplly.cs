@@ -149,10 +149,8 @@ public class AudioAplly : MonoBehaviour
             PlayerMovementAduioSource.Stop();
             PlayerMovementAduioSource.pitch = 1f;
 
-        }
-      
+        }   
     }
-
     public void WeaponsSoundEffects()
     {
         if (gunShot.IsShooting)

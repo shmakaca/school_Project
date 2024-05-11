@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class SwapGun : MonoBehaviour
@@ -9,60 +10,52 @@ public class SwapGun : MonoBehaviour
     public GameObject Sowrd;
 
     [Header("swap")]
-    public KeyCode swapKey;
+    public MouseButton SwordSlotkey;
+    public KeyCode GunSlotKey;
 
     [Header("state")]
-    public bool Guning;
-    public bool Sowrding;
+    public bool InGunSlot;
+    public bool InSowrdSlot;
 
 
     // Start is called before the first frame update
     void Start()
     {
-        Sowrding = true;
-        Guning = false;
+        InSowrdSlot = true;
+        InGunSlot = false;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (Sowrding)
+        if (InSowrdSlot)
         {
-            so();
+            sowrd();
         }
-        if (Guning)
+        if (InGunSlot)
         {
-            gu();
+            gun();
         }
 
-        if (Input.GetKeyDown(swapKey))
+        if (Input.GetMouseButtonDown(4))
         {
-            if (Sowrding)
-            {
-                Sowrding = false;
-            }
-            else
-            {
-                Sowrding = true;
-            }
+            InGunSlot = true;
+            InSowrdSlot = false;
+        }
 
-            if (Guning)
-            {
-                Guning = false;
-            }
-            else
-            {
-                Guning = true;
-            }
+        if (Input.GetMouseButtonDown(3))
+        {
+            InGunSlot = false ;
+            InSowrdSlot = true;
         }
 
     }
-    private void so()
+    private void sowrd()
     {
         Sowrd.SetActive(true);
         Gun.SetActive(false);
     }
-    private void gu()
+    private void gun()
     {
         Sowrd.SetActive(false);
         Gun.SetActive(true);
