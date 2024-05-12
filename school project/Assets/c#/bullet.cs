@@ -5,19 +5,29 @@ using UnityEngine;
 public class bullet : MonoBehaviour
 {
     private Rigidbody rb;
-    private float speed = 100;
+    public float DeafultBulletSpeed;
+    private float BulletSpeed;
     private int damage;
     private Transform Oreientation;
-
+    bool InSlowMotion;
+    float SlowDownFactor;
     // Start is called before the first frame update
     void Start()
     {
         damage = FindAnyObjectByType<gunShot>().bullDamage;
         Oreientation = FindAnyObjectByType<PlayerMovement>().Oreientation;
         rb = gameObject.GetComponent<Rigidbody>();
-        rb.AddForce(Oreientation.forward * speed, ForceMode.Impulse);
+        rb.AddForce(Oreientation.forward * DeafultBulletSpeed, ForceMode.Impulse);
+        InSlowMotion = FindAnyObjectByType<TimeMange>().InSlowMotion;
+        SlowDownFactor = FindAnyObjectByType<TimeMange>().SlowDownFactor;
+
+        BulletSpeed = DeafultBulletSpeed;
     }
 
+    private void Update()
+    {
+        SpeedControl();
+    }
     private void OnTriggerEnter(Collider other)
     {
 
@@ -27,5 +37,18 @@ public class bullet : MonoBehaviour
             Destroy(gameObject);
 
         }
+    }
+
+    private void SpeedControl()
+    {
+        if(InSlowMotion)
+        {
+            BulletSpeed *= SlowDownFactor;
+        }
+    }
+
+    private void Reset()
+    {
+        BulletSpeed = DeafultBulletSpeed;
     }
 }

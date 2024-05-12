@@ -87,5 +87,6 @@ public class TimeMange : MonoBehaviour
         Time.fixedDeltaTime = Time.timeScale * 0.02f;
 
     }
+
 }
 

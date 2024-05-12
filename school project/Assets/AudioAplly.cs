@@ -123,7 +123,7 @@ public class AudioAplly : MonoBehaviour
                 PlayerMovementAduioSource.PlayOneShot(WalkingSoundEffect, 0.1f);
         }
 
-        else if (PlayerMovement.State == PlayerMovement.MovementState.Crouching && (PlayerMovement.Horizontal != 0 || PlayerMovement.Vertical != 0) && !PlayerMovement.OnSlope())
+        else if (PlayerMovement.State == PlayerMovement.MovementState.Crouching && (PlayerMovement.Horizontal != 0 || PlayerMovement.Vertical != 0))
         {
             PlayerMovementAduioSource.pitch = CrouchingPitch;
 
@@ -186,7 +186,6 @@ public class AudioAplly : MonoBehaviour
             }
                 
         }
-
         else if (!SwapGun.InSowrdSlot)
         {
             if (Input.GetMouseButtonDown(3))
