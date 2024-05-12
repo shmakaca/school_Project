@@ -14,11 +14,13 @@ public class mainMenu : MonoBehaviour
     public GameObject setMenu;
     public GameObject menu;
     public GameObject player ,cam;
-    
+
+    public bool InPauseMenu;
     // Start is called before the first frame update
     void Start()
     {
         menu.SetActive(false);
+        InPauseMenu = false;
     }
 
     // Update is called once per frame
@@ -36,17 +38,21 @@ public class mainMenu : MonoBehaviour
     }
     public void MainMenu() //open main menu
     {
+        InPauseMenu = true;
         menu.SetActive(true);
         player.SetActive(false);
         cam.SetActive(false);
+        Time.timeScale = 0f;
     }
     public void settings() //open settings from main menu
     {
         setMenu.SetActive(true);
         menu.SetActive(false);
     }
-    public void exit() //exit GUI
+    public void Resume() //exit GUI
     {
+        InPauseMenu = false;
+
         player.SetActive(true);
         cam.SetActive(true);
 
@@ -55,7 +61,8 @@ public class mainMenu : MonoBehaviour
 
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
-
+        
+        Time.timeScale = 1f;
     }
     
     public void quit() //public function that exit the game (only works on a working game not in unity)

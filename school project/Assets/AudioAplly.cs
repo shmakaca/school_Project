@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static Unity.IO.LowLevel.Unsafe.AsyncReadManagerMetrics;
 
 public class AudioAplly : MonoBehaviour
 {
@@ -26,8 +27,9 @@ public class AudioAplly : MonoBehaviour
     public AudioClip ExitSloMoSoundEffect;
     public AudioClip JumPadSoundEffect;
 
-    [Header("Pitch Controll")]
-    private float SprintingPitch;
+    [Header("Pitch")]
+
+    private float SprintingPitch ;
     private float WalkingPitch;
     private float WallRunningPitch;
     private float WallRunningSpeedingPitch;
@@ -38,7 +40,7 @@ public class AudioAplly : MonoBehaviour
     private float GunShotPitch;
     private float JumpPadPitch;
 
-    [Header("Pitch Reset")] 
+    [Header(" Normal Pitches")]
     public float NormalSprintingPitch;
     public float NormalWalkingPitch;
     public float NormalWallRunningPitch;
@@ -54,13 +56,15 @@ public class AudioAplly : MonoBehaviour
     public GameObject Player;
     public GameObject Pestol;
     public GameObject Sword;
+    public GameObject MainMenu;
 
     [Header("Script  Refrences")]
     private PlayerMovement PlayerMovement;
     private gunShot gunShot;
     private PlayerDamaging Swing;
-    private static TimeMange TimeMange;
     private SwapGun SwapGun;
+    private static mainMenu mainMenu;
+    private static TimeMange TimeMange;
 
     [Header("Volume")]
     public float bossMusicVolume;
@@ -75,13 +79,18 @@ public class AudioAplly : MonoBehaviour
     private float SpeedingNormalVolume;
     void Start()
     {
-        BackGroundMusic(bossMusic);
-
         TimeMange = Player.GetComponent<TimeMange>();
         PlayerMovement = Player.GetComponent<PlayerMovement>();  
         gunShot = Pestol.GetComponent<gunShot>();
         Swing = Sword.GetComponent<PlayerDamaging>();
         SwapGun = Player.GetComponent<SwapGun>();
+        mainMenu = MainMenu.GetComponent<mainMenu>();
+
+
+        if (!mainMenu.InPauseMenu)
+        {
+            BackGroundMusic(bossMusic);
+        }
 
         PlayerMovementNormalVolume = PlayerMovementAduioSource.volume;
         WeaponsNormalVolume = WeaponsAduioSource.volume;
@@ -98,149 +107,176 @@ public class AudioAplly : MonoBehaviour
         SpeedingSoundEffects();
         ParticleSoundEffect();
     }
-
     public void BackGroundMusic(AudioClip clip)
     {
-        BackGroundAduioSource.clip = clip;
-        BackGroundAduioSource.Play();
+            BackGroundAduioSource.clip = clip;
+            BackGroundAduioSource.Play();
+
     }
 
     public void PlayerMovementSoundEffect()
     {
-        if (PlayerMovement.State == PlayerMovement.MovementState.Walking && (PlayerMovement.Horizontal != 0 || PlayerMovement.Vertical != 0) )
+        if (!mainMenu.InPauseMenu)
         {
-            PlayerMovementAduioSource.pitch = WalkingPitch;
+            if (PlayerMovement.State == PlayerMovement.MovementState.Walking && (PlayerMovement.Horizontal != 0 || PlayerMovement.Vertical != 0))
+            {
+                PlayerMovementAduioSource.pitch = WalkingPitch;
 
-            if (!PlayerMovementAduioSource.isPlaying)
-                PlayerMovementAduioSource.PlayOneShot(WalkingSoundEffect, 0.1f);
+                if (!PlayerMovementAduioSource.isPlaying)
+                    PlayerMovementAduioSource.PlayOneShot(WalkingSoundEffect, 0.1f);
+            }
+
+            else if (PlayerMovement.State == PlayerMovement.MovementState.Sprinting && (PlayerMovement.Horizontal != 0 || PlayerMovement.Vertical != 0))
+            {
+                PlayerMovementAduioSource.pitch = SprintingPitch;
+
+                if (!PlayerMovementAduioSource.isPlaying)
+                    PlayerMovementAduioSource.PlayOneShot(WalkingSoundEffect, 0.1f);
+            }
+
+            else if (PlayerMovement.State == PlayerMovement.MovementState.Crouching && (PlayerMovement.Horizontal != 0 || PlayerMovement.Vertical != 0))
+            {
+                PlayerMovementAduioSource.pitch = CrouchingPitch;
+
+                if (!PlayerMovementAduioSource.isPlaying)
+                    PlayerMovementAduioSource.PlayOneShot(WalkingSoundEffect, 0.1f);
+            }
+
+            else if (PlayerMovement.WallRunning)
+            {
+                PlayerMovementAduioSource.pitch = WallRunningPitch;
+
+                if (!PlayerMovementAduioSource.isPlaying)
+                    PlayerMovementAduioSource.PlayOneShot(WalkingSoundEffect, 0.1f);
+            }
+
+            else if (PlayerMovement.sliding && !PlayerMovement.OnSlope())
+            {
+                if (!PlayerMovementAduioSource.isPlaying)
+                    PlayerMovementAduioSource.PlayOneShot(SlidingOnGroundSoundEffect, 0.3f);
+            }
+
+            else
+            {
+                PlayerMovementAduioSource.Stop();
+                PlayerMovementAduioSource.pitch = 1f;
+            }
         }
-
-        else if (PlayerMovement.State == PlayerMovement.MovementState.Sprinting && (PlayerMovement.Horizontal != 0 || PlayerMovement.Vertical != 0))
-        {
-            PlayerMovementAduioSource.pitch = SprintingPitch;
-
-            if (!PlayerMovementAduioSource.isPlaying)
-                PlayerMovementAduioSource.PlayOneShot(WalkingSoundEffect, 0.1f);
-        }
-
-        else if (PlayerMovement.State == PlayerMovement.MovementState.Crouching && (PlayerMovement.Horizontal != 0 || PlayerMovement.Vertical != 0))
-        {
-            PlayerMovementAduioSource.pitch = CrouchingPitch;
-
-            if (!PlayerMovementAduioSource.isPlaying)
-                PlayerMovementAduioSource.PlayOneShot(WalkingSoundEffect, 0.1f);
-        }
-
-        else if (PlayerMovement.WallRunning)
-        {
-            PlayerMovementAduioSource.pitch = WallRunningPitch;
-
-            if (!PlayerMovementAduioSource.isPlaying)
-                PlayerMovementAduioSource.PlayOneShot(WalkingSoundEffect, 0.1f);
-        }
-
-        else if(PlayerMovement.sliding && !PlayerMovement.OnSlope())
-        {
-            if (!PlayerMovementAduioSource.isPlaying)
-                PlayerMovementAduioSource.PlayOneShot(SlidingOnGroundSoundEffect, 0.3f);
-        }
-
         else
         {
-            PlayerMovementAduioSource.Stop();
-            PlayerMovementAduioSource.pitch = 1f;
-
-        }   
+            PlayerMovementAduioSource.Pause();
+        }
+  
     }
     public void WeaponsSoundEffects()
     {
-        if (gunShot.IsShooting)
+        if (!mainMenu.InPauseMenu)
         {
-            WeaponsAduioSource.pitch = GunShotPitch;
-
-            WeaponsAduioSource.PlayOneShot(GunShotSoundEffect, 0.15f);
-        }
-
-        else if (Swing.Swinging)
-        {
-            if (!WeaponsAduioSource.isPlaying)
-                WeaponsAduioSource.PlayOneShot(SwingSoundEffect, 0.2f);
-        } 
-        else if (gunShot.isReloading)
-        {
-            WeaponsAduioSource.pitch = ReloadPitch;
-
-            if (!WeaponsAduioSource.isPlaying)
-                WeaponsAduioSource.PlayOneShot(RealodSoundEffect, 0.15f);
-        }
-        else if (gunShot.ErrorFullMag)
-        {
-            if (!WeaponsAduioSource.isPlaying)
-                WeaponsAduioSource.PlayOneShot(ErrorSoundEffect, 0.3f);
-        }
-        else if (!SwapGun.InGunSlot)
-        {
-            if (Input.GetMouseButtonDown(4))
+            if (gunShot.IsShooting)
             {
-                WeaponsAduioSource.PlayOneShot(RealodSoundEffect, 0.15f);
-            }
-                
-        }
-        else if (!SwapGun.InSowrdSlot)
-        {
-            if (Input.GetMouseButtonDown(3))
-            {
-                WeaponsAduioSource.PlayOneShot(SwingSoundEffect, 0.15f);
+                WeaponsAduioSource.pitch = GunShotPitch;
+
+                WeaponsAduioSource.PlayOneShot(GunShotSoundEffect, 0.15f);
             }
 
+            else if (Swing.Swinging)
+            {
+                if (!WeaponsAduioSource.isPlaying)
+                    WeaponsAduioSource.PlayOneShot(SwingSoundEffect, 0.2f);
+            }
+            else if (gunShot.isReloading)
+            {
+                WeaponsAduioSource.pitch = ReloadPitch;
+
+                if (!WeaponsAduioSource.isPlaying)
+                    WeaponsAduioSource.PlayOneShot(RealodSoundEffect, 0.15f);
+            }
+            else if (gunShot.ErrorFullMag)
+            {
+                if (!WeaponsAduioSource.isPlaying)
+                    WeaponsAduioSource.PlayOneShot(ErrorSoundEffect, 0.3f);
+            }
+            else if (!SwapGun.InGunSlot)
+            {
+                if (Input.GetMouseButtonDown(4))
+                {
+                    WeaponsAduioSource.PlayOneShot(RealodSoundEffect, 0.15f);
+                }
+
+            }
+            else if (!SwapGun.InSowrdSlot)
+            {
+                if (Input.GetMouseButtonDown(3))
+                {
+                    WeaponsAduioSource.PlayOneShot(SwingSoundEffect, 0.15f);
+                }
+
+            }
         }
+        else
+        {
+            WeaponsAduioSource.Pause();
+        }
+
     }
 
     public void SpeedingSoundEffects()
     {
-        if ((PlayerMovement.sliding && PlayerMovement.OnSlope()))
+        if (!mainMenu.InPauseMenu)
         {
-            SlidingSpeedingPitch += Time.deltaTime * 0.1f;
+            if ((PlayerMovement.sliding && PlayerMovement.OnSlope()))
+            {
+                SlidingSpeedingPitch += Time.deltaTime * 0.1f;
 
-            SpeedingAduioSource.pitch = SlidingSpeedingPitch;
+                SpeedingAduioSource.pitch = SlidingSpeedingPitch;
 
-            if (!SpeedingAduioSource.isPlaying)
-                SpeedingAduioSource.PlayOneShot(SpeedingSoundEffect, 0.4f);
-        }
+                if (!SpeedingAduioSource.isPlaying)
+                    SpeedingAduioSource.PlayOneShot(SpeedingSoundEffect, 0.4f);
+            }
 
-        else if (PlayerMovement.Dashing)
-        {
-            SpeedingAduioSource.loop = false;
-            SpeedingAduioSource.pitch = DashingPitch;
+            else if (PlayerMovement.Dashing)
+            {
+                SpeedingAduioSource.loop = false;
+                SpeedingAduioSource.pitch = DashingPitch;
 
-            if (!SpeedingAduioSource.isPlaying)
-                SpeedingAduioSource.PlayOneShot(DashingSoundEffect, 0.5f);
+                if (!SpeedingAduioSource.isPlaying)
+                    SpeedingAduioSource.PlayOneShot(DashingSoundEffect, 0.5f);
+            }
+
+            else
+            {
+                SpeedingAduioSource.Stop();
+                SlidingSpeedingPitch = NormalSlidingSpeedingPitch;
+                SpeedingAduioSource.loop = true;
+            }
         }
 
         else
         {
-            SpeedingAduioSource.Stop();
-            SlidingSpeedingPitch = NormalSlidingSpeedingPitch;
-            SpeedingAduioSource.loop = true;
+            SpeedingAduioSource.Pause();
         }
-
     }
 
     public void ParticleSoundEffect()
     {
-        if (Input.GetMouseButtonDown((int)TimeMange.SLowMotionKey))
+        if (!mainMenu.InPauseMenu)
         {
-            TimeMangePichChange();
+            if (Input.GetMouseButtonDown((int)TimeMange.SLowMotionKey))
+            {
+                TimeMangePichChange();
 
-            if(!ParticlesAudioSource.isPlaying)
-                ParticlesAudioSource.PlayOneShot(EnterSloMoSoundEffect, 0.1f);
+                if (!ParticlesAudioSource.isPlaying)
+                    ParticlesAudioSource.PlayOneShot(EnterSloMoSoundEffect, 0.1f);
+            }
+            else if (Input.GetMouseButtonUp((int)TimeMange.SLowMotionKey) || Time.timeScale == 1f && TimeMange.WasInSlowmotion)
+            {
+                Invoke(nameof(Reset), ExitSloMoSoundEffect.length);
+            }
         }
-        else if (!TimeMange.WasInSlowmotion)
+        else
         {
-            Reset();
+            ParticlesAudioSource.Pause();
         }
-
-
     }
 
     public void JumpsSoundEffects()
@@ -259,8 +295,7 @@ public class AudioAplly : MonoBehaviour
         }
     }
 
-
-    public void TimeMangePichChange()
+public void TimeMangePichChange()
     {
         SprintingPitch *= TimeMange.SlowDownFactor;
         WalkingPitch *= TimeMange.SlowDownFactor;

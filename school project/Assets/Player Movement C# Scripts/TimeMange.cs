@@ -66,6 +66,8 @@ public class TimeMange : MonoBehaviour
             WasInSlowmotion = false;
 
             AudioAplly.ParticlesAudioSource.PlayOneShot(AudioAplly.ExitSloMoSoundEffect, 0.1f);
+
+            Invoke(nameof(AudioAplly.Reset), AudioAplly.ExitSloMoSoundEffect.length);
         }
 
         else if (Time.timeScale < 1f)
