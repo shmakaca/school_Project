@@ -10,7 +10,7 @@ public class SwapGun : MonoBehaviour
     public GameObject Sowrd;
 
     [Header("swap")]
-    public MouseButton SwordSlotkey;
+    public KeyCode SwordSlotkey;
     public KeyCode GunSlotKey;
 
     [Header("state")]
@@ -23,11 +23,13 @@ public class SwapGun : MonoBehaviour
     {
         InSowrdSlot = true;
         InGunSlot = false;
+
     }
 
     // Update is called once per frame
     void Update()
     {
+        SwordSlotkey = FindAnyObjectByType<KeyboardController>().GetSowrd();
         if (InSowrdSlot)
         {
             sowrd();
