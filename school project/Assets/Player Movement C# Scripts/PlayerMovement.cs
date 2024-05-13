@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -47,9 +48,9 @@ public class PlayerMovement : MonoBehaviour
     private bool Crouching;
 
     [Header("KeyBinds")]
-    public KeyCode JumpKey = KeyCode.Space;
-    public KeyCode SprintKey = KeyCode.LeftShift;
-    public KeyCode CrouchKey = KeyCode.LeftControl;
+    public KeyCode JumpKey ;
+    public KeyCode SprintKey;
+    public KeyCode CrouchKey;
 
     [Header("Ground Check")]
     public float PlayerHeight;
@@ -81,6 +82,7 @@ public class PlayerMovement : MonoBehaviour
     [Header("Pov")]
     public float NormalPov;
     public float JumPadPov;
+    public Slider FOVslider;
 
     public float Horizontal;
     public float Vertical;
@@ -100,6 +102,11 @@ public class PlayerMovement : MonoBehaviour
     public bool WallRunning;
     public bool Shooting;
 
+    public void GetKeyCodes() //gets the keyCodes from the KeyboardController Script
+    {
+        JumpKey = FindAnyObjectByType<KeyboardController>().jumpck;
+        SprintKey = FindAnyObjectByType<KeyboardController>().runck;
+    }
     private void Start()
     {
         rb = GetComponent<Rigidbody>();
@@ -118,6 +125,10 @@ public class PlayerMovement : MonoBehaviour
 
     public void Update()
     {
+
+        PlayerCamera.fieldOfView = FOVslider.value;
+        NormalPov = FOVslider.value;
+        GetKeyCodes(); //swaps the keycodes according to the one in the settings
 
         OnGround = Physics.Raycast(transform.position, Vector3.down, PlayerHeight * 0.5f + 0.3f);
         OnJumpPad = Physics.Raycast(transform.position, Vector3.down, PlayerHeight * 0.5f + 0.3f, JumpPad);

@@ -48,6 +48,16 @@ public class WallRun : MonoBehaviour
     [Header("Camera Effects")]
     public playercamera Cam;
 
+
+    public void GetWallKeys()
+    {
+        UpWardsRunKey = FindAnyObjectByType<KeyboardController>().wallRunUP;
+        DownWardsRunKey = FindAnyObjectByType<KeyboardController>().wallRunDown;
+        WallJumpkey = FindAnyObjectByType<KeyboardController>().jumpck;
+
+
+
+    }
     private void Start()
     {
         Rb = GetComponent<Rigidbody>();

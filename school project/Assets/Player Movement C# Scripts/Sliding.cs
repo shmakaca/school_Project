@@ -23,7 +23,7 @@ public class Sliding : MonoBehaviour
     private float SlideFov;
 
     [Header("Input")]
-    public KeyCode SlideKey = KeyCode.LeftControl;
+    public KeyCode SlideKey;
     private float Horizontal;
     private float Vertical;
 
@@ -32,6 +32,10 @@ public class Sliding : MonoBehaviour
     public LayerMask Ground;
     bool OnGround;
 
+    public void getSlideKey()
+    {
+        SlideKey = FindAnyObjectByType<KeyboardController>().slideck;
+    }
     private void Start()
     {
         rb = GetComponent<Rigidbody>();
@@ -50,6 +54,9 @@ public class Sliding : MonoBehaviour
 
     private void Update()
     {
+        getSlideKey();
+
+
         OnGround = Physics.Raycast(transform.position, Vector3.down, PlayerHeight * 0.5f + 0.3f);
 
         Horizontal = Input.GetAxisRaw("Horizontal");

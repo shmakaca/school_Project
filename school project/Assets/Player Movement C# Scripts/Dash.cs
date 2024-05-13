@@ -36,8 +36,13 @@ public class Dash : MonoBehaviour
     public bool resetVel = true;
 
     [Header("Input")]
-    public KeyCode DashKey = KeyCode.E;
+    public KeyCode DashKey;
 
+
+    public void GetDashKey()
+    {
+        DashKey = FindAnyObjectByType<KeyboardController>().dashck;
+    }
     private void Start()
     {
         rb = GetComponent<Rigidbody>();
@@ -46,6 +51,8 @@ public class Dash : MonoBehaviour
 
     private void Update()
     {
+
+        GetDashKey();
 
         if (Input.GetKeyDown(DashKey))
         {
