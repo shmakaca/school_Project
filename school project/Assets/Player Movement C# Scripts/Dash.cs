@@ -25,10 +25,6 @@ public class Dash : MonoBehaviour
     private float Horizontal;
     private float Vertical;
 
-    [Header("Camera Effects")]
-    public playercamera Camera;
-    public float DashFovChange;
-
     [Header("Settings")]
     public bool useCameraForward = true;
     public bool allowAllDirections = true;
@@ -39,20 +35,17 @@ public class Dash : MonoBehaviour
     public KeyCode DashKey;
 
 
-    public void GetDashKey()
-    {
-        DashKey = FindAnyObjectByType<KeyboardController>().dashck;
-    }
+
     private void Start()
     {
         rb = GetComponent<Rigidbody>();
         PlayerMovement = GetComponent<PlayerMovement>();
+
     }
 
     private void Update()
     {
 
-        GetDashKey();
 
         if (Input.GetKeyDown(DashKey))
         {
@@ -73,9 +66,7 @@ public class Dash : MonoBehaviour
 
         PlayerMovement.Dashing = true;
         PlayerMovement.MaxYSpeed = MaxDashYSpeed;
-
-        Camera.DOFOV(DashFovChange + PlayerMovement.NormalPov);
-                
+ 
         Transform forwardT;
 
         if (useCameraForward)
@@ -107,7 +98,7 @@ public class Dash : MonoBehaviour
         PlayerMovement.Dashing = false;
         PlayerMovement.MaxYSpeed = 0;
 
-        Camera.DOFOV(PlayerMovement.NormalPov);
+
     }
 
     private Vector3 GetDirection(Transform forwardT)

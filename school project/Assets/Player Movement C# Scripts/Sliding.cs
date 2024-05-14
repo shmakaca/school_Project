@@ -32,16 +32,12 @@ public class Sliding : MonoBehaviour
     public LayerMask Ground;
     bool OnGround;
 
-    public void getSlideKey()
-    {
-        SlideKey = FindAnyObjectByType<KeyboardController>().slideck;
-    }
     private void Start()
     {
         rb = GetComponent<Rigidbody>();
         PlayerMovement = GetComponent<PlayerMovement>();
         StandingHieght = PlayerObject.localScale.y;
-        SlideFov = PlayerMovement.NormalPov + 5f;
+        SlideFov = PlayerMovement.NormalFov + 5f;
     }
 
     private void FixedUpdate()
@@ -54,8 +50,6 @@ public class Sliding : MonoBehaviour
 
     private void Update()
     {
-        getSlideKey();
-
 
         OnGround = Physics.Raycast(transform.position, Vector3.down, PlayerHeight * 0.5f + 0.3f);
 
@@ -99,16 +93,6 @@ public class Sliding : MonoBehaviour
         // slidng on slope
         else
         {
-            SlideFov += Time.deltaTime * 5f;
-
-            if (SlideFov >= PlayerMovement.NormalPov + 15f)
-                SlideFov = PlayerMovement.NormalPov + 15f;
-
-            if (PlayerMovement.OnSlope())
-            {
-                Camera.DOFOV(SlideFov);
-            }
-
             rb.AddForce(PlayerMovement.GetSlopeMoveDirection(Direction) * SlideForce, ForceMode.Force);
         }
 
@@ -122,7 +106,7 @@ public class Sliding : MonoBehaviour
     {
         PlayerMovement.sliding = false;
         PlayerObject.localScale = new Vector3(PlayerObject.localScale.x, StandingHieght, PlayerObject.localScale.z);
-        Camera.DOFOV(PlayerMovement.NormalPov);
-        SlideFov = PlayerMovement.NormalPov + 5f;
+        Camera.DOFOV(PlayerMovement.NormalFov);
+        SlideFov = PlayerMovement.NormalFov + 5f;
     }
 }

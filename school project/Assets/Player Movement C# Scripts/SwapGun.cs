@@ -17,11 +17,7 @@ public class SwapGun : MonoBehaviour
     public bool InGunSlot;
     public bool InSowrdSlot;
 
-    public void GetWeaponsKeys()
-    {
-        SwordSlotkey = FindAnyObjectByType<KeyboardController>().Sowrdkc;
-        GunSlotKey = FindAnyObjectByType<KeyboardController>().gunck;
-    }
+
     // Start is called before the first frame update
     void Start()
     {
@@ -33,7 +29,6 @@ public class SwapGun : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        GetWeaponsKeys();
         if (InSowrdSlot)
         {
             sowrd();

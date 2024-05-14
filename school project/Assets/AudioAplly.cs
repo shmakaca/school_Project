@@ -87,10 +87,7 @@ public class AudioAplly : MonoBehaviour
         mainMenu = MainMenu.GetComponent<mainMenu>();
 
 
-        if (!mainMenu.InPauseMenu)
-        {
-            BackGroundMusic(bossMusic);
-        }
+
 
         PlayerMovementNormalVolume = PlayerMovementAduioSource.volume;
         WeaponsNormalVolume = WeaponsAduioSource.volume;
@@ -102,6 +99,7 @@ public class AudioAplly : MonoBehaviour
     }
     private void Update()
     {
+        BackGroundMusic(bossMusic);
         PlayerMovementSoundEffect();
         WeaponsSoundEffects();
         SpeedingSoundEffects();
@@ -109,8 +107,15 @@ public class AudioAplly : MonoBehaviour
     }
     public void BackGroundMusic(AudioClip clip)
     {
+        if (!mainMenu.InPauseMenu)
+        {
             BackGroundAduioSource.clip = clip;
             BackGroundAduioSource.Play();
+        }
+        else
+        {
+            BackGroundAduioSource.Pause();
+        }
 
     }
 
@@ -198,7 +203,7 @@ public class AudioAplly : MonoBehaviour
             }
             else if (!SwapGun.InGunSlot)
             {
-                if (Input.GetMouseButtonDown(4))
+                if (Input.GetKeyDown(SwapGun.GunSlotKey))
                 {
                     WeaponsAduioSource.PlayOneShot(RealodSoundEffect, 0.15f);
                 }
@@ -206,7 +211,7 @@ public class AudioAplly : MonoBehaviour
             }
             else if (!SwapGun.InSowrdSlot)
             {
-                if (Input.GetMouseButtonDown(3))
+                if (Input.GetKeyDown(SwapGun.SwordSlotkey))
                 {
                     WeaponsAduioSource.PlayOneShot(SwingSoundEffect, 0.15f);
                 }

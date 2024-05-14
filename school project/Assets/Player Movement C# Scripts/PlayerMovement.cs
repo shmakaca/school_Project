@@ -76,12 +76,16 @@ public class PlayerMovement : MonoBehaviour
     public GameObject CameraHolder;
     public playercamera Cam;
     public Camera PlayerCamera;
+    private WallRun WallRun;
 
-
-
-    [Header("Pov")]
-    public float NormalPov;
-    public float JumPadPov;
+    [Header("Fov")]
+    public float NormalFov;
+    public float JumPadFovChange;
+    public float DashFovChange;
+    public float WallRunFovChange;
+    public float ShootingFovChange;
+    public float SprintFovChange;
+    public float SlideFovChange;
     public Slider FOVslider;
 
     public float Horizontal;
@@ -102,11 +106,7 @@ public class PlayerMovement : MonoBehaviour
     public bool WallRunning;
     public bool Shooting;
 
-    public void GetKeyCodes() //gets the keyCodes from the KeyboardController Script
-    {
-        JumpKey = FindAnyObjectByType<KeyboardController>().jumpck;
-        SprintKey = FindAnyObjectByType<KeyboardController>().runck;
-    }
+
     private void Start()
     {
         rb = GetComponent<Rigidbody>();
@@ -114,21 +114,21 @@ public class PlayerMovement : MonoBehaviour
         ReadyToJump = true;
         StandingHeight = transform.localScale.y;
         PlayerCamera = CameraHolder.GetComponent<Camera>();
+        WallRun = GetComponent<WallRun>();
 
-        NormalPov = PlayerCamera.fieldOfView;
+        FOVslider.value = FOVslider.minValue;
     }
 
     private void FixedUpdate()
     {
         PlayerMove();
+        NormalFov = FOVslider.value;
     }
 
     public void Update()
     {
 
-        PlayerCamera.fieldOfView = FOVslider.value;
-        NormalPov = FOVslider.value;
-        GetKeyCodes(); //swaps the keycodes according to the one in the settings
+
 
         OnGround = Physics.Raycast(transform.position, Vector3.down, PlayerHeight * 0.5f + 0.3f);
         OnJumpPad = Physics.Raycast(transform.position, Vector3.down, PlayerHeight * 0.5f + 0.3f, JumpPad);
@@ -189,14 +189,20 @@ public class PlayerMovement : MonoBehaviour
             State = MovementState.shooting;
             DesireMoveSpeed = KnockBackSpeed;
             SpeedIncreaseMultiplier = KnockBackSpeedChangeFactor;
-            
+            Cam.DOFOV(ShootingFovChange + NormalFov);
+            Cam.DOTilt(0f);
         }
 
 
         else if (WallRunning)
         {
             State = MovementState.WallRunning;
-            DesireMoveSpeed = WallRunSpeed;        
+            DesireMoveSpeed = WallRunSpeed;
+            Cam.DOFOV(WallRunFovChange + NormalFov);
+            if (WallRun.LeftWall)
+                Cam.DOTilt(5f);
+            if (!WallRun.LeftWall)
+                Cam.DOTilt(-5f);
         }
 
         else if (Dashing)
@@ -204,25 +210,37 @@ public class PlayerMovement : MonoBehaviour
             State = MovementState.Dashing;
             DesireMoveSpeed = DashSpeed;
             SpeedIncreaseMultiplier = DashSpeedIncreaseMultiplier;
-            PlayerObject.GetComponent<CapsuleCollider>().enabled = false;
+            Cam.DOFOV(DashFovChange + NormalFov);
+            Cam.DOTilt(0f);
         }
 
         else if (sliding)
         {
             State = MovementState.Sliding;
 
+            SlideFovChange += Time.deltaTime * 4f;
+
             if (OnSlope() && rb.velocity.y < 0.1)
+            {
+                Cam.DOFOV(SlideFovChange + NormalFov);
                 DesireMoveSpeed = SlideSpeed;
+            }
             else
+            {
                 DesireMoveSpeed = SprintSpeed;
+                Cam.DOFOV(NormalFov);
+                SlideFovChange = 5f;
+            }
             SpeedIncreaseMultiplier = SlideSpeedChangeFactror;
-            
+
         }
         // Crouching Mode
         else if (Input.GetKey(CrouchKey) && OnGround)
         {
             State = MovementState.Crouching;
             DesireMoveSpeed = CrouchSpeed;
+            Cam.DOFOV(NormalFov);
+            Cam.DOTilt(0f);
         }
 
         // Sprinting Mode
@@ -230,13 +248,15 @@ public class PlayerMovement : MonoBehaviour
         {
             State = MovementState.Sprinting;
             DesireMoveSpeed = SprintSpeed;
-            Cam.DOFOV(NormalPov + 5f);
+            Cam.DOFOV(NormalFov + SprintFovChange);
+            Cam.DOTilt(0f);
             if (Dashing)
             {
                 State = MovementState.Dashing;
                 DesireMoveSpeed = DashSpeed;
                 SpeedIncreaseMultiplier = DashSpeedIncreaseMultiplier;
-                PlayerObject.GetComponent<CapsuleCollider>().enabled = false;
+                Cam.DOFOV(DashFovChange + NormalFov);
+                Cam.DOTilt(0f);
             }
                   
         }
@@ -245,14 +265,15 @@ public class PlayerMovement : MonoBehaviour
         {
             State = MovementState.Walking;
             DesireMoveSpeed = WalkSpeed;
-            Cam.DOFOV(NormalPov);
-
+            Cam.DOFOV(NormalFov);
+            Cam.DOTilt(0f);
             if (Dashing)
             {
                 State = MovementState.Dashing;
                 DesireMoveSpeed = DashSpeed;
                 SpeedIncreaseMultiplier = DashSpeedIncreaseMultiplier;
-                PlayerObject.GetComponent<CapsuleCollider>().enabled = false;
+                Cam.DOFOV(DashFovChange + NormalFov);
+                Cam.DOTilt(0f);
             }
         }
 
@@ -260,6 +281,9 @@ public class PlayerMovement : MonoBehaviour
         else
         {
             State = MovementState.Air;
+
+            Cam.DOFOV(NormalFov);
+            Cam.DOTilt(0f);
 
             if (DesireMoveSpeed < SprintSpeed)
             {
@@ -270,7 +294,8 @@ public class PlayerMovement : MonoBehaviour
                 State = MovementState.Dashing;
                 DesireMoveSpeed = DashSpeed;
                 SpeedIncreaseMultiplier = DashSpeedIncreaseMultiplier;
-                PlayerObject.GetComponent<CapsuleCollider>().enabled = false;
+                Cam.DOFOV(DashFovChange + NormalFov);
+                Cam.DOTilt(0f);
             }
             else
             {
@@ -284,7 +309,6 @@ public class PlayerMovement : MonoBehaviour
                 ReadyToDoubleJump = false;
             }
 
-            PlayerObject.GetComponent<CapsuleCollider>().enabled = true;
         }
 
 
@@ -441,10 +465,6 @@ public class PlayerMovement : MonoBehaviour
 
     }
 
-    private void ResetPov()
-    {
-        Cam.DOFOV(NormalPov);
-    }
 
 }
 

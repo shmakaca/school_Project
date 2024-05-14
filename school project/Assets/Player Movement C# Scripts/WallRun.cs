@@ -28,8 +28,8 @@ public class WallRun : MonoBehaviour
     public float MinJumpHeight;
     private RaycastHit LeftWallHit;
     private RaycastHit RightWallHit;
-    private bool RightWall;
-    private bool LeftWall;
+    public bool RightWall;
+    public bool LeftWall;
 
     [Header("ExitingWall")]
     private bool ExitingWall;
@@ -45,23 +45,12 @@ public class WallRun : MonoBehaviour
     private PlayerMovement PlayerMovement;
     private Rigidbody Rb;
 
-    [Header("Camera Effects")]
-    public playercamera Cam;
 
-
-    public void GetWallKeys()
-    {
-        UpWardsRunKey = FindAnyObjectByType<KeyboardController>().wallRunUP;
-        DownWardsRunKey = FindAnyObjectByType<KeyboardController>().wallRunDown;
-        WallJumpkey = FindAnyObjectByType<KeyboardController>().jumpck;
-
-
-
-    }
     private void Start()
     {
         Rb = GetComponent<Rigidbody>();
         PlayerMovement = GetComponent<PlayerMovement>();
+
     }
 
     private void FixedUpdate()
@@ -155,11 +144,8 @@ public class WallRun : MonoBehaviour
 
         Rb.velocity = new Vector3(Rb.velocity.x, 0f, Rb.velocity.z);
 
-        Cam.DOFOV(PlayerMovement.NormalPov + 15f);
-        if (LeftWall)
-            Cam.DOTilt(-5f);
-        if (!LeftWall)
-            Cam.DOTilt(5f);
+
+
     }
 
     private void WallRunMoveMent()
@@ -203,8 +189,6 @@ public class WallRun : MonoBehaviour
     private void StopWallRun()
     {
         PlayerMovement.WallRunning = false;
-        Cam.DOFOV(PlayerMovement.NormalPov);
-        Cam.DOTilt(0);
     }
 
     private void Walljump()

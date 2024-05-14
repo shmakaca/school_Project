@@ -36,9 +36,6 @@ public class gunShot : MonoBehaviour
     public float KnockBackForce;
     public float KnockBackDuration;
 
-    [Header("Camera Effects")]
-    public playercamera Cam;
-    public float KnockBackFovChange;
 
     void Start()
     {
@@ -51,6 +48,7 @@ public class gunShot : MonoBehaviour
         PlayerMovement = Player.GetComponent<PlayerMovement>();
         rb = Player.GetComponent<Rigidbody>();
         Am = AudioManger.GetComponent<AudioAplly>();
+
     }
 
     // Update is called once per frame
@@ -116,15 +114,11 @@ public class gunShot : MonoBehaviour
         rb.AddForce(ForceToApply, ForceMode.Impulse);
 
         Invoke(nameof(StopKnockBack), KnockBackDuration);
-
-        Cam.DOFOV(KnockBackFovChange + PlayerMovement.NormalPov);
     }
 
     private void StopKnockBack()
     {
         PlayerMovement.Shooting = false;
-
-        Cam.DOFOV(PlayerMovement.NormalPov);
 
     }
     public void Reloading()
