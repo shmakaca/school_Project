@@ -14,14 +14,17 @@ public class mainMenu : MonoBehaviour
     public GameObject setMenu;
     public GameObject menu;
     public GameObject player ,cam;
+    public GameObject KeybindsMenu;
 
     public bool InPauseMenu;
     public bool InSetMenu;
+    public bool InKeyBindMenu;
     // Start is called before the first frame update
     void Start()
     {
         menu.SetActive(false);
         setMenu.SetActive(false);
+        KeybindsMenu.SetActive(false);
         InPauseMenu = false;
     }
 
@@ -32,8 +35,8 @@ public class mainMenu : MonoBehaviour
         {
             if(!InSetMenu)
             {
-                 MainMenu();
-            
+                PauseMenu();
+
                  Cursor.visible = true;
                  Cursor.lockState = CursorLockMode.Confined;
             }
@@ -42,11 +45,12 @@ public class mainMenu : MonoBehaviour
         
         
     }
-    public void MainMenu() //open main menu
+    public void PauseMenu() //open main menu
     {
         InSetMenu = false;
         InPauseMenu = true;
         menu.SetActive(true);
+        setMenu.SetActive(false);
         player.SetActive(false);
         cam.SetActive(false);
         Time.timeScale = 0f;
@@ -56,6 +60,13 @@ public class mainMenu : MonoBehaviour
         InSetMenu = true;
         setMenu.SetActive(true);
         menu.SetActive(false);
+        KeybindsMenu.SetActive(false);
+    }
+
+    public void KeyBindsMenu()
+    {
+        KeybindsMenu.SetActive(true);
+        setMenu.SetActive(false);
     }
     public void Resume() //exit GUI
     {

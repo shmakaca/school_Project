@@ -74,8 +74,8 @@ public class AudioAplly : MonoBehaviour
     public float SwingVolume;
     public float GunShotVolume;
 
-    private float PlayerMovementNormalVolume;
-    private float WeaponsNormalVolume;
+    private float BackGroundVolume;
+    private float SoundEffectsVolume;
     private float SpeedingNormalVolume;
     void Start()
     {
@@ -86,35 +86,33 @@ public class AudioAplly : MonoBehaviour
         SwapGun = Player.GetComponent<SwapGun>();
         mainMenu = MainMenu.GetComponent<mainMenu>();
 
-
-
-
-        PlayerMovementNormalVolume = PlayerMovementAduioSource.volume;
-        WeaponsNormalVolume = WeaponsAduioSource.volume;
-        SpeedingNormalVolume = SpeedingAduioSource.volume;
-
         SlidingSpeedingPitch = NormalSlidingSpeedingPitch;
 
         Reset();
     }
     private void Update()
     {
-        BackGroundMusic(bossMusic);
+        BackGroundMusic();
         PlayerMovementSoundEffect();
         WeaponsSoundEffects();
         SpeedingSoundEffects();
         ParticleSoundEffect();
     }
-    public void BackGroundMusic(AudioClip clip)
+    public void BackGroundMusic()
     {
-        if (!mainMenu.InPauseMenu)
+        if (!BackGroundAduioSource.isPlaying)
         {
-            BackGroundAduioSource.clip = clip;
             BackGroundAduioSource.Play();
+            BackGroundAduioSource.volume = bossMusicVolume;
         }
-        else
+        
+         if(mainMenu.InPauseMenu)
         {
             BackGroundAduioSource.Pause();
+        }
+         else
+        {
+            BackGroundAduioSource.UnPause();
         }
 
     }
