@@ -1,47 +1,51 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
+using UnityEngine.UI;
 
 public class playercamera : MonoBehaviour
 {
-    public float sensX;
-    public float sensY;
+    private MouseSettings mouseSettings;
 
-    public Transform orentation;
-    public Transform CameraHolder;
+    public Transform orientation;
+    public Transform cameraHolder;
+    public GameObject mouseMenu;
 
     float xRotation;
     float yRotation;
+
 
     private void Start()
     {
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
+        mouseSettings = mouseMenu.GetComponent<MouseSettings>();
     }
+
     private void Update()
     {
-        // get  maouse input
+        // Get the current sensitivity
+        Vector2 sensitivity = mouseSettings.GetCurrentSensitivity();
 
-        float mouseX = Input.GetAxisRaw("Mouse X") * Time.deltaTime * sensX;
-        float mouseY = Input.GetAxisRaw("Mouse Y") * Time.deltaTime * sensY;
+        // Get mouse input
+        float mouseX = Input.GetAxisRaw("Mouse X") * Time.deltaTime * sensitivity.x;
+        float mouseY = Input.GetAxisRaw("Mouse Y") * Time.deltaTime * sensitivity.y;
 
         yRotation += mouseX;
         xRotation -= mouseY;
         xRotation = Mathf.Clamp(xRotation, -90f, 90f);
 
-        CameraHolder.rotation = Quaternion.Euler(xRotation, yRotation, 0);
-        orentation.rotation = Quaternion.Euler(0, yRotation, 0);
-
+        cameraHolder.rotation = Quaternion.Euler(xRotation, yRotation, 0);
+        orientation.rotation = Quaternion.Euler(0, yRotation, 0);
     }
 
-    public void DOFOV(float Endvalue)
+    public void DOFOV(float endValue)
     {
-        GetComponent<Camera>().DOFieldOfView(Endvalue, 0.25f);
+        GetComponent<Camera>().DOFieldOfView(endValue, 0.25f);
     }
 
     public void DOTilt(float zTilt)
     {
         transform.DOLocalRotate(new Vector3(0, 0, zTilt), 0.25f);
     }
+
 }
