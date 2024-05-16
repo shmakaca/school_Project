@@ -19,6 +19,8 @@ public class playercamera : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
         mouseSettings = mouseMenu.GetComponent<MouseSettings>();
+
+
     }
 
     private void Update()
@@ -40,12 +42,12 @@ public class playercamera : MonoBehaviour
 
     public void DOFOV(float endValue)
     {
-        GetComponent<Camera>().DOFieldOfView(endValue, 0.25f);
+        GetComponent<Camera>().DOFieldOfView(endValue, 0.5f);
     }
 
     public void DOTilt(float zTilt)
     {
-        transform.DOLocalRotate(new Vector3(0, 0, zTilt), 0.25f);
+        transform.DOLocalRotate(new Vector3(0, 0, zTilt), 0.5f);
     }
 
 }
