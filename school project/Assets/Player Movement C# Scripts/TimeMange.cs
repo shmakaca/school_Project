@@ -18,12 +18,12 @@ public class TimeMange : MonoBehaviour
     public MouseButton SLowMotionKey = MouseButton.RightMouse;
 
     [Header("Reafrences")]
-    private AudioAplly AudioAplly;
+    private AudioApply AudioAplly;
     public GameObject AM;
 
     private void Start()
     {
-        AudioAplly = AM.GetComponent<AudioAplly>();
+        AudioAplly = AM.GetComponent<AudioApply>();
 
         BackToNormalTime = AudioAplly.ExitSloMoSoundEffect.length;
     }

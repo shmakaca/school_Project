@@ -16,6 +16,7 @@ public class mainMenu : MonoBehaviour
     public GameObject player ,cam;
     public GameObject KeybindsMenu;
     public GameObject MouseMenu;
+    public GameObject AudioMenu;
 
     public bool InPauseMenu;
     public bool InSetMenu;
@@ -28,6 +29,7 @@ public class mainMenu : MonoBehaviour
         setMenu.SetActive(false);
         KeybindsMenu.SetActive(false);
         MouseMenu.SetActive(false);
+        AudioMenu.SetActive(false);
         InPauseMenu = false;
     }
 
@@ -63,6 +65,7 @@ public class mainMenu : MonoBehaviour
         InSetMenu = true;
         setMenu.SetActive(true);
         menu.SetActive(false);
+        AudioMenu.SetActive(false);
         KeybindsMenu.SetActive(false);
     }
 
@@ -73,6 +76,11 @@ public class mainMenu : MonoBehaviour
         MouseMenu.SetActive(false);
     }
 
+    public void Audio()
+    {
+        AudioMenu.SetActive(true);
+        setMenu.SetActive(false);
+    }
     public void Mouse()
     {
         MouseMenu.SetActive(true);

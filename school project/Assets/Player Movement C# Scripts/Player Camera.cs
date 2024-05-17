@@ -1,6 +1,5 @@
 using UnityEngine;
 using DG.Tweening;
-using UnityEngine.UI;
 
 public class playercamera : MonoBehaviour
 {
@@ -13,14 +12,14 @@ public class playercamera : MonoBehaviour
     float xRotation;
     float yRotation;
 
-
     private void Start()
     {
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
         mouseSettings = mouseMenu.GetComponent<MouseSettings>();
 
-
+        // Apply the current sensitivity settings at startup
+        ApplySensitivitySettings();
     }
 
     private void Update()
@@ -40,6 +39,13 @@ public class playercamera : MonoBehaviour
         orientation.rotation = Quaternion.Euler(0, yRotation, 0);
     }
 
+    private void ApplySensitivitySettings()
+    {
+        Vector2 sensitivity = mouseSettings.GetCurrentSensitivity();
+        // Use the sensitivity to initialize any necessary settings
+        // For example, initializing mouse sensitivity in other parts of your game if needed
+    }
+
     public void DOFOV(float endValue)
     {
         GetComponent<Camera>().DOFieldOfView(endValue, 0.5f);
@@ -49,5 +55,4 @@ public class playercamera : MonoBehaviour
     {
         transform.DOLocalRotate(new Vector3(0, 0, zTilt), 0.5f);
     }
-
 }

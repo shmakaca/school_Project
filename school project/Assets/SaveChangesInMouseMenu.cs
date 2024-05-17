@@ -26,8 +26,8 @@ public class MouseSettings : MonoBehaviour
         mouseXSlider.value = mouseXValue;
         mouseYSlider.value = mouseYValue;
         invertMouseSlider.value = invertMouseValue;
-        mouseXText.text = mouseXValue.ToString();
-        mouseYText.text = mouseYValue.ToString();
+        mouseXText.text = mouseXValue.ToString("F2");
+        mouseYText.text = mouseYValue.ToString("F2");
         UpdateInvertMouseText(invertMouseValue);
 
         // Subscribe to slider value changed events
@@ -39,14 +39,14 @@ public class MouseSettings : MonoBehaviour
     // Method to handle mouse X slider value change
     private void OnMouseXSliderValueChanged(float value)
     {
-        mouseXText.text = value.ToString();
+        mouseXText.text = value.ToString("F2");
         PlayerPrefs.SetFloat(mouseXKey, value);
     }
 
     // Method to handle mouse Y slider value change
     private void OnMouseYSliderValueChanged(float value)
     {
-        mouseYText.text = value.ToString();
+        mouseYText.text = value.ToString("F2");
         PlayerPrefs.SetFloat(mouseYKey, value);
     }
 
@@ -66,8 +66,8 @@ public class MouseSettings : MonoBehaviour
     // Method to get the current sensitivity adjusted for inversion
     public Vector2 GetCurrentSensitivity()
     {
-        float sensX = mouseXSlider.value;
-        float sensY = mouseYSlider.value;
+        float sensX = mouseXSlider.value * 100f;
+        float sensY = mouseYSlider.value * 100f;
         if (invertMouseSlider.value == 1f)
         {
             sensX *= -1f;

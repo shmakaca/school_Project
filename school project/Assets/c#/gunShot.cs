@@ -18,7 +18,7 @@ public class gunShot : MonoBehaviour
     public GameObject Bullet;
     public GameObject AudioManger;
     private PlayerMovement PlayerMovement;
-    private AudioAplly Am;
+    private AudioApply Am;
 
     public int bullDamage;
 
@@ -47,7 +47,7 @@ public class gunShot : MonoBehaviour
 
         PlayerMovement = Player.GetComponent<PlayerMovement>();
         rb = Player.GetComponent<Rigidbody>();
-        Am = AudioManger.GetComponent<AudioAplly>();
+        Am = AudioManger.GetComponent<AudioApply>();
 
     }
 
@@ -127,7 +127,7 @@ public class gunShot : MonoBehaviour
         shotsNum = mag;
         animator.SetTrigger("trReload");
 
-        Invoke(nameof(StopRelaoding), Am.RealodSoundEffect.length * ShotsUsed);
+        Invoke(nameof(StopRelaoding), Am.ReloadSoundEffect.length * ShotsUsed);
 
     }
 
