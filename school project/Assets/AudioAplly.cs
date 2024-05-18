@@ -300,17 +300,9 @@ public class AudioApply : MonoBehaviour
 
     public void JumpsSoundEffects()
     {
-        if (Input.GetKey(PlayerMovement.JumpKey) && PlayerMovement.ReadyToJump && PlayerMovement.OnGround)
+        if (PlayerMovement.OnJumpPad)
         {
-            JumpsAudioSource.PlayOneShot(JumpPadSoundEffect, 0.3f);
-        }
-        else if (Input.GetKeyDown(PlayerMovement.JumpKey) && PlayerMovement.ReadyToDoubleJump)
-        {
-            JumpsAudioSource.PlayOneShot(JumpPadSoundEffect, 0.3f);
-        }
-        else if (PlayerMovement.OnJumpPad)
-        {
-            JumpsAudioSource.PlayOneShot(JumpPadSoundEffect, 0.3f);
+            JumpsAudioSource.PlayOneShot(JumpPadSoundEffect, JumpPadVolume * SoundEffectVolume);
         }
     }
 

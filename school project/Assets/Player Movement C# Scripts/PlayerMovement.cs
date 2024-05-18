@@ -156,10 +156,8 @@ public class PlayerMovement : MonoBehaviour
             transform.localScale = new Vector3(transform.localScale.x, StandingHeight, transform.localScale.z);
         }
 
-        if (OnJumpPad)
-        {
-            JumPad();
-        }
+        HandleJumpPad();
+
 
     }
 
@@ -454,15 +452,21 @@ public class PlayerMovement : MonoBehaviour
         return Vector3.ProjectOnPlane(Direction, SlopeHit.normal).normalized;
     }
 
-    private void JumPad()
+    private void HandleJumpPad()
     {
+        if (OnJumpPad)
+        {
+            rb.velocity = new Vector3(rb.velocity.x, 0f, rb.velocity.z); // reset y velocity
+            rb.AddForce(Vector3.up * JumpPadforce, ForceMode.Impulse);
 
-        ExitingSlope = true;
+            Cam.DOFOV(JumPadFovChange + NormalFov);
 
-        rb.velocity = new Vector3(rb.velocity.x, 0f, rb.velocity.z);
-
-        rb.AddForce(transform.up * JumpPadforce, ForceMode.Impulse);
-
+            // limit max y speed
+            if (rb.velocity.y > MaxYSpeed)
+            {
+                rb.velocity = new Vector3(rb.velocity.x, MaxYSpeed, rb.velocity.z);
+            }
+        }
     }
 
 
