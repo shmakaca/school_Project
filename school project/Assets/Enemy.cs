@@ -6,6 +6,7 @@ public class Enemy : MonoBehaviour
 {
     [Header("refrences")]
     public GameObject Player;
+    
 
     [Header("ShotsKind")]
     public GameObject FireBall, ElectroBall, SnowBall;
@@ -41,7 +42,7 @@ public class Enemy : MonoBehaviour
         if (this.IsInRange && IsCoolDownDone)
         {
             int x;
-            x = Random.Range(1, 3);
+            x = Random.Range(1, 4);
 
             if (x == 1)
             {
@@ -54,6 +55,8 @@ public class Enemy : MonoBehaviour
             {
                 Instantiate (SnowBall ,this.transform);
             }
+            this.cooldown = Random.Range(2, 7);
+            IsCoolDownDone=false;
         }
 
     }

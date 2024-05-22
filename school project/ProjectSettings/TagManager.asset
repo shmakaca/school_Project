@@ -13,6 +13,9 @@ TagManager:
   - checkpoint
   - boss
   - Slides
+  - Electro
+  - Fire
+  - Snow
   layers:
   - Default
   - TransparentFX
