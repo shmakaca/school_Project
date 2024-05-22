@@ -1,108 +1,84 @@
 using UnityEngine;
-using TMPro; // Import TextMeshPro namespace
-using UnityEngine.Events; // Import UnityEvents namespace
-using System;
-using System.Collections.Generic;
+using TMPro;
+using UnityEngine.UI;
+using System.Collections;
 
 public class KeybindManager : MonoBehaviour
 {
-    [Serializable]
-    public class Keybind
+    public KeyCode JumpKey = KeyCode.Space;
+    public KeyCode SprintKey = KeyCode.LeftShift;
+    public KeyCode CrouchKey = KeyCode.LeftControl;
+
+    public TMP_Text jumpButtonText;
+    public TMP_Text sprintButtonText;
+    public TMP_Text crouchButtonText;
+
+    private TMP_Text currentButtonText;
+    private bool isWaitingForKey;
+
+    void Start()
     {
-        public string actionName; // Name of the action
-        public KeyCode defaultKey; // Default key for the action
-        public KeyCode currentKey; // Current key for the action
+        UpdateButtonText();
     }
 
-    public List<Keybind> keybinds = new List<Keybind>(); // List of keybinds
-
-    public TMP_Text buttonTextPrefab; // Prefab for displaying button text using TMP_Text
-    public Transform buttonParent; // Parent object for buttons
-
-    private bool waitingForKey = false; // Flag to check if waiting for a key press
-    private TMP_Text currentButtonText; // Reference to the button text being modified
-
-    private void Start()
+    void UpdateButtonText()
     {
-        // Create buttons for each keybind
-        foreach (Keybind keybind in keybinds)
+        jumpButtonText.text = JumpKey.ToString();
+        sprintButtonText.text = SprintKey.ToString();
+        crouchButtonText.text = CrouchKey.ToString();
+    }
+
+    public void StartRebind(string action)
+    {
+        if (isWaitingForKey) return;
+        StartCoroutine(WaitForKeyPress(action));
+    }
+
+    IEnumerator WaitForKeyPress(string action)
+    {
+        isWaitingForKey = true;
+
+        switch (action)
         {
-            CreateKeybindButton(keybind);
+            case "Jump":
+                currentButtonText = jumpButtonText;
+                break;
+            case "Sprint":
+                currentButtonText = sprintButtonText;
+                break;
+            case "Crouch":
+                currentButtonText = crouchButtonText;
+                break;
         }
-    }
 
-    private void CreateKeybindButton(Keybind keybind)
-    {
-        // Instantiate the buttonTextPrefab
-        TMP_Text buttonText = Instantiate(buttonTextPrefab, buttonParent);
+        currentButtonText.text = "Press any key to bind...";
 
-        // Set button text to current key
-        buttonText.text = keybind.currentKey.ToString();
-
-        // Add listener to handle key change
-        var buttonEvent = new UnityEvent();
-        buttonEvent.AddListener(() => { SetNewKey(buttonText, keybind); });
-        buttonText.gameObject.AddComponent<Clickable>().OnClick = buttonEvent; // Add Clickable script to handle click events
-
-        // Add listener to handle reset
-        // You can handle reset button in a similar way or use a different UI element for reset
-    }
-
-    private void SetNewKey(TMP_Text buttonText, Keybind keybind)
-    {
-        waitingForKey = true;
-        currentButtonText = buttonText;
-    }
-
-    private void Update()
-    {
-        if (waitingForKey)
+        while (!Input.anyKeyDown)
         {
-            foreach (KeyCode keyCode in Enum.GetValues(typeof(KeyCode)))
+            yield return null;
+        }
+
+        foreach (KeyCode keyCode in System.Enum.GetValues(typeof(KeyCode)))
+        {
+            if (Input.GetKeyDown(keyCode))
             {
-                if (Input.GetKeyDown(keyCode))
+                switch (action)
                 {
-                    // Check if the pressed key is not already used for another action
-                    if (!IsKeybindAlreadyInUse(keyCode))
-                    {
-                        // Update keybind and button text
-                        currentButtonText.text = keyCode.ToString();
-                        foreach (Keybind keybind in keybinds)
-                        {
-                            if (keybind.currentKey == keybind.defaultKey)
-                            {
-                                keybind.currentKey = keyCode;
-                                break;
-                            }
-                        }
-                    }
-                    waitingForKey = false;
-                    break;
+                    case "Jump":
+                        JumpKey = keyCode;
+                        break;
+                    case "Sprint":
+                        SprintKey = keyCode;
+                        break;
+                    case "Crouch":
+                        CrouchKey = keyCode;
+                        break;
                 }
+                break;
             }
         }
-    }
 
-    private bool IsKeybindAlreadyInUse(KeyCode keyCode)
-    {
-        foreach (Keybind keybind in keybinds)
-        {
-            if (keybind.currentKey == keyCode)
-            {
-                return true;
-            }
-        }
-        return false;
-    }
-}
-
-// Clickable script to handle click events
-public class Clickable : MonoBehaviour
-{
-    public UnityEvent OnClick;
-
-    private void OnMouseDown()
-    {
-        OnClick.Invoke();
+        UpdateButtonText();
+        isWaitingForKey = false;
     }
 }

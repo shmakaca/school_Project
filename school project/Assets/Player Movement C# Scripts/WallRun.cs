@@ -111,12 +111,13 @@ public class WallRun : MonoBehaviour
         //State 2 - Exitng Wall Run
         else if (ExitingWall)
         {
+
             if (PlayerMovement.WallRunning)
             {
                 StopWallRun();
             }
 
-            if (ExitWallTimer > 0)
+            if (ExitWallTimer > 0.1)
             {
                 ExitWallTimer -= Time.deltaTime;
             }
@@ -143,8 +144,6 @@ public class WallRun : MonoBehaviour
         WallRunTimer = WallRunStamina;
 
         Rb.velocity = new Vector3(Rb.velocity.x, 0f, Rb.velocity.z);
-
-
 
     }
 
@@ -194,6 +193,7 @@ public class WallRun : MonoBehaviour
     private void Walljump()
     {
         ExitingWall = true;
+
         ExitWallTimer = ExitWallTime;
 
         Vector3 WallNormal = RightWall ? RightWallHit.normal : LeftWallHit.normal;

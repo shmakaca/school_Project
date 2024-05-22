@@ -280,6 +280,7 @@ public class PlayerMovement : MonoBehaviour
         {
             State = MovementState.Air;
 
+            
             Cam.DOFOV(NormalFov);
             Cam.DOTilt(0f);
 
