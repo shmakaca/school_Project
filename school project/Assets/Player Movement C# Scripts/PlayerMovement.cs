@@ -47,11 +47,6 @@ public class PlayerMovement : MonoBehaviour
     private float StandingHeight;
     private bool Crouching;
 
-    [Header("KeyBinds")]
-    public KeyCode JumpKey ;
-    public KeyCode SprintKey;
-    public KeyCode CrouchKey;
-
     [Header("Ground Check")]
     public float PlayerHeight;
     public LayerMask Ground;
@@ -74,9 +69,11 @@ public class PlayerMovement : MonoBehaviour
     public Transform Oreientation;
     public GameObject PlayerObject;
     public GameObject CameraHolder;
+    public GameObject KeyBindMenu;
     public playercamera Cam;
     public Camera PlayerCamera;
     private WallRun WallRun;
+    private KeybindManager KeybindManager;
 
     [Header("Fov")]
     public float NormalFov;
@@ -114,6 +111,7 @@ public class PlayerMovement : MonoBehaviour
         ReadyToJump = true;
         StandingHeight = transform.localScale.y;
         PlayerCamera = CameraHolder.GetComponent<Camera>();
+        KeybindManager = KeyBindMenu.GetComponent<KeybindManager>();
         WallRun = GetComponent<WallRun>();
 
         FOVslider.value = FOVslider.minValue;
@@ -142,12 +140,12 @@ public class PlayerMovement : MonoBehaviour
         else
             rb.drag = 0;
 
-        if (Input.GetKey(CrouchKey) && OnGround)
+        if (Input.GetKey(KeybindManager.GetKeyCode("Crouch")) && OnGround)
         {
             transform.localScale = new Vector3(transform.localScale.x, CrouchHeight, transform.localScale.z);
             rb.AddForce(Vector3.down * 5f, ForceMode.Force);
         }
-        else if (Input.GetKey(CrouchKey) && !OnGround)
+        else if (Input.GetKey(KeybindManager.GetKeyCode("Crouch")) && !OnGround)
         {
             transform.localScale = new Vector3(transform.localScale.x, CrouchHeight, transform.localScale.z);
         }
@@ -164,10 +162,31 @@ public class PlayerMovement : MonoBehaviour
 
     private void MyInput()
     {
-        Horizontal = Input.GetAxisRaw("Horizontal");
-        Vertical = Input.GetAxisRaw("Vertical");
+        Horizontal = 0;
+        Vertical = 0;
+
+        // Forward and backward
+        if (Input.GetKey(KeybindManager.GetKeyCode("Forward")))
+        {
+            Vertical += 1;
+        }
+        if (Input.GetKey(KeybindManager.GetKeyCode("BackWards")))
+        {
+            Vertical -= 1;
+        }
+
+        // Left and right
+        if (Input.GetKey(KeybindManager.GetKeyCode("Left")))
+        {
+            Horizontal -= 1;
+        }
+        if (Input.GetKey(KeybindManager.GetKeyCode("Right")))
+        {
+            Horizontal += 1;
+        }
+
         // Jump
-        if (Input.GetKey(JumpKey) && ReadyToJump && OnGround)
+        if (Input.GetKey(KeybindManager.GetKeyCode("Jump")) && ReadyToJump && OnGround)
         {
             ReadyToJump = false;
 
@@ -233,7 +252,7 @@ public class PlayerMovement : MonoBehaviour
 
         }
         // Crouching Mode
-        else if (Input.GetKey(CrouchKey) && OnGround)
+        else if (Input.GetKey(KeybindManager.GetKeyCode("Crouch")) && OnGround)
         {
             State = MovementState.Crouching;
             DesireMoveSpeed = CrouchSpeed;
@@ -242,7 +261,7 @@ public class PlayerMovement : MonoBehaviour
         }
 
         // Sprinting Mode
-        else if (OnGround && Input.GetKey(SprintKey))
+        else if (OnGround && Input.GetKey(KeybindManager.GetKeyCode("Sprint")))
         {
             State = MovementState.Sprinting;
             DesireMoveSpeed = SprintSpeed;
@@ -302,7 +321,7 @@ public class PlayerMovement : MonoBehaviour
             }
 
             // double jump
-            if (Input.GetKeyDown(JumpKey) && ReadyToDoubleJump)
+            if (Input.GetKeyDown(KeybindManager.GetKeyCode("Jump")) && ReadyToDoubleJump)
             {
                 DoubleJump();
                 ReadyToDoubleJump = false;

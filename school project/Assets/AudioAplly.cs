@@ -56,6 +56,7 @@ public class AudioApply : MonoBehaviour
     public GameObject Pistol;
     public GameObject Sword;
     public GameObject MainMenu;
+    public GameObject KeyBindMenu;
 
     [Header("Script References")]
     private PlayerMovement PlayerMovement;
@@ -64,6 +65,7 @@ public class AudioApply : MonoBehaviour
     private SwapGun SwapGun;
     private static mainMenu mainMenu;
     private static TimeMange TimeManage;
+    private KeybindManager KeybindManager;
 
     [Header("Sliders References")]
     public Slider BackGroundVolumeSlider;
@@ -102,6 +104,7 @@ public class AudioApply : MonoBehaviour
         Swing = Sword.GetComponent<PlayerDamaging>();
         SwapGun = Player.GetComponent<SwapGun>();
         mainMenu = MainMenu.GetComponent<mainMenu>();
+        KeybindManager = KeyBindMenu.GetComponent<KeybindManager>();
 
         SlidingSpeedingPitch = NormalSlidingSpeedingPitch;
 
@@ -223,14 +226,14 @@ public class AudioApply : MonoBehaviour
             }
             else if (!SwapGun.InGunSlot)
             {
-                if (Input.GetKeyDown(SwapGun.GunSlotKey))
+                if (Input.GetKeyDown(KeybindManager.GetKeyCode("GunSlot")))
                 {
                     WeaponsAudioSource.PlayOneShot(ReloadSoundEffect, ReloadVolume * WeaponsVolume);
                 }
             }
             else if (!SwapGun.InSowrdSlot)
             {
-                if (Input.GetKeyDown(SwapGun.SwordSlotkey))
+                if (Input.GetKeyDown(KeybindManager.GetKeyCode("SwordSlot")))
                 {
                     WeaponsAudioSource.PlayOneShot(SwingSoundEffect, SwingVolume * WeaponsVolume);
                 }

@@ -10,6 +10,8 @@ public class Dash : MonoBehaviour
     public Transform PlayerCam;
     public GameObject PlayerObject;
     private Rigidbody rb;
+    public GameObject KeyBindMenu;
+    private KeybindManager KeybindManager;
     private PlayerMovement PlayerMovement;
 
     [Header("Dash")]
@@ -31,8 +33,6 @@ public class Dash : MonoBehaviour
     public bool disableGravity = false;
     public bool resetVel = true;
 
-    [Header("Input")]
-    public KeyCode DashKey;
 
 
 
@@ -41,13 +41,15 @@ public class Dash : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         PlayerMovement = GetComponent<PlayerMovement>();
 
+        KeybindManager = KeyBindMenu.GetComponent<KeybindManager>();
+
     }
 
     private void Update()
     {
 
 
-        if (Input.GetKeyDown(DashKey))
+        if (Input.GetKeyDown(KeybindManager.GetKeyCode("Dash")))
         {
             dash();
         }
@@ -103,8 +105,8 @@ public class Dash : MonoBehaviour
 
     private Vector3 GetDirection(Transform forwardT)
     {
-        float horizontalInput = Input.GetAxisRaw("Horizontal");
-        float verticalInput = Input.GetAxisRaw("Vertical");
+        float horizontalInput = PlayerMovement.Horizontal;
+        float verticalInput = PlayerMovement.Vertical;
 
         Vector3 direction = new Vector3();
 

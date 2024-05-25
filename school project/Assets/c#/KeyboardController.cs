@@ -1,84 +1,138 @@
 using UnityEngine;
-using TMPro;
-using UnityEngine.UI;
-using System.Collections;
+using TMPro; // Import TextMeshPro namespace
+using UnityEngine.UI; // Import UI namespace
+using System;
+using System.Collections.Generic;
 
 public class KeybindManager : MonoBehaviour
 {
-    public KeyCode JumpKey = KeyCode.Space;
-    public KeyCode SprintKey = KeyCode.LeftShift;
-    public KeyCode CrouchKey = KeyCode.LeftControl;
+    [Serializable]
+    public class Keybind
+    {
+        public string actionName;
+        public Button ResetButton;
+        public Button ActionButton;
+        public TMP_Text buttonText;
+        public KeyCode defaultKey;
+        public KeyCode currentKey = KeyCode.None;
+    }
 
-    public TMP_Text jumpButtonText;
-    public TMP_Text sprintButtonText;
-    public TMP_Text crouchButtonText;
-
-    private TMP_Text currentButtonText;
-    private bool isWaitingForKey;
+    public List<Keybind> keybindsList = new List<Keybind>();
+    public Button resetAllButton; // Button to reset all keys
+    private bool waitingForKey = false;
+    private Keybind currentKeybind;
 
     void Start()
     {
-        UpdateButtonText();
-    }
+        LoadKeybinds(); // Load keybindings when the game starts
 
-    void UpdateButtonText()
-    {
-        jumpButtonText.text = JumpKey.ToString();
-        sprintButtonText.text = SprintKey.ToString();
-        crouchButtonText.text = CrouchKey.ToString();
-    }
-
-    public void StartRebind(string action)
-    {
-        if (isWaitingForKey) return;
-        StartCoroutine(WaitForKeyPress(action));
-    }
-
-    IEnumerator WaitForKeyPress(string action)
-    {
-        isWaitingForKey = true;
-
-        switch (action)
+        foreach (Keybind keybind in keybindsList)
         {
-            case "Jump":
-                currentButtonText = jumpButtonText;
-                break;
-            case "Sprint":
-                currentButtonText = sprintButtonText;
-                break;
-            case "Crouch":
-                currentButtonText = crouchButtonText;
-                break;
+            UpdateButtonText(keybind); // Update the button text to show the current key
+
+            // Add listener to each action button
+            keybind.ActionButton.onClick.AddListener(() => OnClick(keybind));
+
+            // Add listener to each reset button
+            keybind.ResetButton.onClick.AddListener(() => OnReset(keybind));
         }
 
-        currentButtonText.text = "Press any key to bind...";
-
-        while (!Input.anyKeyDown)
+        // Add listener to the reset all button
+        if (resetAllButton != null)
         {
-            yield return null;
+            resetAllButton.onClick.AddListener(ResetAllKeys);
         }
+    }
 
-        foreach (KeyCode keyCode in System.Enum.GetValues(typeof(KeyCode)))
+    void Update()
+    {
+        if (waitingForKey && Input.anyKeyDown)
         {
-            if (Input.GetKeyDown(keyCode))
+            foreach (KeyCode keyCode in Enum.GetValues(typeof(KeyCode)))
             {
-                switch (action)
+                if (Input.GetKeyDown(keyCode))
                 {
-                    case "Jump":
-                        JumpKey = keyCode;
-                        break;
-                    case "Sprint":
-                        SprintKey = keyCode;
-                        break;
-                    case "Crouch":
-                        CrouchKey = keyCode;
-                        break;
+                    currentKeybind.currentKey = keyCode;
+                    UpdateButtonText(currentKeybind);
+                    SaveKeybind(currentKeybind); // Save the keybinding whenever it is changed
+                    waitingForKey = false;
+                    break;
                 }
-                break;
             }
         }
+    }
 
-        UpdateButtonText();
-        isWaitingForKey = false;
+    void OnClick(Keybind keybind)
+    {
+        if (!waitingForKey)
+        {
+            waitingForKey = true;
+            currentKeybind = keybind;
+            keybind.buttonText.text = "Press any key...";
+        }
+    }
+
+    void OnReset(Keybind keybind)
+    {
+        keybind.currentKey = keybind.defaultKey;
+        UpdateButtonText(keybind);
+        SaveKeybind(keybind); // Save the keybinding when it is reset
+    }
+
+    void UpdateButtonText(Keybind keybind)
+    {
+        keybind.buttonText.text = keybind.currentKey.ToString();
+    }
+
+    void ResetAllKeys()
+    {
+        foreach (Keybind keybind in keybindsList)
+        {
+            keybind.currentKey = keybind.defaultKey;
+            UpdateButtonText(keybind);
+            SaveKeybind(keybind); // Save the keybinding when all are reset
+        }
+    }
+
+    void SaveKeybind(Keybind keybind)
+    {
+        PlayerPrefs.SetString(keybind.actionName, keybind.currentKey.ToString());
+        PlayerPrefs.Save();
+    }
+
+    void LoadKeybinds()
+    {
+        foreach (Keybind keybind in keybindsList)
+        {
+            if (PlayerPrefs.HasKey(keybind.actionName))
+            {
+                try
+                {
+                    keybind.currentKey = (KeyCode)Enum.Parse(typeof(KeyCode), PlayerPrefs.GetString(keybind.actionName));
+                }
+                catch
+                {
+                    // If parsing fails, reset to default key
+                    keybind.currentKey = keybind.defaultKey;
+                }
+            }
+            else
+            {
+                keybind.currentKey = keybind.defaultKey;
+            }
+            UpdateButtonText(keybind); // Update the button text after loading
+        }
+    }
+
+    public KeyCode GetKeyCode(string actionName)
+    {
+        foreach (var keybind in keybindsList)
+        {
+            if (keybind.actionName == actionName)
+            {
+                return keybind.currentKey;
+            }
+        }
+        return KeyCode.None;
     }
 }

@@ -17,6 +17,7 @@ public class mainMenu : MonoBehaviour
     public GameObject KeybindsMenu;
     public GameObject MouseMenu;
     public GameObject AudioMenu;
+    public GameObject ConfeirmResetMenu;
 
     public bool InPauseMenu;
     public bool InSetMenu;
@@ -30,6 +31,7 @@ public class mainMenu : MonoBehaviour
         KeybindsMenu.SetActive(false);
         MouseMenu.SetActive(false);
         AudioMenu.SetActive(false);
+        ConfeirmResetMenu.SetActive(false);
         InPauseMenu = false;
     }
 
@@ -71,6 +73,7 @@ public class mainMenu : MonoBehaviour
 
     public void KeyBinds()
     {
+        ConfeirmResetMenu.SetActive(false);
         KeybindsMenu.SetActive(true);
         setMenu.SetActive(false);
         MouseMenu.SetActive(false);
@@ -103,6 +106,11 @@ public class mainMenu : MonoBehaviour
         Time.timeScale = 1f;
     }
     
+    public void ConfermResetMenu()
+    {
+        ConfeirmResetMenu.SetActive(true);
+        KeybindsMenu.SetActive(false );
+    }
     public void quit() //public function that exit the game (only works on a working game not in unity)
     {
         Application.Quit();

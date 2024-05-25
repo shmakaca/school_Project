@@ -8,6 +8,8 @@ public class Sliding : MonoBehaviour
     public Transform Orientation;
     public Transform PlayerObject;
     private Rigidbody rb;
+    public GameObject KeyBindMenu;
+    private KeybindManager KeybindManager;
     private PlayerMovement PlayerMovement;
 
     [Header("Sliding")]
@@ -23,7 +25,6 @@ public class Sliding : MonoBehaviour
     private float SlideFov;
 
     [Header("Input")]
-    public KeyCode SlideKey;
     private float Horizontal;
     private float Vertical;
 
@@ -38,6 +39,9 @@ public class Sliding : MonoBehaviour
         PlayerMovement = GetComponent<PlayerMovement>();
         StandingHieght = PlayerObject.localScale.y;
         SlideFov = PlayerMovement.NormalFov + 5f;
+
+        KeybindManager = KeyBindMenu.GetComponent<KeybindManager>();
+
     }
 
     private void FixedUpdate()
@@ -53,15 +57,15 @@ public class Sliding : MonoBehaviour
 
         OnGround = Physics.Raycast(transform.position, Vector3.down, PlayerHeight * 0.5f + 0.3f);
 
-        Horizontal = Input.GetAxisRaw("Horizontal");
-        Vertical = Input.GetAxisRaw("Vertical");
+        Horizontal = PlayerMovement.Horizontal;
+        Vertical = PlayerMovement.Vertical;
 
-        if ((Horizontal != 0 || Vertical != 0) && OnGround && !PlayerMovement.sliding && Input.GetKeyDown(SlideKey))
+        if ((Horizontal != 0 || Vertical != 0) && OnGround && !PlayerMovement.sliding && Input.GetKeyDown(KeybindManager.GetKeyCode("Slide")))
         {
             StartSlide();
         }
 
-        if (Input.GetKeyUp(SlideKey) && PlayerMovement.sliding)
+        if (Input.GetKeyUp(KeybindManager.GetKeyCode("Slide")) && PlayerMovement.sliding)
         {
             StopSlide();
         }

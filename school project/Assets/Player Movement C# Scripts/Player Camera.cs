@@ -7,7 +7,7 @@ public class playercamera : MonoBehaviour
 
     public Transform orientation;
     public Transform cameraHolder;
-    public GameObject mouseMenu;
+    public GameObject MouseMenuSaveChanges;
 
     float xRotation;
     float yRotation;
@@ -16,7 +16,7 @@ public class playercamera : MonoBehaviour
     {
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
-        mouseSettings = mouseMenu.GetComponent<MouseSettings>();
+        mouseSettings = MouseMenuSaveChanges.GetComponent<MouseSettings>();
 
         // Apply the current sensitivity settings at startup
         ApplySensitivitySettings();

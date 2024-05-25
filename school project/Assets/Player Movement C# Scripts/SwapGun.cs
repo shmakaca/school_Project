@@ -9,14 +9,13 @@ public class SwapGun : MonoBehaviour
     public GameObject Gun;
     public GameObject Sowrd;
 
-    [Header("swap")]
-    public KeyCode SwordSlotkey;
-    public KeyCode GunSlotKey;
-
     [Header("state")]
     public bool InGunSlot;
     public bool InSowrdSlot;
 
+    [Header("Refrences")]
+    public GameObject KeyBindMenu;
+    private KeybindManager KeybindManager;
 
     // Start is called before the first frame update
     void Start()
@@ -24,6 +23,7 @@ public class SwapGun : MonoBehaviour
         InSowrdSlot = true;
         InGunSlot = false;
 
+        KeybindManager = KeyBindMenu.GetComponent<KeybindManager>();
     }
 
     // Update is called once per frame
@@ -38,13 +38,13 @@ public class SwapGun : MonoBehaviour
             gun();
         }
 
-        if (Input.GetKeyDown(GunSlotKey))
+        if (Input.GetKeyDown(KeybindManager.GetKeyCode("GunSlot")))
         {
             InGunSlot = true;
             InSowrdSlot = false;
         }
 
-        if (Input.GetKeyDown(SwordSlotkey))
+        if (Input.GetKeyDown(KeybindManager.GetKeyCode("SwordSlots")))
         {
             InGunSlot = false ;
             InSowrdSlot = true;

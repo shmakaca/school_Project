@@ -15,9 +15,6 @@ public class WallRun : MonoBehaviour
     public float WallRunTimer;
 
     [Header("Input")]
-    public KeyCode UpWardsRunKey = KeyCode.LeftShift;
-    public KeyCode DownWardsRunKey = KeyCode.LeftControl;
-    public KeyCode WallJumpkey = KeyCode.Space;
     private bool UpWardsRunning;
     private bool DownWardsRunning;
     private float Horizontal;
@@ -44,13 +41,15 @@ public class WallRun : MonoBehaviour
     public Transform Orientation;
     private PlayerMovement PlayerMovement;
     private Rigidbody Rb;
+    public GameObject KeyBindMenu;
+    private KeybindManager KeybindManager;
 
 
     private void Start()
     {
         Rb = GetComponent<Rigidbody>();
         PlayerMovement = GetComponent<PlayerMovement>();
-
+        KeybindManager = KeyBindMenu.GetComponent<KeybindManager>();
     }
 
     private void FixedUpdate()
@@ -77,11 +76,11 @@ public class WallRun : MonoBehaviour
     }
     private void StateMachine()
     {
-        Horizontal = Input.GetAxisRaw("Horizontal");
-        Vertical = Input.GetAxisRaw("Vertical");
+        Horizontal = PlayerMovement.Horizontal;
+        Vertical = PlayerMovement.Vertical;
 
-        UpWardsRunning = Input.GetKey(UpWardsRunKey);
-        DownWardsRunning = Input.GetKey(DownWardsRunKey);
+        UpWardsRunning = Input.GetKey(KeybindManager.GetKeyCode("WallRunUp"));
+        DownWardsRunning = Input.GetKey(KeybindManager.GetKeyCode("WallRunDown"));
 
         // State 1 - WallRining
         if ((LeftWall || RightWall) && Vertical > 0 && AboveGround() && !ExitingWall)
@@ -102,7 +101,7 @@ public class WallRun : MonoBehaviour
                 ExitWallTimer = ExitWallTime;
             }
 
-            if (Input.GetKeyDown(WallJumpkey))
+            if (Input.GetKeyDown(KeybindManager.GetKeyCode("Jump")))
             {
                 Walljump();
             }
@@ -117,7 +116,7 @@ public class WallRun : MonoBehaviour
                 StopWallRun();
             }
 
-            if (ExitWallTimer > 0.1)
+            if (ExitWallTimer > 0)
             {
                 ExitWallTimer -= Time.deltaTime;
             }

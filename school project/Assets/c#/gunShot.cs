@@ -19,6 +19,8 @@ public class gunShot : MonoBehaviour
     public GameObject AudioManger;
     private PlayerMovement PlayerMovement;
     private AudioApply Am;
+    public GameObject KeyBindMenu;
+    private KeybindManager KeybindManager;
 
     public int bullDamage;
 
@@ -48,6 +50,7 @@ public class gunShot : MonoBehaviour
         PlayerMovement = Player.GetComponent<PlayerMovement>();
         rb = Player.GetComponent<Rigidbody>();
         Am = AudioManger.GetComponent<AudioApply>();
+        KeybindManager = KeyBindMenu.GetComponent<KeybindManager>();
 
     }
 
@@ -55,7 +58,7 @@ public class gunShot : MonoBehaviour
     void Update()
     {
         isGun = FindAnyObjectByType<SwapGun>().InGunSlot;
-        if (isGun && Input.GetKeyDown(KeyCode.Mouse0) && !isReloading && shotsNum > 0 && ReadyToShootAgain)
+        if (isGun && Input.GetKeyDown(KeybindManager.GetKeyCode("Shoot")) && !isReloading && shotsNum > 0 && ReadyToShootAgain)
         {
             IsShooting = true;
             shot();
@@ -65,12 +68,12 @@ public class gunShot : MonoBehaviour
             IsShooting = false;
         }
 
-        if (isGun && Input.GetKeyDown(KeyCode.R) && !IsfullMag())
+        if (isGun && Input.GetKeyDown(KeybindManager.GetKeyCode("Reload")) && !IsfullMag())
         {
             Reloading();
         }
 
-        if (isGun && Input.GetKeyDown(KeyCode.R) && IsfullMag())
+        if (isGun && Input.GetKeyDown(KeybindManager.GetKeyCode("Reload")) && IsfullMag())
         {
             ErrorFullMag = true;
         }
