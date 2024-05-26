@@ -220,10 +220,17 @@ public class PlayerMovement : MonoBehaviour
             State = MovementState.WallRunning;
             DesireMoveSpeed = WallRunSpeed;
             Cam.DOFOV(WallRunFovChange + NormalFov);
+
+            Vector3 camLocalPosition = Cam.transform.localPosition;
+
             if (WallRun.LeftWall)
+            {
                 Cam.DOTilt(5f);
-            if (!WallRun.LeftWall)
+            }
+            else
+            {
                 Cam.DOTilt(-5f);
+            }
         }
 
         else if (Dashing)

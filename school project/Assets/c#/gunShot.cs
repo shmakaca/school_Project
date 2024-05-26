@@ -81,6 +81,10 @@ public class gunShot : MonoBehaviour
         {
             ErrorFullMag = false;
         }
+        if(shotsNum == 0 && Input.GetKeyDown(KeybindManager.GetKeyCode("Shoot")))
+        {
+            Reloading();
+        }
 
     }
     private void shot()

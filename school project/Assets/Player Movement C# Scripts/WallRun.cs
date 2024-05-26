@@ -10,6 +10,7 @@ public class WallRun : MonoBehaviour
     public float WallRunForce;
     public float WallJumpUpForce;
     public float WallJumpSlideForce;
+    public float WallSlideForce;
     public float WallCimbSpeed;
     public float WallRunStamina;
     private float currentWallRunStamina; // Current stamina
@@ -27,8 +28,10 @@ public class WallRun : MonoBehaviour
     public float MinJumpHeight;
     private RaycastHit LeftWallHit;
     private RaycastHit RightWallHit;
+    private RaycastHit FrontWallHit;
     public bool RightWall;
     public bool LeftWall;
+    public bool FrontWall;
 
     [Header("Exiting Wall")]
     private bool ExitingWall;
@@ -46,6 +49,11 @@ public class WallRun : MonoBehaviour
     public GameObject KeyBindMenu;
     private KeybindManager KeybindManager;
 
+    [Header("Camera")]
+    public playercamera Cam;
+
+    public float WallRunCameraOffset; // New: offset for camera position
+
     private void Start()
     {
         Rb = GetComponent<Rigidbody>();
@@ -60,6 +68,10 @@ public class WallRun : MonoBehaviour
         {
             WallRunMovement();
         }
+        if (FrontWall && Vertical == 1f || LeftWall && Horizontal == -1f || RightWall && Horizontal == 1f)
+        {
+            SlidingDownTheWall();
+        }
     }
 
     private void Update()
@@ -72,6 +84,7 @@ public class WallRun : MonoBehaviour
     {
         RightWall = Physics.Raycast(transform.position, Orientation.right, out RightWallHit, WallCheckDistance, Wall);
         LeftWall = Physics.Raycast(transform.position, -Orientation.right, out LeftWallHit, WallCheckDistance, Wall);
+        FrontWall = Physics.Raycast(transform.position, Orientation.forward,out FrontWallHit, WallCheckDistance, Wall);
     }
 
     private bool AboveGround()
@@ -156,6 +169,7 @@ public class WallRun : MonoBehaviour
         WallRunTimer = WallRunStamina; // Set the timer to max stamina value
 
         Rb.velocity = new Vector3(Rb.velocity.x, 0f, Rb.velocity.z);
+
     }
 
     private void WallRunMovement()
@@ -198,6 +212,11 @@ public class WallRun : MonoBehaviour
     private void StopWallRun()
     {
         PlayerMovement.WallRunning = false;
+
+        // Reset camera after wall run
+        Cam.DOFOV(PlayerMovement.NormalFov);
+        Cam.DOTilt(0f);
+        Cam.transform.localPosition = new Vector3(0, Cam.transform.localPosition.y, Cam.transform.localPosition.z);
     }
 
     private void WallJump()
@@ -212,6 +231,34 @@ public class WallRun : MonoBehaviour
 
         Rb.velocity = new Vector3(Rb.velocity.x, 0f, Rb.velocity.z);
         Rb.AddForce(ForceToApply, ForceMode.Impulse);
-
     }
+
+    private void SlidingDownTheWall()
+    {
+        RaycastHit wallHit;
+        if (RightWall)
+        {
+            wallHit = RightWallHit;
+        }
+        else if (LeftWall)
+        {
+            wallHit = LeftWallHit;
+        }
+        else if (FrontWall && Vertical == 1f)
+        {
+            wallHit = FrontWallHit;
+        }
+        else
+        {
+            // No valid wall to slide down
+            return;
+        }
+
+        // Calculate the direction the player should slide down
+        Vector3 slideDirection = Vector3.ProjectOnPlane(-wallHit.normal, Vector3.up).normalized;
+
+        // Apply downward force to make the player slide down
+        Rb.AddForce(slideDirection * WallSlideForce, ForceMode.Force);
+    }
+
 }
