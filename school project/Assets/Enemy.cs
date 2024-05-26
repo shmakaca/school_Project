@@ -14,8 +14,12 @@ public class Enemy : MonoBehaviour
     public float projectile = 6f;
     public float cooldown;
 
-    private bool IsCoolDownDone = false;
-    private bool IsInRange = false;
+    public bool IsCoolDownDone = false;
+   public bool IsInRange = false;
+
+    [Header("animation")]
+    public Animator Animator;
+    
 
     // Start is called before the first frame update
     void Start()
@@ -26,6 +30,7 @@ public class Enemy : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        
         
         transform.LookAt(Player.transform.position);
 
@@ -39,26 +44,46 @@ public class Enemy : MonoBehaviour
             this.IsCoolDownDone = true;
         }
 
-        if (this.IsInRange && IsCoolDownDone)
+        if (this.IsInRange && this.IsCoolDownDone)
         {
-            int x;
-            x = Random.Range(1, 4);
 
-            if (x == 1)
-            {
-                Instantiate(FireBall ,this.transform);
-            }else if(x == 2)
-            {
-                Instantiate (ElectroBall ,this.transform);
-            }
-            else
-            {
-                Instantiate (SnowBall ,this.transform);
-            }
-            this.cooldown = Random.Range(2, 7);
-            IsCoolDownDone=false;
+
+            SummonBall();
+            Invoke("anim", 2f);
+            
         }
 
+    }
+    private void anim()
+    {
+        Animator.SetTrigger("isShooting");
+    }
+    public void SummonBall()
+    {
+        bool temp = true;
+        if(temp)
+        {
+            int x;
+          x = Random.Range(1, 4);
+
+          if (x == 1)
+          {
+            Instantiate(FireBall, this.transform);
+          }
+          else if (x == 2)
+          {
+            Instantiate(ElectroBall, this.transform);
+          }
+         else
+         {
+            Instantiate(SnowBall, this.transform);
+         }
+          this.cooldown = Random.Range(2, 7);
+          IsCoolDownDone = false;
+
+            temp = false;
+        }
+        
     }
     private void OnTriggerStay(Collider other)
     {

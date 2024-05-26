@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18174115, g: 0.22740585, b: 0.30742034, a: 1}
+  m_IndirectSpecularColor: {r: 0.18174103, g: 0.22740552, b: 0.30741972, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -23015,6 +23015,8 @@ GameObject:
   - component: {fileID: 672683149}
   - component: {fileID: 672683148}
   - component: {fileID: 672683150}
+  - component: {fileID: 672683151}
+  - component: {fileID: 672683152}
   m_Layer: 0
   m_Name: Enemy
   m_TagString: Untagged
@@ -23040,6 +23042,9 @@ MonoBehaviour:
   SnowBall: {fileID: 2894524553234165240, guid: e9164c73de7cb4e40a9d872a45ef0ef9, type: 3}
   projectile: 6
   cooldown: 2
+  IsCoolDownDone: 0
+  IsInRange: 0
+  Animator: {fileID: 672683151}
 --- !u!4 &672683149
 Transform:
   m_ObjectHideFlags: 0
@@ -23078,6 +23083,44 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 50, y: 20, z: 50}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!95 &672683151
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 672683147}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 9de17cb0c488984409bc25fea2f904f3, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 1
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
+--- !u!111 &672683152
+Animation:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 672683147}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Animation: {fileID: 0}
+  m_Animations:
+  - {fileID: 7400000, guid: 2cb5e2dd74266e44d9abcd58087e4c95, type: 2}
+  - {fileID: 7400000, guid: c31f6677797b51c498858c06eebc110b, type: 2}
+  m_WrapMode: 0
+  m_PlayAutomatically: 1
+  m_AnimatePhysics: 0
+  m_CullingType: 0
 --- !u!1 &673416935
 GameObject:
   m_ObjectHideFlags: 0
@@ -28330,7 +28373,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1051682057
 Transform:
   m_ObjectHideFlags: 0
@@ -65870,6 +65913,8 @@ GameObject:
   - component: {fileID: 2147173340}
   - component: {fileID: 2147173339}
   - component: {fileID: 2147173338}
+  - component: {fileID: 2147173342}
+  - component: {fileID: 2147173341}
   m_Layer: 0
   m_Name: Enemy (1)
   m_TagString: Untagged
@@ -65916,6 +65961,9 @@ MonoBehaviour:
   SnowBall: {fileID: 2894524553234165240, guid: e9164c73de7cb4e40a9d872a45ef0ef9, type: 3}
   projectile: 6
   cooldown: 2
+  IsCoolDownDone: 0
+  IsInRange: 0
+  Animator: {fileID: 2147173342}
 --- !u!4 &2147173340
 Transform:
   m_ObjectHideFlags: 0
@@ -65933,6 +65981,44 @@ Transform:
   - {fileID: 512822019}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: -182.869, z: 0}
+--- !u!111 &2147173341
+Animation:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2147173337}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Animation: {fileID: 7400000, guid: 2cb5e2dd74266e44d9abcd58087e4c95, type: 2}
+  m_Animations:
+  - {fileID: 7400000, guid: c31f6677797b51c498858c06eebc110b, type: 2}
+  - {fileID: 7400000, guid: 2cb5e2dd74266e44d9abcd58087e4c95, type: 2}
+  m_WrapMode: 0
+  m_PlayAutomatically: 1
+  m_AnimatePhysics: 0
+  m_CullingType: 0
+--- !u!95 &2147173342
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2147173337}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 9de17cb0c488984409bc25fea2f904f3, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 1
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!4 &85490140433294519
 Transform:
   m_ObjectHideFlags: 0
@@ -66641,6 +66727,7 @@ GameObject:
   - component: {fileID: 8521355073781606797}
   - component: {fileID: 8521355073781606799}
   - component: {fileID: 8521355073781606800}
+  - component: {fileID: 8521355073781606801}
   m_Layer: 9
   m_Name: Player
   m_TagString: Player
@@ -68620,7 +68707,7 @@ Transform:
   m_GameObject: {fileID: 232831524096562549}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.017647026, y: 0.8492625, z: 0.83821356}
+  m_LocalPosition: {x: 0.017647026, y: 0.8492625, z: 0.8382136}
   m_LocalScale: {x: -0.39320895, y: -0.39320895, z: -0.39320895}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -69013,6 +69100,19 @@ MonoBehaviour:
   WasInSlowmotion: 0
   AM: {fileID: 3205356029682509498}
   KeyBindMenu: {fileID: 2008653404}
+--- !u!114 &8521355073781606801
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1810291875899569769}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8f2b857cb30c1c449955a42d476b8c9a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  PlayerMovement: {fileID: 0}
 --- !u!23 &8679544972658803507
 MeshRenderer:
   m_ObjectHideFlags: 0
