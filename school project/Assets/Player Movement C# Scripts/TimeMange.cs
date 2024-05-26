@@ -14,22 +14,23 @@ public class TimeMange : MonoBehaviour
     private bool ReadyToSlowMotion;
     public bool WasInSlowmotion = false;
 
-    [Header("Inputs")]
-    public MouseButton SLowMotionKey = MouseButton.RightMouse;
-
     [Header("Reafrences")]
     private AudioApply AudioAplly;
     public GameObject AM;
+    public GameObject KeyBindMenu;
+    private KeybindManager KeybindManager;
 
     private void Start()
     {
         AudioAplly = AM.GetComponent<AudioApply>();
 
         BackToNormalTime = AudioAplly.ExitSloMoSoundEffect.length;
+
+        KeybindManager = KeyBindMenu.GetComponent<KeybindManager>();
     }
     private void FixedUpdate()
     {
-        if (Input.GetMouseButton((int)SLowMotionKey))
+        if (Input.GetKey(KeybindManager.GetKeyCode("SlowMotion")))
         {
             ReadyToSlowMotion = true;
             SlowDownLenght += Time.deltaTime * (1 / SlowDownFactor);
@@ -49,7 +50,7 @@ public class TimeMange : MonoBehaviour
             ReadyToSlowMotion = false;
             SlowDownLenght = Focus;
         }
-        if(Input.GetMouseButtonUp((int)SLowMotionKey))
+        if (Input.GetKeyUp(KeybindManager.GetKeyCode("SlowMotion")))
         {
             ReadyToSlowMotion = false;
         }

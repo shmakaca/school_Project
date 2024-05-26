@@ -102,7 +102,7 @@ public class PlayerMovement : MonoBehaviour
     public bool Dashing;
     public bool WallRunning;
     public bool Shooting;
-
+    bool isCrouching = false;
 
     private void Start()
     {
@@ -140,14 +140,18 @@ public class PlayerMovement : MonoBehaviour
         else
             rb.drag = 0;
 
-        if (Input.GetKey(KeybindManager.GetKeyCode("Crouch")) && OnGround)
+        if (Input.GetKeyDown(KeybindManager.GetKeyCode("Crouch")))
         {
-            transform.localScale = new Vector3(transform.localScale.x, CrouchHeight, transform.localScale.z);
-            rb.AddForce(Vector3.down * 5f, ForceMode.Force);
+            isCrouching = !isCrouching; 
         }
-        else if (Input.GetKey(KeybindManager.GetKeyCode("Crouch")) && !OnGround)
+
+        if (isCrouching)
         {
             transform.localScale = new Vector3(transform.localScale.x, CrouchHeight, transform.localScale.z);
+            if (OnGround)
+            {
+                rb.AddForce(Vector3.down * 5f, ForceMode.Force);
+            }
         }
         else
         {
@@ -252,7 +256,7 @@ public class PlayerMovement : MonoBehaviour
 
         }
         // Crouching Mode
-        else if (Input.GetKey(KeybindManager.GetKeyCode("Crouch")) && OnGround)
+        else if (isCrouching && OnGround)
         {
             State = MovementState.Crouching;
             DesireMoveSpeed = CrouchSpeed;

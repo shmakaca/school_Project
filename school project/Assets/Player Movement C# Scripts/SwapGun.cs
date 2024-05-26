@@ -44,7 +44,7 @@ public class SwapGun : MonoBehaviour
             InSowrdSlot = false;
         }
 
-        if (Input.GetKeyDown(KeybindManager.GetKeyCode("SwordSlots")))
+        if (Input.GetKeyDown(KeybindManager.GetKeyCode("SwordSlot")))
         {
             InGunSlot = false ;
             InSowrdSlot = true;

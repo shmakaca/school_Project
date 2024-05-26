@@ -8,6 +8,7 @@ public class playercamera : MonoBehaviour
     public Transform orientation;
     public Transform cameraHolder;
     public GameObject MouseMenuSaveChanges;
+    public Camera weaponCamera;  // Reference to the weapon camera
 
     float xRotation;
     float yRotation;
@@ -20,6 +21,9 @@ public class playercamera : MonoBehaviour
 
         // Apply the current sensitivity settings at startup
         ApplySensitivitySettings();
+
+        // Sync the initial FOV
+        weaponCamera.fieldOfView = GetComponent<Camera>().fieldOfView;
     }
 
     private void Update()
@@ -49,6 +53,7 @@ public class playercamera : MonoBehaviour
     public void DOFOV(float endValue)
     {
         GetComponent<Camera>().DOFieldOfView(endValue, 0.5f);
+        weaponCamera.DOFieldOfView(endValue, 0.5f);  // Apply FOV to weapon camera as well
     }
 
     public void DOTilt(float zTilt)

@@ -15,10 +15,11 @@ public class Sliding : MonoBehaviour
     [Header("Sliding")]
     public float MaxSlideTime;
     public float SlideForce;
-    private float SlieTimer;
-
-    public float SlideHieght;
-    private float StandingHieght;
+    private float SlideTimer;
+    public float SlideHeight;
+    private float StandingHeight;
+    private float slideKeyHoldTime = 0f;
+    public float slideHoldDuration;
 
     [Header("Camera Effects")]
     public playercamera Camera;
@@ -33,15 +34,16 @@ public class Sliding : MonoBehaviour
     public LayerMask Ground;
     bool OnGround;
 
+
+
     private void Start()
     {
         rb = GetComponent<Rigidbody>();
         PlayerMovement = GetComponent<PlayerMovement>();
-        StandingHieght = PlayerObject.localScale.y;
+        StandingHeight = PlayerObject.localScale.y;
         SlideFov = PlayerMovement.NormalFov + 5f;
 
         KeybindManager = KeyBindMenu.GetComponent<KeybindManager>();
-
     }
 
     private void FixedUpdate()
@@ -54,53 +56,62 @@ public class Sliding : MonoBehaviour
 
     private void Update()
     {
-
         OnGround = Physics.Raycast(transform.position, Vector3.down, PlayerHeight * 0.5f + 0.3f);
 
         Horizontal = PlayerMovement.Horizontal;
         Vertical = PlayerMovement.Vertical;
 
-        if ((Horizontal != 0 || Vertical != 0) && OnGround && !PlayerMovement.sliding && Input.GetKeyDown(KeybindManager.GetKeyCode("Slide")))
+        if ((Horizontal != 0 || Vertical != 0) && OnGround && !PlayerMovement.sliding)
         {
-            StartSlide();
+            if (Input.GetKey(KeybindManager.GetKeyCode("Slide")))
+            {
+                slideKeyHoldTime += Time.deltaTime; 
+                if (slideKeyHoldTime >= slideHoldDuration)
+                {
+                    StartSlide();
+                }
+            }
+            else
+            {
+                slideKeyHoldTime = 0f; 
+            }
         }
 
         if (Input.GetKeyUp(KeybindManager.GetKeyCode("Slide")) && PlayerMovement.sliding)
         {
             StopSlide();
         }
-
     }
+
     private void StartSlide()
     {
         PlayerMovement.sliding = true;
-        PlayerObject.localScale = new Vector3(PlayerObject.localScale.x, SlideHieght, PlayerObject.localScale.z);
+        PlayerObject.localScale = new Vector3(PlayerObject.localScale.x, SlideHeight, PlayerObject.localScale.z);
 
         rb.AddForce(Vector3.down * 5f, ForceMode.Impulse);
 
-        SlieTimer= MaxSlideTime;
-        
+        SlideTimer = MaxSlideTime;
+        slideKeyHoldTime = 0f; // Reset the hold time after starting the slide
     }
 
     private void SlideMovement()
     {
-        Vector3 Direction = Orientation.forward * Vertical + Orientation.right * Horizontal;
+        Vector3 direction = Orientation.forward * Vertical + Orientation.right * Horizontal;
 
-        // sliding on ground
-
+        // Sliding on ground
         if (!PlayerMovement.OnSlope() || rb.velocity.y > -0.1f)
         {
-            rb.AddForce(Direction.normalized * SlideForce, ForceMode.Force);
+            rb.AddForce(direction.normalized * SlideForce, ForceMode.Force);
 
-            SlieTimer -= Time.deltaTime;
+            SlideTimer -= Time.deltaTime;
         }
-        // slidng on slope
+        // Sliding on slope
         else
         {
-            rb.AddForce(PlayerMovement.GetSlopeMoveDirection(Direction) * SlideForce, ForceMode.Force);
+            rb.AddForce(PlayerMovement.GetSlopeMoveDirection(direction) * SlideForce, ForceMode.Force);
         }
 
-        if (SlieTimer <= 0)
+        if (SlideTimer <= 0)
         {
             StopSlide();
         }
@@ -109,7 +120,7 @@ public class Sliding : MonoBehaviour
     private void StopSlide()
     {
         PlayerMovement.sliding = false;
-        PlayerObject.localScale = new Vector3(PlayerObject.localScale.x, StandingHieght, PlayerObject.localScale.z);
+        PlayerObject.localScale = new Vector3(PlayerObject.localScale.x, StandingHeight, PlayerObject.localScale.z);
         Camera.DOFOV(PlayerMovement.NormalFov);
         SlideFov = PlayerMovement.NormalFov + 5f;
     }

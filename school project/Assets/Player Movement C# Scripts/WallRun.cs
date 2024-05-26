@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class WallRun : MonoBehaviour
 {
-    [Header("Wall Runing")]
+    [Header("Wall Running")]
     public LayerMask Ground;
     public LayerMask Wall;
     public float WallRunForce;
@@ -12,7 +12,9 @@ public class WallRun : MonoBehaviour
     public float WallJumpSlideForce;
     public float WallCimbSpeed;
     public float WallRunStamina;
+    private float currentWallRunStamina; // Current stamina
     public float WallRunTimer;
+    public float StaminaRegenRate; // Stamina regeneration rate per second
 
     [Header("Input")]
     private bool UpWardsRunning;
@@ -28,42 +30,44 @@ public class WallRun : MonoBehaviour
     public bool RightWall;
     public bool LeftWall;
 
-    [Header("ExitingWall")]
+    [Header("Exiting Wall")]
     private bool ExitingWall;
     public float ExitWallTime;
     private float ExitWallTimer;
 
-    [Header("Graviry")]
-    public bool UseGarvity;
+    [Header("Gravity")]
+    public bool UseGravity;
     public float GravityCounterForce;
 
-    [Header("Refrences")]
+    [Header("References")]
     public Transform Orientation;
     private PlayerMovement PlayerMovement;
     private Rigidbody Rb;
     public GameObject KeyBindMenu;
     private KeybindManager KeybindManager;
 
-
     private void Start()
     {
         Rb = GetComponent<Rigidbody>();
         PlayerMovement = GetComponent<PlayerMovement>();
         KeybindManager = KeyBindMenu.GetComponent<KeybindManager>();
+        currentWallRunStamina = WallRunStamina; // Initialize stamina to max
     }
 
     private void FixedUpdate()
     {
         if (PlayerMovement.WallRunning)
         {
-            WallRunMoveMent();
+            WallRunMovement();
         }
     }
+
     private void Update()
     {
         CheckForWall();
         StateMachine();
     }
+
     private void CheckForWall()
     {
         RightWall = Physics.Raycast(transform.position, Orientation.right, out RightWallHit, WallCheckDistance, Wall);
@@ -74,6 +78,7 @@ public class WallRun : MonoBehaviour
     {
         return !Physics.Raycast(transform.position, Vector3.down, MinJumpHeight, Ground);
     }
+
     private void StateMachine()
     {
         Horizontal = PlayerMovement.Horizontal;
@@ -82,8 +87,8 @@ public class WallRun : MonoBehaviour
         UpWardsRunning = Input.GetKey(KeybindManager.GetKeyCode("WallRunUp"));
         DownWardsRunning = Input.GetKey(KeybindManager.GetKeyCode("WallRunDown"));
 
-        // State 1 - WallRining
-        if ((LeftWall || RightWall) && Vertical > 0 && AboveGround() && !ExitingWall)
+        // State 1 - Wall Running
+        if ((LeftWall || RightWall) && Vertical > 0 && AboveGround() && !ExitingWall && currentWallRunStamina > 0)
         {
             if (!PlayerMovement.WallRunning)
             {
@@ -93,9 +98,10 @@ public class WallRun : MonoBehaviour
             if (WallRunTimer > 0)
             {
                 WallRunTimer -= Time.deltaTime;
+                currentWallRunStamina -= Time.deltaTime; // Decrease stamina over time
             }
 
-            if (WallRunTimer <= 0 && PlayerMovement.WallRunning)
+            if (currentWallRunStamina <= 0 && PlayerMovement.WallRunning)
             {
                 ExitingWall = true;
                 ExitWallTimer = ExitWallTime;
@@ -103,14 +109,13 @@ public class WallRun : MonoBehaviour
 
             if (Input.GetKeyDown(KeybindManager.GetKeyCode("Jump")))
             {
-                Walljump();
+                WallJump();
             }
         }
 
-        //State 2 - Exitng Wall Run
+        // State 2 - Exiting Wall Run
         else if (ExitingWall)
         {
-
             if (PlayerMovement.WallRunning)
             {
                 StopWallRun();
@@ -127,11 +132,19 @@ public class WallRun : MonoBehaviour
             }
         }
 
+        // State 3 - Not Wall Running, regenerate stamina
         else
         {
             if (PlayerMovement.WallRunning)
             {
                 StopWallRun();
+            }
+
+            // Regenerate stamina when not wall running
+            if (currentWallRunStamina < WallRunStamina)
+            {
+                currentWallRunStamina += Time.deltaTime * StaminaRegenRate;
+                currentWallRunStamina = Mathf.Clamp(currentWallRunStamina, 0, WallRunStamina);
             }
         }
     }
@@ -140,16 +153,14 @@ public class WallRun : MonoBehaviour
     {
         PlayerMovement.WallRunning = true;
 
-        WallRunTimer = WallRunStamina;
+        WallRunTimer = WallRunStamina; // Set the timer to max stamina value
 
         Rb.velocity = new Vector3(Rb.velocity.x, 0f, Rb.velocity.z);
-
     }
 
-    private void WallRunMoveMent()
+    private void WallRunMovement()
     {
-        Rb.useGravity = UseGarvity;
-
+        Rb.useGravity = UseGravity;
 
         Vector3 WallNormal = RightWall ? RightWallHit.normal : LeftWallHit.normal;
 
@@ -158,8 +169,9 @@ public class WallRun : MonoBehaviour
         if ((Orientation.forward - WallForward).magnitude > (Orientation.forward - -WallForward).magnitude)
         {
             WallForward = -WallForward;
-        }        // forward force
+        }
 
+        // Forward force
         Rb.AddForce(WallForward * WallRunForce, ForceMode.Force);
 
         if (UpWardsRunning)
@@ -177,11 +189,10 @@ public class WallRun : MonoBehaviour
             Rb.AddForce(-WallNormal * 100, ForceMode.Force);
         }
 
-        if (UseGarvity)
+        if (UseGravity)
         {
             Rb.AddForce(transform.up * GravityCounterForce, ForceMode.Force);
         }
-
     }
 
     private void StopWallRun()
@@ -189,7 +200,7 @@ public class WallRun : MonoBehaviour
         PlayerMovement.WallRunning = false;
     }
 
-    private void Walljump()
+    private void WallJump()
     {
         ExitingWall = true;
 
@@ -201,6 +212,6 @@ public class WallRun : MonoBehaviour
 
         Rb.velocity = new Vector3(Rb.velocity.x, 0f, Rb.velocity.z);
         Rb.AddForce(ForceToApply, ForceMode.Impulse);
+
     }
 }
-

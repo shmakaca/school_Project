@@ -283,14 +283,14 @@ public class AudioApply : MonoBehaviour
     {
         if (!mainMenu.InPauseMenu)
         {
-            if (Input.GetMouseButtonDown((int)TimeManage.SLowMotionKey))
+            if (Input.GetKeyDown(KeybindManager.GetKeyCode("SlowMotion")))
             {
                 TimeManagePitchChange();
 
                 if (!ParticlesAudioSource.isPlaying)
                     ParticlesAudioSource.PlayOneShot(EnterSloMoSoundEffect, SlowMotionVolume * SoundEffectVolume);
             }
-            else if (Input.GetMouseButtonUp((int)TimeManage.SLowMotionKey) || Time.timeScale == 1f && TimeManage.WasInSlowmotion)
+            else if (Input.GetKeyUp(KeybindManager.GetKeyCode("SlowMotion")) || Time.timeScale == 1f && TimeManage.WasInSlowmotion)
             {
                 Invoke(nameof(Reset), ExitSloMoSoundEffect.length);
             }
