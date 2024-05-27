@@ -181,7 +181,7 @@ public class AudioApply : MonoBehaviour
                 if (!PlayerMovementAudioSource.isPlaying)
                     PlayerMovementAudioSource.PlayOneShot(WalkingSoundEffect, WallRunningVolume * ActionEffectsVolume);
             }
-            else if (PlayerMovement.sliding && !PlayerMovement.OnSlope())
+            else if (PlayerMovement.Sliding && !PlayerMovement.OnSlope())
             {
                 if (!PlayerMovementAudioSource.isPlaying)
                     PlayerMovementAudioSource.PlayOneShot(SlidingOnGroundSoundEffect, SlidingVolume * ActionEffectsVolume);
@@ -249,7 +249,7 @@ public class AudioApply : MonoBehaviour
     {
         if (!mainMenu.InPauseMenu)
         {
-            if (PlayerMovement.sliding && PlayerMovement.OnSlope())
+            if (PlayerMovement.Sliding && PlayerMovement.OnSlope())
             {
                 SlidingSpeedingPitch += Time.deltaTime * 0.1f;
 

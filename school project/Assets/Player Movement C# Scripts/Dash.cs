@@ -1,66 +1,137 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Threading;
 using UnityEngine;
 
 public class Dash : MonoBehaviour
 {
     [Header("References")]
-    public Transform Orientation;
-    public Transform PlayerCam;
-    public GameObject PlayerObject;
-    private Rigidbody rb;
-    public GameObject KeyBindMenu;
-    private KeybindManager KeybindManager;
-    private PlayerMovement PlayerMovement;
+
+    [SerializeField] private Transform orientation;
+    [SerializeField] private Transform playerCam;
+    [SerializeField] private GameObject playerObject;
+    [SerializeField] private Rigidbody rb;
+    [SerializeField] private GameObject keyBindMenu;
+    [SerializeField] private KeybindManager keybindManager;
+    [SerializeField] private PlayerMovement playerMovement;
 
     [Header("Dash")]
-    public float DashForce;
-    public float DashUpwardForce;
-    public float MaxDashYSpeed;
-    public float DashDuration;
+
+    [SerializeField] private float dashForce;
+    [SerializeField] private float dashUpwardForce;
+    [SerializeField] private float maxDashYSpeed;
+    [SerializeField] private float dashDuration;
 
     [Header("Dash CoolDown")]
-    public float DashCoolDown;
-    private float DashCoolDownTimer;
 
-    private float Horizontal;
-    private float Vertical;
+    [SerializeField] private float dashCoolDown;
+    private float dashCoolDownTimer;
 
     [Header("Settings")]
-    public bool useCameraForward = true;
-    public bool allowAllDirections = true;
-    public bool disableGravity = false;
-    public bool resetVel = true;
+    [SerializeField] private bool useCameraForward = true;
+    [SerializeField] private bool allowAllDirections = true;
+    [SerializeField] private bool disableGravity = false;
+    [SerializeField] private bool resetVel = true;
 
-
-
+    public Transform Orientation
+    {
+        get { return orientation; }
+    }
+    public Transform PlayerCam
+    {
+        get { return playerCam; }
+    }
+    public GameObject PlayerObject
+    {
+        get { return playerObject; }
+    }
+    public Rigidbody RB
+    {
+        get { return rb; }
+    }
+    public GameObject KeyBindMenu
+    {
+        get { return keyBindMenu; }
+    }
+    public KeybindManager KeybindManager
+    {
+        get { return keybindManager; }
+    }
+    public PlayerMovement PlayerMovement
+    {
+        get { return playerMovement; }
+    }
+    public float DashForce
+    {
+        get { return dashForce; }
+        private set { dashForce = value; }
+    }
+    public float DashUpwardForce
+    {
+        get { return dashUpwardForce; }
+        private set { dashUpwardForce = value; }
+    }
+    public float MaxDashYSpeed
+    {
+        get { return maxDashYSpeed; }
+        private set { maxDashYSpeed = value; }
+    }
+    public float DashDuration
+    {
+        get { return dashDuration; }
+        private set { dashDuration = value; }
+    }
+    public float DashCoolDown
+    {
+        get { return dashCoolDown; }
+        private set { dashCoolDown = value; }
+    }
+    public float DashCoolDownTimer
+    {
+        get { return dashCoolDownTimer; }
+        private set { dashCoolDownTimer = value; }
+    }
+    public bool UseCameraForward
+    {
+        get { return useCameraForward; }
+        private set { useCameraForward = value; }
+    }
+    public bool AllowAllDirections
+    {
+        get { return allowAllDirections; }
+        private set { allowAllDirections = value; }
+    }
+    public bool DisableGravity
+    {
+        get { return disableGravity; }
+        private set { disableGravity = value; }
+    }
+    public bool ResetVel
+    {
+        get { return resetVel; }
+        private set { resetVel = value; }
+    }
 
     private void Start()
     {
         rb = GetComponent<Rigidbody>();
-        PlayerMovement = GetComponent<PlayerMovement>();
+        playerMovement = GetComponent<PlayerMovement>();
 
-        KeybindManager = KeyBindMenu.GetComponent<KeybindManager>();
-
+        keybindManager = KeyBindMenu.GetComponent<KeybindManager>();
     }
 
     private void Update()
     {
-
-
         if (Input.GetKeyDown(KeybindManager.GetKeyCode("Dash")))
         {
-            dash();
+            DashMovement();
         }
 
         if (DashCoolDownTimer > 0)
             DashCoolDownTimer -= Time.deltaTime;
     }
 
-    private void dash()
+    private void DashMovement()
     {
-
         if (DashCoolDownTimer > 0)
             return;
         else
@@ -68,39 +139,33 @@ public class Dash : MonoBehaviour
 
         PlayerMovement.Dashing = true;
         PlayerMovement.MaxYSpeed = MaxDashYSpeed;
- 
+
         Transform forwardT;
 
-        if (useCameraForward)
-            forwardT = PlayerCam; /// where you're looking
+        if (UseCameraForward)
+            forwardT = PlayerCam;
         else
-            forwardT = Orientation; /// where you're facing (no up or down)
+            forwardT = Orientation;
 
         Vector3 direction = GetDirection(forwardT);
+        Vector3 forceToApply = direction * DashForce + Orientation.up * DashUpwardForce;
 
-
-        Vector3 ForceToApply = direction * DashForce + Orientation.up * DashUpwardForce;
-
-        DelayForceToApply = ForceToApply;
-
+        DelayForceToApply = forceToApply;
         Invoke(nameof(DelayDashForce), 0.025f);
-
         Invoke(nameof(ResetDash), DashDuration);
     }
 
     private Vector3 DelayForceToApply;
     private void DelayDashForce()
     {
-        rb.AddForce(DelayForceToApply, ForceMode.Impulse);
+        RB.AddForce(DelayForceToApply, ForceMode.Impulse);
     }
+
     private void ResetDash()
     {
         PlayerObject.GetComponent<CapsuleCollider>().enabled = true;
-
         PlayerMovement.Dashing = false;
         PlayerMovement.MaxYSpeed = 0;
-
-
     }
 
     private Vector3 GetDirection(Transform forwardT)
@@ -108,9 +173,9 @@ public class Dash : MonoBehaviour
         float horizontalInput = PlayerMovement.Horizontal;
         float verticalInput = PlayerMovement.Vertical;
 
-        Vector3 direction = new Vector3();
+        Vector3 direction = Vector3.zero;
 
-        if (allowAllDirections)
+        if (AllowAllDirections)
             direction = forwardT.forward * verticalInput + forwardT.right * horizontalInput;
         else
             direction = forwardT.forward;
@@ -120,5 +185,4 @@ public class Dash : MonoBehaviour
 
         return direction.normalized;
     }
-
 }

@@ -5,50 +5,129 @@ using UnityEngine;
 public class Sliding : MonoBehaviour
 {
     [Header("References")]
-    public Transform Orientation;
-    public Transform PlayerObject;
-    private Rigidbody rb;
-    public GameObject KeyBindMenu;
-    private KeybindManager KeybindManager;
-    private PlayerMovement PlayerMovement;
+    [SerializeField] private Transform orientation;
+    [SerializeField] private Transform playerObject;
+    [SerializeField] private Rigidbody rb;
+    [SerializeField] private GameObject keyBindMenu;
+    [SerializeField] private KeybindManager keybindManager;
+    [SerializeField] private PlayerMovement playerMovement;
 
     [Header("Sliding")]
-    public float MaxSlideTime;
-    public float SlideForce;
-    private float SlideTimer;
-    public float SlideHeight;
-    private float StandingHeight;
-    private float slideKeyHoldTime = 0f;
-    public float slideHoldDuration;
+    [SerializeField] private float maxSlideTime;
+    [SerializeField] private float slideForce;
+    [SerializeField] private float slideTimer;
+    [SerializeField] private float slideHeight;
+    [SerializeField] private float standingHeight;
+    [SerializeField] private float slideKeyHoldTime;
+    [SerializeField] private float slideHoldDuration;
 
     [Header("Camera Effects")]
-    public playercamera Camera;
-    private float SlideFov;
+    [SerializeField] private playercamera camera;
+    [SerializeField] private float slideFov;
 
     [Header("Input")]
-    private float Horizontal;
-    private float Vertical;
+    [SerializeField] private float horizontal;
+    [SerializeField] private float vertical;
 
     [Header("Ground Check")]
-    public float PlayerHeight;
-    public LayerMask Ground;
-    bool OnGround;
+    [SerializeField] private float playerHeight;
+    [SerializeField] private LayerMask ground;
+    [SerializeField] private bool onGround;
 
-
+    public Transform Orientation
+    {
+        get { return orientation; }
+        set { orientation = value; }
+    }
+    public Transform PlayerObject
+    {
+        get { return playerObject; }
+        set { playerObject = value; }
+    }
+    public Rigidbody RB
+    {
+        get { return rb; }
+        set { rb = value; }
+    }
+    public GameObject KeyBindMenu
+    {
+        get { return keyBindMenu; }
+        set { keyBindMenu = value; }
+    }
+    public KeybindManager KeybindManager
+    {
+        get { return keybindManager; }
+        set { keybindManager = value; }
+    }
+    public PlayerMovement PlayerMovement
+    {
+        get { return playerMovement; }
+        set { playerMovement = value; }
+    }
+    public float MaxSlideTime
+    {
+        get { return maxSlideTime; }
+        private set { maxSlideTime = value; }
+    }
+    public float SlideForce
+    {
+        get { return slideForce; }
+        set { slideForce = value; }
+    }
+    public float SlideHeight
+    {
+        get { return slideHeight; }
+        set { slideHeight = value; }
+    }
+    public float SlideHoldDuration
+    {
+        get { return slideHoldDuration; }
+        set { slideHoldDuration = value; }
+    }
+    public playercamera Camera
+    {
+        get { return camera; }
+        set { camera = value; }
+    }
+    public float Horizontal
+    {
+        get { return horizontal; }
+        set { horizontal = value; }
+    }
+    public float Vertical
+    {
+        get { return vertical; }
+        set { vertical = value; }
+    }
+    public float PlayerHeight
+    {
+        get { return playerHeight; }
+        set { playerHeight = value; }
+    }
+    public LayerMask Ground
+    {
+        get { return ground; }
+        set { ground = value; }
+    }
+    public bool OnGround
+    {
+        get { return onGround; }
+        set { onGround = value; }
+    }
 
     private void Start()
     {
-        rb = GetComponent<Rigidbody>();
+        RB = GetComponent<Rigidbody>();
         PlayerMovement = GetComponent<PlayerMovement>();
-        StandingHeight = PlayerObject.localScale.y;
-        SlideFov = PlayerMovement.NormalFov + 5f;
+        standingHeight = PlayerObject.localScale.y;
+        slideFov = PlayerMovement.NormalFov + 5f;
 
         KeybindManager = KeyBindMenu.GetComponent<KeybindManager>();
     }
 
     private void FixedUpdate()
     {
-        if (PlayerMovement.sliding)
+        if (PlayerMovement.Sliding)
         {
             SlideMovement();
         }
@@ -61,23 +140,23 @@ public class Sliding : MonoBehaviour
         Horizontal = PlayerMovement.Horizontal;
         Vertical = PlayerMovement.Vertical;
 
-        if ((Horizontal != 0 || Vertical != 0) && OnGround && !PlayerMovement.sliding)
+        if ((Horizontal != 0 || Vertical != 0) && OnGround && !PlayerMovement.Sliding)
         {
             if (Input.GetKey(KeybindManager.GetKeyCode("Slide")))
             {
-                slideKeyHoldTime += Time.deltaTime; 
-                if (slideKeyHoldTime >= slideHoldDuration)
+                slideKeyHoldTime += Time.deltaTime;
+                if (slideKeyHoldTime >= SlideHoldDuration)
                 {
                     StartSlide();
                 }
             }
             else
             {
-                slideKeyHoldTime = 0f; 
+                slideKeyHoldTime = 0f;
             }
         }
 
-        if (Input.GetKeyUp(KeybindManager.GetKeyCode("Slide")) && PlayerMovement.sliding)
+        if (Input.GetKeyUp(KeybindManager.GetKeyCode("Slide")) && PlayerMovement.Sliding)
         {
             StopSlide();
         }
@@ -85,12 +164,12 @@ public class Sliding : MonoBehaviour
 
     private void StartSlide()
     {
-        PlayerMovement.sliding = true;
+        PlayerMovement.Sliding = true;
         PlayerObject.localScale = new Vector3(PlayerObject.localScale.x, SlideHeight, PlayerObject.localScale.z);
 
-        rb.AddForce(Vector3.down * 5f, ForceMode.Impulse);
+        RB.AddForce(Vector3.down * 5f, ForceMode.Impulse);
 
-        SlideTimer = MaxSlideTime;
+        slideTimer = MaxSlideTime;
         slideKeyHoldTime = 0f; // Reset the hold time after starting the slide
     }
 
@@ -99,19 +178,19 @@ public class Sliding : MonoBehaviour
         Vector3 direction = Orientation.forward * Vertical + Orientation.right * Horizontal;
 
         // Sliding on ground
-        if (!PlayerMovement.OnSlope() || rb.velocity.y > -0.1f)
+        if (!PlayerMovement.OnSlope() || RB.velocity.y > -0.1f)
         {
-            rb.AddForce(direction.normalized * SlideForce, ForceMode.Force);
+            RB.AddForce(direction.normalized * SlideForce, ForceMode.Force);
 
-            SlideTimer -= Time.deltaTime;
+            slideTimer -= Time.deltaTime;
         }
         // Sliding on slope
         else
         {
-            rb.AddForce(PlayerMovement.GetSlopeMoveDirection(direction) * SlideForce, ForceMode.Force);
+            RB.AddForce(PlayerMovement.GetSlopeMoveDirection(direction) * SlideForce, ForceMode.Force);
         }
 
-        if (SlideTimer <= 0)
+        if (slideTimer <= 0)
         {
             StopSlide();
         }
@@ -119,9 +198,9 @@ public class Sliding : MonoBehaviour
 
     private void StopSlide()
     {
-        PlayerMovement.sliding = false;
-        PlayerObject.localScale = new Vector3(PlayerObject.localScale.x, StandingHeight, PlayerObject.localScale.z);
+        PlayerMovement.Sliding = false;
+        PlayerObject.localScale = new Vector3(PlayerObject.localScale.x, standingHeight, PlayerObject.localScale.z);
         Camera.DOFOV(PlayerMovement.NormalFov);
-        SlideFov = PlayerMovement.NormalFov + 5f;
+        slideFov = PlayerMovement.NormalFov + 5f;
     }
 }

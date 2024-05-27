@@ -41,6 +41,7 @@ public class playercamera : MonoBehaviour
     }
 
     private void ApplySensitivitySettings()
+
     {
         Vector2 sensitivity = mouseSettings.GetCurrentSensitivity();
 

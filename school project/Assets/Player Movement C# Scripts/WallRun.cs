@@ -8,14 +8,13 @@ public class WallRun : MonoBehaviour
     public LayerMask Ground;
     public LayerMask Wall;
     public float WallRunForce;
-    public float WallJumpUpForce;
-    public float WallJumpSlideForce;
     public float WallSlideForce;
     public float WallCimbSpeed;
     public float WallRunStamina;
     private float currentWallRunStamina; // Current stamina
     public float WallRunTimer;
     public float StaminaRegenRate; // Stamina regeneration rate per second
+    private bool WasRanOutOfStamina;
 
     [Header("Input")]
     private bool UpWardsRunning;
@@ -34,7 +33,7 @@ public class WallRun : MonoBehaviour
     public bool FrontWall;
 
     [Header("Exiting Wall")]
-    private bool ExitingWall;
+    public bool ExitingWall;
     public float ExitWallTime;
     private float ExitWallTimer;
 
@@ -68,10 +67,6 @@ public class WallRun : MonoBehaviour
         {
             WallRunMovement();
         }
-        if (FrontWall && Vertical == 1f || LeftWall && Horizontal == -1f || RightWall && Horizontal == 1f)
-        {
-            SlidingDownTheWall();
-        }
     }
 
     private void Update()
@@ -101,37 +96,36 @@ public class WallRun : MonoBehaviour
         DownWardsRunning = Input.GetKey(KeybindManager.GetKeyCode("WallRunDown"));
 
         // State 1 - Wall Running
-        if ((LeftWall || RightWall) && Vertical > 0 && AboveGround() && !ExitingWall && currentWallRunStamina > 0)
+        if ((LeftWall || RightWall) && Vertical == 1f && AboveGround() && !ExitingWall)
         {
-            if (!PlayerMovement.WallRunning)
+            if (!PlayerMovement.WallRunning && !WasRanOutOfStamina)
             {
                 StartWallRun();
-            }
+            }       
 
-            if (WallRunTimer > 0)
-            {
-                WallRunTimer -= Time.deltaTime;
-                currentWallRunStamina -= Time.deltaTime; // Decrease stamina over time
-            }
-
-            if (currentWallRunStamina <= 0 && PlayerMovement.WallRunning)
+            if (currentWallRunStamina <= 0)
             {
                 ExitingWall = true;
                 ExitWallTimer = ExitWallTime;
+                WasRanOutOfStamina = true;
+            }
+             if(currentWallRunStamina >= 0.5)
+            {
+                WasRanOutOfStamina =  false;
             }
 
             if (Input.GetKeyDown(KeybindManager.GetKeyCode("Jump")))
             {
-                WallJump();
+                WallJump(7, 10);
             }
         }
-
         // State 2 - Exiting Wall Run
         else if (ExitingWall)
         {
             if (PlayerMovement.WallRunning)
             {
                 StopWallRun();
+                
             }
 
             if (ExitWallTimer > 0)
@@ -144,13 +138,13 @@ public class WallRun : MonoBehaviour
                 ExitingWall = false;
             }
         }
-
         // State 3 - Not Wall Running, regenerate stamina
         else
         {
             if (PlayerMovement.WallRunning)
             {
                 StopWallRun();
+                WallJump(4,7);
             }
 
             // Regenerate stamina when not wall running
@@ -161,12 +155,11 @@ public class WallRun : MonoBehaviour
             }
         }
     }
-
     private void StartWallRun()
     {
         PlayerMovement.WallRunning = true;
 
-        WallRunTimer = WallRunStamina; // Set the timer to max stamina value
+        WallRunTimer = WallRunStamina; 
 
         Rb.velocity = new Vector3(Rb.velocity.x, 0f, Rb.velocity.z);
 
@@ -175,6 +168,8 @@ public class WallRun : MonoBehaviour
     private void WallRunMovement()
     {
         Rb.useGravity = UseGravity;
+
+        currentWallRunStamina -= Time.deltaTime;
 
         Vector3 WallNormal = RightWall ? RightWallHit.normal : LeftWallHit.normal;
 
@@ -213,13 +208,9 @@ public class WallRun : MonoBehaviour
     {
         PlayerMovement.WallRunning = false;
 
-        // Reset camera after wall run
-        Cam.DOFOV(PlayerMovement.NormalFov);
-        Cam.DOTilt(0f);
-        Cam.transform.localPosition = new Vector3(0, Cam.transform.localPosition.y, Cam.transform.localPosition.z);
     }
 
-    private void WallJump()
+    private void WallJump(float WallJumpUpForce, float WallJumpSlideForce )
     {
         ExitingWall = true;
 
@@ -231,34 +222,6 @@ public class WallRun : MonoBehaviour
 
         Rb.velocity = new Vector3(Rb.velocity.x, 0f, Rb.velocity.z);
         Rb.AddForce(ForceToApply, ForceMode.Impulse);
-    }
-
-    private void SlidingDownTheWall()
-    {
-        RaycastHit wallHit;
-        if (RightWall)
-        {
-            wallHit = RightWallHit;
-        }
-        else if (LeftWall)
-        {
-            wallHit = LeftWallHit;
-        }
-        else if (FrontWall && Vertical == 1f)
-        {
-            wallHit = FrontWallHit;
-        }
-        else
-        {
-            // No valid wall to slide down
-            return;
-        }
-
-        // Calculate the direction the player should slide down
-        Vector3 slideDirection = Vector3.ProjectOnPlane(-wallHit.normal, Vector3.up).normalized;
-
-        // Apply downward force to make the player slide down
-        Rb.AddForce(slideDirection * WallSlideForce, ForceMode.Force);
     }
 
 }

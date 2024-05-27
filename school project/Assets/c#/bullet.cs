@@ -15,7 +15,7 @@ public class bullet : MonoBehaviour
     void Start()
     {
         damage = FindAnyObjectByType<gunShot>().bullDamage;
-        Oreientation = FindAnyObjectByType<PlayerMovement>().Oreientation;
+        Oreientation = FindAnyObjectByType<PlayerMovement>().Orientation;
         rb = gameObject.GetComponent<Rigidbody>();
         rb.AddForce(Oreientation.forward * DeafultBulletSpeed, ForceMode.Impulse);
         InSlowMotion = FindAnyObjectByType<TimeMange>().InSlowMotion;

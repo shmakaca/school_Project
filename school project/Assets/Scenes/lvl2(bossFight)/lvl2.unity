@@ -63760,6 +63760,37 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &2029608690
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2029608691}
+  m_Layer: 0
+  m_Name: ShakeTransform
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2029608691
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2029608690}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: -0, z: -0}
+  m_LocalScale: {x: 0, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4787144762336932439}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2045880243
 GameObject:
   m_ObjectHideFlags: 0
@@ -66155,60 +66186,72 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2673c4622655f76409556c7812f9d000, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MoveSpeed: 0
-  WalkSpeed: 7
-  SprintSpeed: 10
-  DashSpeed: 25
-  SlideSpeed: 30
-  WallRunSpeed: 12
-  MaxYSpeed: 0
-  KnockBackSpeed: 20
-  DashSpeedIncreaseMultiplier: 30
-  SlopeIncreaseMultiplier: 3
-  SlideSpeedChangeFactror: 4
-  KnockBackSpeedChangeFactor: 15
-  JumpForce: 10
-  JumpCoolDown: 0.25
-  AirMultiplier: 0.4
-  JumpPadCheckDistance: 0.1
-  ReadyToJump: 0
-  DoubleJumpforce: 8
-  ReadyToDoubleJump: 0
-  CrouchSpeed: 3
-  CrouchHeight: 0.1
-  PlayerHeight: 2
-  Ground:
+  moveSpeed: 0
+  walkSpeed: 6
+  sprintSpeed: 10
+  desireMoveSpeed: 0
+  lastDesireMoveSpeed: 0
+  dashSpeed: 25
+  slideSpeed: 30
+  wallRunSpeed: 12
+  maxYSpeed: 10
+  knockBackSpeed: 8
+  dashSpeedIncreaseMultiplier: 50
+  slopeIncreaseMultiplier: 3
+  slideSpeedChangeFactor: 3
+  knockBackSpeedChangeFactor: 10
+  maxSpeed: 0
+  jumpForce: 10
+  jumpCoolDown: 0.1
+  airMultiplier: 0.4
+  jumpPadCheckDistance: 0
+  readyToJump: 0
+  doubleJumpForce: 10
+  readyToDoubleJump: 0
+  crouchSpeed: 3
+  crouchHeight: 0.5
+  standingHeight: 2
+  crouching: 0
+  playerHeight: 2
+  ground:
     serializedVersion: 2
     m_Bits: 64
-  GroundDrag: 7
-  OnGround: 0
-  JumpPad:
+  groundDrag: 7
+  onGround: 0
+  jumpPad:
     serializedVersion: 2
     m_Bits: 1024
-  JumpPadforce: 10
-  OnJumpPad: 0
-  MaxSlopeAngel: 60
-  Oreientation: {fileID: 2200719075210154078}
-  PlayerObject: {fileID: 111159113482706702}
-  CameraHolder: {fileID: 6385654954435086314}
-  KeyBindMenu: {fileID: 2008653404}
-  Cam: {fileID: 1808158380147263701}
-  PlayerCamera: {fileID: 6740792673851997321}
-  NormalFov: 0
-  JumPadFovChange: 0
-  DashFovChange: 15
-  WallRunFovChange: 12
-  ShootingFovChange: 7
-  SprintFovChange: 5
-  SlideFovChange: 3
-  FOVslider: {fileID: 1424939771}
-  Horizontal: 0
-  Vertical: 0
-  State: 0
+  jumpPadForce: 15
+  onJumpPad: 0
+  maxSlopeAngle: 80
+  exitingSlope: 0
+  orientation: {fileID: 2200719075210154078}
+  playerObject: {fileID: 111159113482706702}
+  cameraHolder: {fileID: 6002336740934354975}
+  keyBindMenu: {fileID: 2008653404}
+  cam: {fileID: 1808158380147263701}
+  playerCamera: {fileID: 6740792673851997321}
+  wallRun: {fileID: 7373197980445180256}
+  keybindManager: {fileID: 2008653405}
+  normalFov: 60
+  jumpPadFovChange: 5
+  dashFovChange: 15
+  wallRunFovChange: 10
+  shootingFovChange: 5
+  sprintFovChange: 3
+  slideFovChange: 5
+  fovSlider: {fileID: 1424939771}
+  horizontal: 0
+  vertical: 0
+  moveDirection: {x: 0, y: 0, z: 0}
+  rb: {fileID: 0}
+  state: 0
   sliding: 0
-  Dashing: 0
-  WallRunning: 0
-  Shooting: 0
+  dashing: 0
+  wallRunning: 0
+  shooting: 0
+  isCrouching: 0
+  lastState: 0
 --- !u!1 &593911756086420257
 GameObject:
   m_ObjectHideFlags: 0
@@ -67369,18 +67412,28 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f59f2a992c0d2f047bd1ab0df8356fb1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Orientation: {fileID: 2200719075210154078}
-  PlayerObject: {fileID: 7826618564043763282}
-  KeyBindMenu: {fileID: 2008653404}
-  MaxSlideTime: 0.5
-  SlideForce: 200
-  SlideHeight: 0
+  orientation: {fileID: 2200719075210154078}
+  playerObject: {fileID: 7826618564043763282}
+  rb: {fileID: 7426536916766514034}
+  keyBindMenu: {fileID: 2008653404}
+  keybindManager: {fileID: 2008653405}
+  playerMovement: {fileID: 556201645859360854}
+  maxSlideTime: 0.5
+  slideForce: 200
+  slideTimer: 0
+  slideHeight: 0
+  standingHeight: 0
+  slideKeyHoldTime: 0
   slideHoldDuration: 0.2
-  Camera: {fileID: 1808158380147263701}
-  PlayerHeight: 2
-  Ground:
+  camera: {fileID: 1808158380147263701}
+  slideFov: 0
+  horizontal: 0
+  vertical: 0
+  playerHeight: 2
+  ground:
     serializedVersion: 2
     m_Bits: 64
+  onGround: 0
 --- !u!33 &4458588571881745839
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -67618,12 +67671,13 @@ Transform:
   m_GameObject: {fileID: 6002336740934354975}
   serializedVersion: 2
   m_LocalRotation: {x: 0.04646389, y: -0.7639874, z: 0.05412443, w: 0.641276}
-  m_LocalPosition: {x: -109.196365, y: 246.00699, z: 842.4641}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 1542227063}
+  - {fileID: 2029608691}
   - {fileID: 7621869038610693069}
+  - {fileID: 1542227063}
   - {fileID: 703147928}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -68353,7 +68407,7 @@ Transform:
   m_GameObject: {fileID: 967402770651820968}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.472, z: 0}
+  m_LocalPosition: {x: 0, y: -0.43, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -68396,18 +68450,17 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 64
   WallRunForce: 200
-  WallJumpUpForce: 7
-  WallJumpSlideForce: 12
   WallSlideForce: 10
   WallCimbSpeed: 3
   WallRunStamina: 2
   WallRunTimer: 0
-  StaminaRegenRate: 1
+  StaminaRegenRate: 0.7
   WallCheckDistance: 0.7
   MinJumpHeight: 2
   RightWall: 0
   LeftWall: 0
   FrontWall: 0
+  ExitingWall: 0
   ExitWallTime: 0.1
   UseGravity: 0
   GravityCounterForce: 15
@@ -68999,15 +69052,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b497d6d1f14b3654299342f3d346628a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Orientation: {fileID: 2200719075210154078}
-  PlayerCam: {fileID: 7621869038610693069}
-  PlayerObject: {fileID: 111159113482706702}
-  KeyBindMenu: {fileID: 2008653404}
-  DashForce: 10
-  DashUpwardForce: 0.5
-  MaxDashYSpeed: 15
-  DashDuration: 0.7
-  DashCoolDown: 5
+  orientation: {fileID: 2200719075210154078}
+  playerCam: {fileID: 7621869038610693069}
+  playerObject: {fileID: 111159113482706702}
+  rb: {fileID: 7426536916766514034}
+  keyBindMenu: {fileID: 2008653404}
+  keybindManager: {fileID: 2008653405}
+  playerMovement: {fileID: 556201645859360854}
+  dashForce: 10
+  dashUpwardForce: 0.5
+  maxDashYSpeed: 15
+  dashDuration: 0.7
+  dashCoolDown: 5
   useCameraForward: 0
   allowAllDirections: 1
   disableGravity: 1
@@ -69281,7 +69337,7 @@ MonoBehaviour:
   isReloading: 0
   IsShooting: 0
   ErrorFullMag: 0
-  FireRate: 1
+  FireRate: 0.5
   KnockBackForce: 7
   KnockBackDuration: 0.5
 --- !u!95 &9002132112630693748

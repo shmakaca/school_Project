@@ -7,500 +7,801 @@ using UnityEngine.UI;
 
 public class PlayerMovement : MonoBehaviour
 {
-
     [Header("Movement")]
-    public float MoveSpeed;
-    public float WalkSpeed;
-    public float SprintSpeed;
-    private float DesireMoveSpeed;
-    private float LastDesireMoveSpeed;
-    public float DashSpeed;
-    public float SlideSpeed;
-    public float WallRunSpeed;
-    public float MaxYSpeed;
-    public float KnockBackSpeed;
+    [SerializeField] private float moveSpeed;
+    [SerializeField] private float walkSpeed;
+    [SerializeField] private float sprintSpeed;
+    [SerializeField] private float desireMoveSpeed;
+    [SerializeField] private float lastDesireMoveSpeed;
+    [SerializeField] private float dashSpeed;
+    [SerializeField] private float slideSpeed;
+    [SerializeField] private float wallRunSpeed;
+    [SerializeField] private float maxYSpeed;
+    [SerializeField] private float knockBackSpeed;
 
     [Header("keep momentum")]
-    private float SpeedIncreaseMultiplier;
-    public float DashSpeedIncreaseMultiplier;
-    public float SlopeIncreaseMultiplier;
-    public float SlideSpeedChangeFactror;
-    public float KnockBackSpeedChangeFactor;
-    bool MaxSpeed;
+    private float speedIncreaseMultiplier;
+    [SerializeField] private float dashSpeedIncreaseMultiplier;
+    [SerializeField] private float slopeIncreaseMultiplier;
+    [SerializeField] private float slideSpeedChangeFactor;
+    [SerializeField] private float knockBackSpeedChangeFactor;
+    [SerializeField] private bool maxSpeed;
 
     [Header("Jump")]
-    public float JumpForce;
-    public float JumpCoolDown;
-    public float AirMultiplier;
-    public float JumpPadCheckDistance;
-    public bool ReadyToJump;
-
+    [SerializeField] private float jumpForce;
+    [SerializeField] private float jumpCoolDown;
+    [SerializeField] private float airMultiplier;
+    [SerializeField] private float jumpPadCheckDistance;
+    [SerializeField] private bool readyToJump;
 
     [Header("DoubleJump")]
-    public float DoubleJumpforce;
-    public bool ReadyToDoubleJump;
-
+    [SerializeField] private float doubleJumpForce;
+    [SerializeField] private bool readyToDoubleJump;
 
     [Header("Crouch")]
-    public float CrouchSpeed;
-    public float CrouchHeight;
-    private float StandingHeight;
-    private bool Crouching;
+    [SerializeField] private float crouchSpeed;
+    [SerializeField] private float crouchHeight;
+    [SerializeField] private float standingHeight;
+    [SerializeField] private bool crouching;
 
     [Header("Ground Check")]
-    public float PlayerHeight;
-    public LayerMask Ground;
-    public float GroundDrag;
-    public bool OnGround;
+    [SerializeField] private float playerHeight;
+    [SerializeField] private LayerMask ground;
+    [SerializeField] private float groundDrag;
+    [SerializeField]  private bool onGround;
 
     [Header("JumpPads Check")]
-    public LayerMask JumpPad;
-    public float JumpPadforce;
-    public bool OnJumpPad;
+    [SerializeField] private LayerMask jumpPad;
+    [SerializeField] private float jumpPadForce;
+    [SerializeField] private bool onJumpPad;
 
+    [Header("Slope Handle")]
+    [SerializeField] private float maxSlopeAngle;
+    [SerializeField] private RaycastHit slopeHit;
+    [SerializeField] private bool exitingSlope;
 
-
-    [Header("Slope Handel")]
-    public float MaxSlopeAngel;
-    private RaycastHit SlopeHit;
-    private bool ExitingSlope;
-
-    [Header("Refrences")]
-    public Transform Oreientation;
-    public GameObject PlayerObject;
-    public GameObject CameraHolder;
-    public GameObject KeyBindMenu;
-    public playercamera Cam;
-    public Camera PlayerCamera;
-    private WallRun WallRun;
-    private KeybindManager KeybindManager;
+    [Header("References")]
+    [SerializeField] private Transform orientation;
+    [SerializeField] private GameObject playerObject;
+    [SerializeField] private GameObject cameraHolder;
+    [SerializeField] private GameObject keyBindMenu;
+    [SerializeField] private playercamera cam;
+    [SerializeField] private Camera playerCamera;
+    [SerializeField] private WallRun wallRun;
+    [SerializeField] private KeybindManager keybindManager;
 
     [Header("Fov")]
-    public float NormalFov;
-    public float JumPadFovChange;
-    public float DashFovChange;
-    public float WallRunFovChange;
-    public float ShootingFovChange;
-    public float SprintFovChange;
-    public float SlideFovChange;
-    public Slider FOVslider;
+    [SerializeField] private float normalFov;
+    [SerializeField] private float jumpPadFovChange;
+    [SerializeField] private float dashFovChange;
+    [SerializeField] private float wallRunFovChange;
+    [SerializeField] private float shootingFovChange;
+    [SerializeField] private float sprintFovChange;
+    [SerializeField] private float slideFovChange;
+    [SerializeField] private Slider fovSlider;
 
-    public float Horizontal;
-    public float Vertical;
+    [SerializeField] private float horizontal;
+    [SerializeField] private float vertical;
 
-    Vector3 MoveDirection;
+    [SerializeField] private Vector3 moveDirection;
 
-    Rigidbody rb;
+    [SerializeField] private Rigidbody rb;
 
-    public MovementState State;
     public enum MovementState
     {
-        Walking, Sprinting, Air, Crouching, Sliding, Dashing, WallRunning, shooting, Standing
+        Walking, Sprinting, Air, Crouching, Sliding, Dashing, WallRunning, Shooting, Standing
     }
 
-    public bool sliding;
-    public bool Dashing;
-    public bool WallRunning;
-    public bool Shooting;
-    bool isCrouching = false;
+    [SerializeField] private MovementState state;
+    [SerializeField] private bool sliding;
+    [SerializeField] private bool dashing;
+    [SerializeField] private bool wallRunning;
+    [SerializeField] private bool shooting;
+    [SerializeField] private bool isCrouching = false;
 
     private void Start()
     {
         rb = GetComponent<Rigidbody>();
         rb.freezeRotation = true;
-        ReadyToJump = true;
-        StandingHeight = transform.localScale.y;
-        PlayerCamera = CameraHolder.GetComponent<Camera>();
-        KeybindManager = KeyBindMenu.GetComponent<KeybindManager>();
-        WallRun = GetComponent<WallRun>();
+        readyToJump = true;
+        standingHeight = transform.localScale.y;
+        playerCamera = cameraHolder.GetComponent<Camera>();
+        keybindManager = keyBindMenu.GetComponent<KeybindManager>();
+        wallRun = GetComponent<WallRun>();
 
-        FOVslider.value = FOVslider.minValue;
+        fovSlider.value = fovSlider.minValue;
     }
 
     private void FixedUpdate()
     {
         PlayerMove();
-        NormalFov = FOVslider.value;
+        normalFov = fovSlider.value;
     }
 
-    public void Update()
+    private void Update()
     {
-
-
-
-        OnGround = Physics.Raycast(transform.position, Vector3.down, PlayerHeight * 0.5f + 0.3f);
-        OnJumpPad = Physics.Raycast(transform.position, Vector3.down, PlayerHeight * 0.5f + 0.3f, JumpPad);
+        onGround = Physics.Raycast(transform.position, Vector3.down, playerHeight * 0.5f + 0.3f);
+        onJumpPad = Physics.Raycast(transform.position, Vector3.down, playerHeight * 0.5f + 0.3f, jumpPad);
 
         MyInput();
         SpeedControl();
         StateHandle();
 
-        if (State == MovementState.Walking || State == MovementState.Sprinting || State == MovementState.Crouching)
-            rb.drag = GroundDrag;
+        if (state == MovementState.Walking || state == MovementState.Sprinting || state == MovementState.Crouching)
+            rb.drag = groundDrag;
         else
             rb.drag = 0;
 
-        if (Input.GetKeyDown(KeybindManager.GetKeyCode("Crouch")))
+        if (Input.GetKeyDown(keybindManager.GetKeyCode("Crouch")))
         {
-            isCrouching = !isCrouching; 
+            isCrouching = !isCrouching;
         }
 
         if (isCrouching)
         {
-            transform.localScale = new Vector3(transform.localScale.x, CrouchHeight, transform.localScale.z);
-            if (OnGround)
+            transform.localScale = new Vector3(transform.localScale.x, crouchHeight, transform.localScale.z);
+            if (onGround)
             {
                 rb.AddForce(Vector3.down * 5f, ForceMode.Force);
             }
         }
         else
         {
-            transform.localScale = new Vector3(transform.localScale.x, StandingHeight, transform.localScale.z);
+            transform.localScale = new Vector3(transform.localScale.x, standingHeight, transform.localScale.z);
         }
 
         HandleJumpPad();
-
-
     }
-
 
     private void MyInput()
     {
-        Horizontal = 0;
-        Vertical = 0;
+        horizontal = 0;
+        vertical = 0;
 
         // Forward and backward
-        if (Input.GetKey(KeybindManager.GetKeyCode("Forward")))
+        if (Input.GetKey(keybindManager.GetKeyCode("Forward")))
         {
-            Vertical += 1;
+            vertical += 1;
         }
-        if (Input.GetKey(KeybindManager.GetKeyCode("BackWards")))
+        if (Input.GetKey(keybindManager.GetKeyCode("Backwards")))
         {
-            Vertical -= 1;
+            vertical -= 1;
         }
 
         // Left and right
-        if (Input.GetKey(KeybindManager.GetKeyCode("Left")))
+        if (Input.GetKey(keybindManager.GetKeyCode("Left")))
         {
-            Horizontal -= 1;
+            horizontal -= 1;
         }
-        if (Input.GetKey(KeybindManager.GetKeyCode("Right")))
+        if (Input.GetKey(keybindManager.GetKeyCode("Right")))
         {
-            Horizontal += 1;
+            horizontal += 1;
         }
+
+        WallSlideDown();
 
         // Jump
-        if (Input.GetKey(KeybindManager.GetKeyCode("Jump")) && ReadyToJump && OnGround)
+        if (Input.GetKey(keybindManager.GetKeyCode("Jump")) && readyToJump && onGround)
         {
-            ReadyToJump = false;
-
+            readyToJump = false;
             Jump();
-
-            Invoke(nameof(ResetJump), JumpCoolDown);
+            Invoke(nameof(ResetJump), jumpCoolDown);
         }
-
     }
 
-    private MovementState LastState;
+    [SerializeField] private MovementState lastState;
 
     private void StateHandle()
     {
-        if (Shooting)
+        if (shooting)
         {
-            State = MovementState.shooting;
-            DesireMoveSpeed = KnockBackSpeed;
-            SpeedIncreaseMultiplier = KnockBackSpeedChangeFactor;
-            Cam.DOFOV(ShootingFovChange + NormalFov);
-            Cam.DOTilt(0f);
+            state = MovementState.Shooting;
+            desireMoveSpeed = knockBackSpeed;
+            speedIncreaseMultiplier = knockBackSpeedChangeFactor;
+            cam.DOFOV(shootingFovChange + normalFov);
+            cam.DOTilt(0f);
         }
-
-
-        else if (WallRunning)
+        else if (wallRunning)
         {
-            State = MovementState.WallRunning;
-            DesireMoveSpeed = WallRunSpeed;
-            Cam.DOFOV(WallRunFovChange + NormalFov);
+            state = MovementState.WallRunning;
+            desireMoveSpeed = wallRunSpeed;
+            cam.DOFOV(wallRunFovChange + normalFov);
 
-            Vector3 camLocalPosition = Cam.transform.localPosition;
+            Vector3 camLocalPosition = cam.transform.localPosition;
 
-            if (WallRun.LeftWall)
+            if (wallRun.LeftWall)
             {
-                Cam.DOTilt(5f);
+                cam.DOTilt(5f);
             }
             else
             {
-                Cam.DOTilt(-5f);
+                cam.DOTilt(-5f);
             }
         }
-
-        else if (Dashing)
+        else if (dashing)
         {
-            State = MovementState.Dashing;
-            DesireMoveSpeed = DashSpeed;
-            SpeedIncreaseMultiplier = DashSpeedIncreaseMultiplier;
-            Cam.DOFOV(DashFovChange + NormalFov);
-            Cam.DOTilt(0f);
+            state = MovementState.Dashing;
+            desireMoveSpeed = dashSpeed;
+            speedIncreaseMultiplier = dashSpeedIncreaseMultiplier;
+            cam.DOFOV(dashFovChange + normalFov);
+            cam.DOTilt(0f);
         }
-
         else if (sliding)
         {
-            State = MovementState.Sliding;
-
-            SlideFovChange += Time.deltaTime * 4f;
+            state = MovementState.Sliding;
+            slideFovChange += Time.deltaTime * 4f;
 
             if (OnSlope() && rb.velocity.y < 0.1)
             {
-                Cam.DOFOV(SlideFovChange + NormalFov);
-                DesireMoveSpeed = SlideSpeed;
+                cam.DOFOV(slideFovChange + normalFov);
+                desireMoveSpeed = slideSpeed;
             }
             else
             {
-                DesireMoveSpeed = SprintSpeed;
-                Cam.DOFOV(NormalFov);
-                SlideFovChange = 5f;
+                desireMoveSpeed = sprintSpeed;
+                cam.DOFOV(normalFov);
+                slideFovChange = 5f;
             }
-            SpeedIncreaseMultiplier = SlideSpeedChangeFactror;
-
+            speedIncreaseMultiplier = slideSpeedChangeFactor;
         }
         // Crouching Mode
-        else if (isCrouching && OnGround)
+        else if (isCrouching && onGround)
         {
-            State = MovementState.Crouching;
-            DesireMoveSpeed = CrouchSpeed;
-            Cam.DOFOV(NormalFov);
-            Cam.DOTilt(0f);
+            state = MovementState.Crouching;
+            desireMoveSpeed = crouchSpeed;
+            cam.DOFOV(normalFov);
+            cam.DOTilt(0f);
         }
-
         // Sprinting Mode
-        else if (OnGround && Input.GetKey(KeybindManager.GetKeyCode("Sprint")))
+        else if (onGround && Input.GetKey(keybindManager.GetKeyCode("Sprint")))
         {
-            State = MovementState.Sprinting;
-            DesireMoveSpeed = SprintSpeed;
-            Cam.DOFOV(NormalFov + SprintFovChange);
-            Cam.DOTilt(0f);
-            if (Dashing)
+            state = MovementState.Sprinting;
+            desireMoveSpeed = sprintSpeed;
+            cam.DOFOV(normalFov + sprintFovChange);
+            cam.DOTilt(0f);
+            if (dashing)
             {
-                State = MovementState.Dashing;
-                DesireMoveSpeed = DashSpeed;
-                SpeedIncreaseMultiplier = DashSpeedIncreaseMultiplier;
-                Cam.DOFOV(DashFovChange + NormalFov);
-                Cam.DOTilt(0f);
+                state = MovementState.Dashing;
+                desireMoveSpeed = dashSpeed;
+                speedIncreaseMultiplier = dashSpeedIncreaseMultiplier;
+                cam.DOFOV(dashFovChange + normalFov);
+                cam.DOTilt(0f);
             }
-                  
         }
         // Walking Mode
-        else if (OnGround)
+        else if (onGround)
         {
-            State = MovementState.Walking;
-            DesireMoveSpeed = WalkSpeed;
-            Cam.DOFOV(NormalFov);
-            Cam.DOTilt(0f);
-            if (Dashing)
+            state = MovementState.Walking;
+            desireMoveSpeed = walkSpeed;
+            cam.DOFOV(normalFov);
+            cam.DOTilt(0f);
+            if (dashing)
             {
-                State = MovementState.Dashing;
-                DesireMoveSpeed = DashSpeed;
-                SpeedIncreaseMultiplier = DashSpeedIncreaseMultiplier;
-                Cam.DOFOV(DashFovChange + NormalFov);
-                Cam.DOTilt(0f);
+                state = MovementState.Dashing;
+                desireMoveSpeed = dashSpeed;
+                speedIncreaseMultiplier = dashSpeedIncreaseMultiplier;
+                cam.DOFOV(dashFovChange + normalFov);
+                cam.DOTilt(0f);
             }
         }
-
-        //  in Air
+        // In Air
         else
         {
-            State = MovementState.Air;
+            state = MovementState.Air;
+            cam.DOFOV(normalFov);
+            cam.DOTilt(0f);
 
-            
-            Cam.DOFOV(NormalFov);
-            Cam.DOTilt(0f);
-
-            if (DesireMoveSpeed < SprintSpeed)
+            if (desireMoveSpeed < sprintSpeed)
             {
-                DesireMoveSpeed = WalkSpeed;
+                desireMoveSpeed = walkSpeed;
             }
-            else if (Dashing)
+            else if (dashing)
             {
-                State = MovementState.Dashing;
-                DesireMoveSpeed = DashSpeed;
-                SpeedIncreaseMultiplier = DashSpeedIncreaseMultiplier;
-                Cam.DOFOV(DashFovChange + NormalFov);
-                Cam.DOTilt(0f);
+                state = MovementState.Dashing;
+                desireMoveSpeed = dashSpeed;
+                speedIncreaseMultiplier = dashSpeedIncreaseMultiplier;
+                cam.DOFOV(dashFovChange + normalFov);
+                cam.DOTilt(0f);
             }
             else
             {
-                DesireMoveSpeed = SprintSpeed;
+                desireMoveSpeed = sprintSpeed;
             }
 
-            // double jump
-            if (Input.GetKeyDown(KeybindManager.GetKeyCode("Jump")) && ReadyToDoubleJump)
+            // Double jump
+            if (Input.GetKeyDown(keybindManager.GetKeyCode("Jump")) && readyToDoubleJump)
             {
                 DoubleJump();
-                ReadyToDoubleJump = false;
+                readyToDoubleJump = false;
             }
-
         }
 
-
-        if (Mathf.Abs(DesireMoveSpeed - LastDesireMoveSpeed) > (SprintSpeed - CrouchSpeed) && MoveSpeed != 0)
+        if (Mathf.Abs(desireMoveSpeed - lastDesireMoveSpeed) > (sprintSpeed - crouchSpeed) && moveSpeed != 0)
         {
             StopAllCoroutines();
             StartCoroutine(SmoothlyLerpMoveSpeed());
         }
         else
         {
-            MoveSpeed = DesireMoveSpeed;
+            moveSpeed = desireMoveSpeed;
         }
 
-        LastDesireMoveSpeed = DesireMoveSpeed;
-
+        lastDesireMoveSpeed = desireMoveSpeed;
     }
+
     private IEnumerator SmoothlyLerpMoveSpeed()
     {
         float time = 0;
-        float Diffrence = Mathf.Abs(DesireMoveSpeed - MoveSpeed);
-        float StartValue = MoveSpeed;
+        float difference = Mathf.Abs(desireMoveSpeed - moveSpeed);
+        float startValue = moveSpeed;
 
-
-        while (time < Diffrence)
+        while (time < difference)
         {
-            MoveSpeed = Mathf.Lerp(StartValue, DesireMoveSpeed, time / Diffrence);
+            moveSpeed = Mathf.Lerp(startValue, desireMoveSpeed, time / difference);
 
             if (OnSlope())
             {
-                float SLopeAngel = Vector3.Angle(Vector3.up, SlopeHit.normal);
-                float SLopeAngelIncrease = 1 + (SLopeAngel / 90f);
+                float slopeAngle = Vector3.Angle(Vector3.up, slopeHit.normal);
+                float slopeAngleIncrease = 1 + (slopeAngle / 90f);
 
-                time += Time.deltaTime * SpeedIncreaseMultiplier * SLopeAngelIncrease;
+                time += Time.deltaTime * speedIncreaseMultiplier * slopeAngleIncrease;
             }
             else
-                time += Time.deltaTime * SpeedIncreaseMultiplier;
+            {
+                time += Time.deltaTime * speedIncreaseMultiplier;
+            }
 
             yield return null;
-
         }
 
-        MoveSpeed = DesireMoveSpeed;
+        moveSpeed = desireMoveSpeed;
     }
-
 
     private void PlayerMove()
     {
-
-        MoveDirection = Oreientation.forward * Vertical + Oreientation.right * Horizontal;
+        moveDirection = orientation.forward * vertical + orientation.right * horizontal;
 
         // On slope
-        if (OnSlope() && !ExitingSlope)
+        if (OnSlope() && !exitingSlope)
         {
-            rb.AddForce(GetSlopeMoveDirection(MoveDirection) * MoveSpeed * 20f, ForceMode.Force);
+            rb.AddForce(GetSlopeMoveDirection(moveDirection) * moveSpeed * 20f, ForceMode.Force);
 
             if (rb.velocity.y < 0)
             {
                 rb.AddForce(Vector3.down * 100f, ForceMode.Force);
             }
         }
-
         // On ground
-        else if (OnGround)
-            rb.AddForce(MoveDirection.normalized * MoveSpeed * 10f, ForceMode.Force);
-
+        else if (onGround)
+        {
+            rb.AddForce(moveDirection.normalized * moveSpeed * 10f, ForceMode.Force);
+        }
         // In air
-        else if (!OnGround)
-            rb.AddForce(MoveDirection.normalized * MoveSpeed * 10f * AirMultiplier, ForceMode.Force);
+        else if (!onGround)
+        {
+            rb.AddForce(moveDirection.normalized * moveSpeed * 10f * airMultiplier, ForceMode.Force);
+        }
 
-        // turn off gravity while on slope
-        if (!WallRunning)
+        // Turn off gravity while on slope
+        if (!wallRunning)
         {
             rb.useGravity = !OnSlope();
         }
-
     }
 
     private void SpeedControl()
     {
-        // limit speed on slope
-        if (OnSlope() && !ExitingSlope)
+        // Limit speed on slope
+        if (OnSlope() && !exitingSlope)
         {
-            if (rb.velocity.magnitude > MoveSpeed)
+            if (rb.velocity.magnitude > moveSpeed)
             {
-                rb.velocity = rb.velocity.normalized * MoveSpeed;
+                rb.velocity = rb.velocity.normalized * moveSpeed;
             }
         }
         else
         {
-            Vector3 FlatVelocity = new Vector3(rb.velocity.x, 0f, rb.velocity.z);
-            if (FlatVelocity.magnitude > MoveSpeed)
+            Vector3 flatVelocity = new Vector3(rb.velocity.x, 0f, rb.velocity.z);
+            if (flatVelocity.magnitude > moveSpeed)
             {
-                Vector3 Limitedvelocity = FlatVelocity.normalized * MoveSpeed;
-                rb.velocity = new Vector3(Limitedvelocity.x, rb.velocity.y, Limitedvelocity.z);
+                Vector3 limitedVelocity = flatVelocity.normalized * moveSpeed;
+                rb.velocity = new Vector3(limitedVelocity.x, rb.velocity.y, limitedVelocity.z);
             }
         }
 
-        if (MaxYSpeed != 0 && rb.velocity.y > MaxYSpeed)
-            rb.velocity = new Vector3(rb.velocity.x, MaxYSpeed, rb.velocity.z);
+        if (maxYSpeed != 0 && rb.velocity.y > maxYSpeed)
+        {
+            rb.velocity = new Vector3(rb.velocity.x, maxYSpeed, rb.velocity.z);
+        }
     }
+
     private void Jump()
     {
-        ExitingSlope = true;
-
+        exitingSlope = true;
         rb.velocity = new Vector3(rb.velocity.x, 0f, rb.velocity.z);
-
-        rb.AddForce(transform.up * JumpForce, ForceMode.Impulse);
-
-
+        rb.AddForce(transform.up * jumpForce, ForceMode.Impulse);
     }
 
     private void DoubleJump()
     {
-        ExitingSlope = true;
-
+        exitingSlope = true;
         rb.velocity = new Vector3(rb.velocity.x, 0f, rb.velocity.z);
-
-        rb.AddForce(transform.up * DoubleJumpforce, ForceMode.Impulse);
-
+        rb.AddForce(transform.up * doubleJumpForce, ForceMode.Impulse);
     }
 
     private void ResetJump()
     {
-        ReadyToJump = true;
-
-        ReadyToDoubleJump = true;
-
-        ExitingSlope = false;
+        readyToJump = true;
+        readyToDoubleJump = true;
+        exitingSlope = false;
     }
 
     public bool OnSlope()
     {
-        if (Physics.Raycast(transform.position, Vector3.down, out SlopeHit, PlayerHeight * 0.5f + 0.3f))
+        if (Physics.Raycast(transform.position, Vector3.down, out slopeHit, playerHeight * 0.5f + 0.3f))
         {
-            float angel = Vector3.Angle(Vector3.up, SlopeHit.normal);
-            return angel < MaxSlopeAngel && angel != 0;
+            float angle = Vector3.Angle(Vector3.up, slopeHit.normal);
+            return angle < maxSlopeAngle && angle != 0;
         }
         return false;
     }
 
-    public Vector3 GetSlopeMoveDirection(Vector3 Direction)
+    public Vector3 GetSlopeMoveDirection(Vector3 direction)
     {
-        return Vector3.ProjectOnPlane(Direction, SlopeHit.normal).normalized;
+        return Vector3.ProjectOnPlane(direction, slopeHit.normal).normalized;
     }
 
     private void HandleJumpPad()
     {
-        if (OnJumpPad)
+        if (onJumpPad)
         {
-            rb.velocity = new Vector3(rb.velocity.x, 0f, rb.velocity.z); // reset y velocity
-            rb.AddForce(Vector3.up * JumpPadforce, ForceMode.Impulse);
+            rb.velocity = new Vector3(rb.velocity.x, 0f, rb.velocity.z);
+            rb.AddForce(Vector3.up * jumpPadForce, ForceMode.Impulse);
 
-            Cam.DOFOV(JumPadFovChange + NormalFov);
+            cam.DOFOV(jumpPadFovChange + normalFov);
 
-            // limit max y speed
-            if (rb.velocity.y > MaxYSpeed)
+            // Limit max y speed
+            if (rb.velocity.y > maxYSpeed)
             {
-                rb.velocity = new Vector3(rb.velocity.x, MaxYSpeed, rb.velocity.z);
+                rb.velocity = new Vector3(rb.velocity.x, maxYSpeed, rb.velocity.z);
             }
         }
     }
 
+    private void WallSlideDown()
+    {
+        if (wallRun.FrontWall && Input.GetKey(keybindManager.GetKeyCode("Forward")))
+        {
+            vertical = 0f;
+        }
+        if (wallRun.RightWall && Input.GetKey(keybindManager.GetKeyCode("Right")) || wallRun.LeftWall && Input.GetKey(keybindManager.GetKeyCode("Left")))
+        {
+            horizontal = 0f;
+        }
+    }
 
+    // Getters and Setters for all fields
+    public float MoveSpeed
+    {
+        get { return moveSpeed; }
+        set { moveSpeed = value; }
+    }
+
+    public float WalkSpeed
+    {
+        get { return walkSpeed; }
+        set { walkSpeed = value; }
+    }
+
+    public float SprintSpeed
+    {
+        get { return sprintSpeed; }
+        set { sprintSpeed = value; }
+    }
+
+    public float DashSpeed
+    {
+        get { return dashSpeed; }
+        set { dashSpeed = value; }
+    }
+
+    public float SlideSpeed
+    {
+        get { return slideSpeed; }
+        set { slideSpeed = value; }
+    }
+
+    public float WallRunSpeed
+    {
+        get { return wallRunSpeed; }
+        set { wallRunSpeed = value; }
+    }
+
+    public float MaxYSpeed
+    {
+        get { return maxYSpeed; }
+        set { maxYSpeed = value; }
+    }
+
+    public float KnockBackSpeed
+    {
+        get { return knockBackSpeed; }
+        set { knockBackSpeed = value; }
+    }
+
+    public float DashSpeedIncreaseMultiplier
+    {
+        get { return dashSpeedIncreaseMultiplier; }
+        set { dashSpeedIncreaseMultiplier = value; }
+    }
+
+    public float SlopeIncreaseMultiplier
+    {
+        get { return slopeIncreaseMultiplier; }
+        set { slopeIncreaseMultiplier = value; }
+    }
+
+    public float SlideSpeedChangeFactor
+    {
+        get { return slideSpeedChangeFactor; }
+        set { slideSpeedChangeFactor = value; }
+    }
+
+    public float KnockBackSpeedChangeFactor
+    {
+        get { return knockBackSpeedChangeFactor; }
+        set { knockBackSpeedChangeFactor = value; }
+    }
+
+    public float JumpForce
+    {
+        get { return jumpForce; }
+        set { jumpForce = value; }
+    }
+
+    public float JumpCoolDown
+    {
+        get { return jumpCoolDown; }
+        set { jumpCoolDown = value; }
+    }
+
+    public float AirMultiplier
+    {
+        get { return airMultiplier; }
+        set { airMultiplier = value; }
+    }
+
+    public float JumpPadCheckDistance
+    {
+        get { return jumpPadCheckDistance; }
+        set { jumpPadCheckDistance = value; }
+    }
+
+    public bool ReadyToJump
+    {
+        get { return readyToJump; }
+        set { readyToJump = value; }
+    }
+
+    public float DoubleJumpForce
+    {
+        get { return doubleJumpForce; }
+        set { doubleJumpForce = value; }
+    }
+
+    public bool ReadyToDoubleJump
+    {
+        get { return readyToDoubleJump; }
+        set { readyToDoubleJump = value; }
+    }
+
+    public float CrouchSpeed
+    {
+        get { return crouchSpeed; }
+        set { crouchSpeed = value; }
+    }
+
+    public float CrouchHeight
+    {
+        get { return crouchHeight; }
+        set { crouchHeight = value; }
+    }
+
+    public float PlayerHeight
+    {
+        get { return playerHeight; }
+        set { playerHeight = value; }
+    }
+
+    public LayerMask Ground
+    {
+        get { return ground; }
+        set { ground = value; }
+    }
+
+    public float GroundDrag
+    {
+        get { return groundDrag; }
+        set { groundDrag = value; }
+    }
+
+    public bool OnGround
+    {
+        get { return onGround; }
+        set { onGround = value; }
+    }
+
+    public LayerMask JumpPad
+    {
+        get { return jumpPad; }
+        set { jumpPad = value; }
+    }
+
+    public float JumpPadForce
+    {
+        get { return jumpPadForce; }
+        set { jumpPadForce = value; }
+    }
+
+    public bool OnJumpPad
+    {
+        get { return onJumpPad; }
+        set { onJumpPad = value; }
+    }
+
+    public float MaxSlopeAngle
+    {
+        get { return maxSlopeAngle; }
+        set { maxSlopeAngle = value; }
+    }
+
+    public Transform Orientation
+    {
+        get { return orientation; }
+        set { orientation = value; }
+    }
+
+    public GameObject PlayerObject
+    {
+        get { return playerObject; }
+        set { playerObject = value; }
+    }
+
+    public GameObject CameraHolder
+    {
+        get { return cameraHolder; }
+        set { cameraHolder = value; }
+    }
+
+    public GameObject KeyBindMenu
+    {
+        get { return keyBindMenu; }
+        set { keyBindMenu = value; }
+    }
+
+    public playercamera Cam
+    {
+        get { return cam; }
+        set { cam = value; }
+    }
+
+    public Camera PlayerCamera
+    {
+        get { return playerCamera; }
+        set { playerCamera = value; }
+    }
+
+    public WallRun WallRun
+    {
+        get { return wallRun; }
+        set { wallRun = value; }
+    }
+
+    public KeybindManager KeybindManager
+    {
+        get { return keybindManager; }
+        set { keybindManager = value; }
+    }
+
+    public float NormalFov
+    {
+        get { return normalFov; }
+        set { normalFov = value; }
+    }
+
+    public float JumpPadFovChange
+    {
+        get { return jumpPadFovChange; }
+        set { jumpPadFovChange = value; }
+    }
+
+    public float DashFovChange
+    {
+        get { return dashFovChange; }
+        set { dashFovChange = value; }
+    }
+
+    public float WallRunFovChange
+    {
+        get { return wallRunFovChange; }
+        set { wallRunFovChange = value; }
+    }
+
+    public float ShootingFovChange
+    {
+        get { return shootingFovChange; }
+        set { shootingFovChange = value; }
+    }
+
+    public float SprintFovChange
+    {
+        get { return sprintFovChange; }
+        set { sprintFovChange = value; }
+    }
+
+    public float SlideFovChange
+    {
+        get { return slideFovChange; }
+        set { slideFovChange = value; }
+    }
+
+    public Slider FOVSlider
+    {
+        get { return fovSlider; }
+        set { fovSlider = value; }
+    }
+
+    public float Horizontal
+    {
+        get { return horizontal; }
+        set { horizontal = value; }
+    }
+
+    public float Vertical
+    {
+        get { return vertical; }
+        set { vertical = value; }
+    }
+
+    public Rigidbody Rb
+    {
+        get { return rb; }
+        set { rb = value; }
+    }
+
+    public MovementState State
+    {
+        get { return state; }
+        set { state = value; }
+    }
+
+    public bool Sliding
+    {
+        get { return sliding; }
+        set { sliding = value; }
+    }
+
+    public bool Dashing
+    {
+        get { return dashing; }
+        set { dashing = value; }
+    }
+
+    public bool WallRunning
+    {
+        get { return wallRunning; }
+        set { wallRunning = value; }
+    }
+
+    public bool Shooting
+    {
+        get { return shooting; }
+        set { shooting = value; }
+    }
+
+    public bool IsCrouching
+    {
+        get { return isCrouching; }
+        set { isCrouching = value; }
+    }
 }
-
-

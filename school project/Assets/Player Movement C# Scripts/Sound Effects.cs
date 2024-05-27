@@ -36,7 +36,7 @@ public class SoundEffects : MonoBehaviour
             Src.clip = Dashing;
             Src.Play();
         }
-        else if (PlayerMovement.sliding || PlayerMovement.WallRunning)
+        else if (PlayerMovement.Sliding || PlayerMovement.WallRunning)
         {
             Src.clip = Wind;
             Src.Play();
