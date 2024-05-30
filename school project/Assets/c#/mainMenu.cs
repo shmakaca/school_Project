@@ -60,7 +60,7 @@ public class mainMenu : MonoBehaviour
         setMenu.SetActive(false);
         player.SetActive(false);
         cam.SetActive(false);
-        Time.timeScale = 0f;
+
     }
     public void settings() //open settings from main menu
     {
@@ -102,8 +102,7 @@ public class mainMenu : MonoBehaviour
 
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
-        
-        Time.timeScale = 1f;
+
     }
     
     public void ConfermResetMenu()
