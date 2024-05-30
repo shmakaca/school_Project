@@ -1,58 +1,37 @@
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.EventSystems;
-using System.Collections.Generic;
 
-public class ButtonOutlineHighlighter : MonoBehaviour
+public class AddCleanOutline : MonoBehaviour
 {
-    // List of buttons to check
-    public List<Button> buttons;
-
-    // Material for highlighted state
-    public Material highlightMaterial;
-
-    // Original material to revert when the button is not highlighted
-    private Dictionary<Button, Material> originalMaterials = new Dictionary<Button, Material>();
-
     void Start()
     {
-        // Ensure each button has an EventTrigger and store original materials
-        foreach (Button button in buttons)
+        Button button = GetComponent<Button>();
+        if (button != null)
         {
-            // Store the original material of the button
-            Image buttonImage = button.GetComponent<Image>();
-            if (buttonImage != null)
-            {
-                originalMaterials[button] = buttonImage.material;
-            }
+            // Create a new GameObject for the shadows
+            GameObject shadowObject = new GameObject("ButtonShadow");
+            shadowObject.transform.SetParent(button.transform, false);
 
-            // Add EventTrigger component if not present
-            EventTrigger eventTrigger = button.GetComponent<EventTrigger>();
-            if (eventTrigger == null)
-            {
-                eventTrigger = button.gameObject.AddComponent<EventTrigger>();
-            }
+            // Add Shadow components
+            AddShadow(shadowObject, new Vector2(-1, 1));  // Top-left
+            AddShadow(shadowObject, new Vector2(1, 1));   // Top-right
+            AddShadow(shadowObject, new Vector2(-1, -1)); // Bottom-left
+            AddShadow(shadowObject, new Vector2(1, -1));  // Bottom-right
 
-            // Add pointer enter event
-            AddEventTriggerListener(eventTrigger, EventTriggerType.PointerEnter, () => OnButtonHighlight(button, true));
-            // Add pointer exit event
-            AddEventTriggerListener(eventTrigger, EventTriggerType.PointerExit, () => OnButtonHighlight(button, false));
+            // Ensure the shadow object has the same RectTransform settings as the button
+            RectTransform shadowRect = shadowObject.AddComponent<RectTransform>();
+            RectTransform buttonRect = button.GetComponent<RectTransform>();
+            shadowRect.anchorMin = buttonRect.anchorMin;
+            shadowRect.anchorMax = buttonRect.anchorMax;
+            shadowRect.sizeDelta = buttonRect.sizeDelta;
+            shadowRect.anchoredPosition = buttonRect.anchoredPosition;
         }
     }
 
-    void AddEventTriggerListener(EventTrigger eventTrigger, EventTriggerType eventType, System.Action action)
+    void AddShadow(GameObject shadowObject, Vector2 effectDistance)
     {
-        EventTrigger.Entry entry = new EventTrigger.Entry { eventID = eventType };
-        entry.callback.AddListener((eventData) => action());
-        eventTrigger.triggers.Add(entry);
-    }
-
-    void OnButtonHighlight(Button button, bool highlight)
-    {
-        Image buttonImage = button.GetComponent<Image>();
-        if (buttonImage != null)
-        {
-            buttonImage.material = highlight ? highlightMaterial : originalMaterials[button];
-        }
+        Shadow shadow = shadowObject.AddComponent<Shadow>();
+        shadow.effectColor = Color.black; // Set outline color
+        shadow.effectDistance = effectDistance; // Set shadow offset
     }
 }
