@@ -11,7 +11,7 @@ public class Enemy : MonoBehaviour
     [Header("ShotsKind")]
     public GameObject FireBall, ElectroBall, SnowBall;
     [Header ("ShotsDetails")]
-    public float projectile = 6f;
+    
     public float cooldown;
 
     public bool IsCoolDownDone = false;
@@ -78,7 +78,7 @@ public class Enemy : MonoBehaviour
          {
             Instantiate(SnowBall, this.transform);
          }
-          this.cooldown = Random.Range(2, 7);
+          this.cooldown = Random.Range(5, 7);
           IsCoolDownDone = false;
 
             temp = false;

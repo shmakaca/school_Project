@@ -18,6 +18,7 @@ TagManager:
   - Snow
   - FxTemporaire
   - Enemy
+  - bamboozled
   layers:
   - Default
   - TransparentFX
