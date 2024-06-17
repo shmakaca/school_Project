@@ -17,6 +17,7 @@ public class SwapGun : MonoBehaviour
     [Header("State")]
     private GameObject currentWeapon;
     private GameObject currentCrosshair;
+    private bool isPistolEquipped = false;  // New flag to track if the pistol's speed boost has been applied
 
     [Header("References")]
     public GameObject KeyBindMenu;
@@ -29,7 +30,6 @@ public class SwapGun : MonoBehaviour
     public GameObject ARCrosshair;
     public GameObject GrenadelauncherCrosshair;
     public GameObject shotgunCrosshair;
-
 
     void Start()
     {
@@ -70,18 +70,23 @@ public class SwapGun : MonoBehaviour
             EquipWeapon(Grappler);
             ChangeCrosshair(Grappler);
         }
-
     }
 
     private void EquipWeapon(GameObject weapon)
     {
         if (currentWeapon != null)
         {
-
             Weapon currentWeaponScript = currentWeapon.GetComponent<Weapon>();
             if (currentWeaponScript != null)
             {
-                currentWeaponScript.StopReload();
+                if (currentWeaponScript.ReloadAnimator != null) 
+                {
+                    currentWeaponScript.StopReload();
+                }
+                else
+                {
+                    Debug.LogError("ReloadAnimator is null on the current weapon.");
+                }
             }
 
             currentWeapon.SetActive(false);
@@ -108,15 +113,20 @@ public class SwapGun : MonoBehaviour
     {
         if (currentWeapon == Pistol)
         {
-            playerMovement.walkSpeed *= 1.2f;
-            playerMovement.sprintSpeed *= 1.2f;
-            playerMovement.wallRunSpeed *= 1.2f;
+            if (!isPistolEquipped)
+            {
+                playerMovement.walkSpeed *= 1.2f;
+                playerMovement.sprintSpeed *= 1.2f;
+                playerMovement.wallRunSpeed *= 1.2f;
+                isPistolEquipped = true;
+            }
         }
         else
         {
             playerMovement.walkSpeed = playerMovement.defaultWalkSpeed;
             playerMovement.sprintSpeed = playerMovement.defaultSprintSpeed;
             playerMovement.wallRunSpeed = playerMovement.defaultWallRunSpeed;
+            isPistolEquipped = false;  
         }
     }
 }

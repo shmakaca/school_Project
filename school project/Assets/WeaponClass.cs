@@ -24,12 +24,30 @@ public abstract class Weapon : MonoBehaviour
         CurrentAmmo = MagSize;
         KeybindManager = FindObjectOfType<KeybindManager>();
         WeaponSway = FindObjectOfType<WeaponSway>();
-        ReloadAnimator.enabled = false; 
+
+        if (KeybindManager == null)
+        {
+            Debug.LogError("KeybindManager not found!");
+        }
+
+        if (WeaponSway == null)
+        {
+            Debug.LogError("WeaponSway not found!");
+        }
+
+        if (ReloadAnimator == null)
+        {
+            Debug.LogError("ReloadAnimator not assigned!");
+        }
+        else
+        {
+            ReloadAnimator.enabled = false;
+        }
     }
 
     protected virtual void Update()
     {
-        if ((CurrentAmmo < MagSize && Input.GetKeyDown(KeybindManager.GetKeyCode("Reload"))) || CurrentAmmo == 0)
+        if ((CurrentAmmo < MagSize && Input.GetKeyDown(KeybindManager.GetKeyCode("Reload"))) || CurrentAmmo == 0 && Input.GetKeyDown(KeybindManager.GetKeyCode("Shoot")))
         {
             StartReload();
         }
@@ -40,12 +58,22 @@ public abstract class Weapon : MonoBehaviour
     protected IEnumerator Reload()
     {
         IsReloading = true;
-        ReloadAnimator.enabled = true; 
-        ReloadAnimator.SetTrigger("Reload");
+        if (ReloadAnimator != null)
+        {
+            ReloadAnimator.enabled = true;
+            ReloadAnimator.SetTrigger("Reload");
+        }
+        else
+        {
+            Debug.LogError("ReloadAnimator is null during reload.");
+        }
         yield return new WaitForSeconds(ReloadAnimation.length);
         IsReloading = false;
         CurrentAmmo = MagSize;
-        ReloadAnimator.enabled = false; 
+        if (ReloadAnimator != null)
+        {
+            ReloadAnimator.enabled = false;
+        }
     }
 
     public void StartReload()
@@ -53,8 +81,15 @@ public abstract class Weapon : MonoBehaviour
         if (!IsReloading)
         {
             IsReloading = true;
-            ReloadAnimator.enabled = true; 
-            ReloadAnimator.SetTrigger("Reload");
+            if (ReloadAnimator != null)
+            {
+                ReloadAnimator.enabled = true;
+                ReloadAnimator.SetTrigger("Reload");
+            }
+            else
+            {
+                Debug.LogError("ReloadAnimator is null during StartReload.");
+            }
             reloadCoroutine = StartCoroutine(Reload());
         }
     }
@@ -66,7 +101,14 @@ public abstract class Weapon : MonoBehaviour
             StopCoroutine(reloadCoroutine);
             IsReloading = false;
             reloadCoroutine = null;
-            ReloadAnimator.enabled = false; 
+            if (ReloadAnimator != null)
+            {
+                ReloadAnimator.enabled = false;
+            }
+            else
+            {
+                Debug.LogError("ReloadAnimator is null during StopReload.");
+            }
         }
     }
 
@@ -94,6 +136,9 @@ public abstract class Weapon : MonoBehaviour
 
     public void OnReloadComplete()
     {
-        ReloadAnimator.SetFloat("ReloadProgress", 1f);
+        if (ReloadAnimator != null)
+        {
+            ReloadAnimator.SetFloat("ReloadProgress", 1f);
+        }
     }
 }
