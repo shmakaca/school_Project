@@ -24,7 +24,7 @@ public abstract class Weapon : MonoBehaviour
         CurrentAmmo = MagSize;
         KeybindManager = FindObjectOfType<KeybindManager>();
         WeaponSway = FindObjectOfType<WeaponSway>();
-        ReloadAnimator.enabled = false; // Disable Animator initially
+        ReloadAnimator.enabled = false; 
     }
 
     protected virtual void Update()
@@ -40,12 +40,12 @@ public abstract class Weapon : MonoBehaviour
     protected IEnumerator Reload()
     {
         IsReloading = true;
-        ReloadAnimator.enabled = true; // Enable Animator to play reload animation
+        ReloadAnimator.enabled = true; 
         ReloadAnimator.SetTrigger("Reload");
         yield return new WaitForSeconds(ReloadAnimation.length);
         IsReloading = false;
         CurrentAmmo = MagSize;
-        ReloadAnimator.enabled = false; // Disable Animator after reload
+        ReloadAnimator.enabled = false; 
     }
 
     public void StartReload()
@@ -53,7 +53,7 @@ public abstract class Weapon : MonoBehaviour
         if (!IsReloading)
         {
             IsReloading = true;
-            ReloadAnimator.enabled = true; // Enable Animator to play reload animation
+            ReloadAnimator.enabled = true; 
             ReloadAnimator.SetTrigger("Reload");
             reloadCoroutine = StartCoroutine(Reload());
         }
@@ -66,7 +66,7 @@ public abstract class Weapon : MonoBehaviour
             StopCoroutine(reloadCoroutine);
             IsReloading = false;
             reloadCoroutine = null;
-            ReloadAnimator.enabled = false; // Disable Animator if reloading is stopped
+            ReloadAnimator.enabled = false; 
         }
     }
 
@@ -92,7 +92,6 @@ public abstract class Weapon : MonoBehaviour
 
     protected abstract void Shoot();
 
-    // This method will be called by the animation event
     public void OnReloadComplete()
     {
         ReloadAnimator.SetFloat("ReloadProgress", 1f);
