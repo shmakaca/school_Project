@@ -1,44 +1,51 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 using TMPro;
+using UnityEngine.UI;
 
-public class SlidersValue : MonoBehaviour
+public class SliderValueUpdater : MonoBehaviour
 {
-    [System.Serializable]
-    public struct SliderTextPair
+    public Slider slider;
+    public TMP_InputField inputField;
+
+    private void Start()
     {
-        public Slider slider;
-        public TextMeshProUGUI textMeshPro;
+        // Initialize input field with slider value
+        inputField.text = slider.value.ToString();
+
+        // Add listener to input field to handle value changes
+        inputField.onValueChanged.AddListener(OnInputFieldValueChanged);
+
+        // Add listener to slider to handle value changes
+        slider.onValueChanged.AddListener(OnSliderValueChanged);
     }
 
-    public SliderTextPair[] sliderTextPairs;
-
-    void Start()
+    private void OnInputFieldValueChanged(string newValue)
     {
-        // Subscribe to each slider's OnValueChanged event
-        foreach (var pair in sliderTextPairs)
+        // If the input field is empty, set slider value to minimum
+        if (string.IsNullOrEmpty(newValue))
         {
-            pair.slider.onValueChanged.AddListener(value => UpdateText(pair.textMeshPro, value));
-            // Initialize the text
-            UpdateText(pair.textMeshPro, pair.slider.value);
+            slider.value = slider.minValue;
+            return;
         }
-    }
 
-    // This method updates the TextMeshPro text with the current slider value
-    void UpdateText(TextMeshProUGUI textMeshPro, float value)
-    {
-        textMeshPro.text = value.ToString();
-    }
-
-    // Unsubscribe from the event when the script is disabled or destroyed
-    void OnDestroy()
-    {
-        foreach (var pair in sliderTextPairs)
+        // Check if the new value is a valid float
+        if (!float.TryParse(newValue, out float value))
         {
-            pair.slider.onValueChanged.RemoveAllListeners();
+            // If not valid, revert to slider value
+            inputField.text = slider.value.ToString();
+            return;
         }
+
+        // Clamp value within slider's range
+        value = Mathf.Clamp(value, slider.minValue, slider.maxValue);
+
+        // Update slider value
+        slider.value = value;
     }
 
+    private void OnSliderValueChanged(float newValue)
+    {
+        // Update input field with slider value
+        inputField.text = newValue.ToString();
+    }
 }

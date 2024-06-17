@@ -1,4 +1,4 @@
-using JetBrains.Rider.Unity.Editor;
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,15 +9,19 @@ public class PlayerMovement : MonoBehaviour
 {
     [Header("Movement")]
     [SerializeField] private float moveSpeed;
-    [SerializeField] private float walkSpeed;
-    [SerializeField] private float sprintSpeed;
+    [SerializeField] public float walkSpeed;
+    [SerializeField] public float sprintSpeed;
+    [SerializeField] private float SwingSpeed;
     [SerializeField] private float desireMoveSpeed;
     [SerializeField] private float lastDesireMoveSpeed;
     [SerializeField] private float dashSpeed;
     [SerializeField] private float slideSpeed;
-    [SerializeField] private float wallRunSpeed;
+    [SerializeField] public float wallRunSpeed;
     [SerializeField] private float maxYSpeed;
     [SerializeField] private float knockBackSpeed;
+    [SerializeField] public float defaultWalkSpeed;
+    [SerializeField] public float defaultSprintSpeed;
+    [SerializeField] public float defaultWallRunSpeed;
 
     [Header("keep momentum")]
     private float speedIncreaseMultiplier;
@@ -70,6 +74,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private WallRun wallRun;
     [SerializeField] private KeybindManager keybindManager;
 
+
     [Header("Fov")]
     [SerializeField] private float normalFov;
     [SerializeField] private float jumpPadFovChange;
@@ -87,9 +92,10 @@ public class PlayerMovement : MonoBehaviour
 
     [SerializeField] private Rigidbody rb;
 
+
     public enum MovementState
     {
-        Walking, Sprinting, Air, Crouching, Sliding, Dashing, WallRunning, Shooting, Standing
+        Walking, Sprinting, Air, Crouching, Sliding, Dashing, WallRunning,
     }
 
     [SerializeField] private MovementState state;
@@ -98,6 +104,9 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private bool wallRunning;
     [SerializeField] private bool shooting;
     [SerializeField] private bool isCrouching = false;
+    [SerializeField] private bool swinging;
+
+
 
     private void Start()
     {
@@ -108,6 +117,10 @@ public class PlayerMovement : MonoBehaviour
         playerCamera = cameraHolder.GetComponent<Camera>();
         keybindManager = keyBindMenu.GetComponent<KeybindManager>();
         wallRun = GetComponent<WallRun>();
+
+        defaultWalkSpeed = walkSpeed;
+        defaultSprintSpeed = sprintSpeed;
+        defaultWallRunSpeed = wallRunSpeed;
 
         fovSlider.value = fovSlider.minValue;
     }
@@ -163,7 +176,7 @@ public class PlayerMovement : MonoBehaviour
         {
             vertical += 1;
         }
-        if (Input.GetKey(keybindManager.GetKeyCode("Backwards")))
+        if (Input.GetKey(keybindManager.GetKeyCode("BackWards")))
         {
             vertical -= 1;
         }
@@ -178,8 +191,6 @@ public class PlayerMovement : MonoBehaviour
             horizontal += 1;
         }
 
-        WallSlideDown();
-
         // Jump
         if (Input.GetKey(keybindManager.GetKeyCode("Jump")) && readyToJump && onGround)
         {
@@ -193,15 +204,9 @@ public class PlayerMovement : MonoBehaviour
 
     private void StateHandle()
     {
-        if (shooting)
-        {
-            state = MovementState.Shooting;
-            desireMoveSpeed = knockBackSpeed;
-            speedIncreaseMultiplier = knockBackSpeedChangeFactor;
-            cam.DOFOV(shootingFovChange + normalFov);
-            cam.DOTilt(0f);
-        }
-        else if (wallRunning)
+
+
+         if (wallRunning)
         {
             state = MovementState.WallRunning;
             desireMoveSpeed = wallRunSpeed;
@@ -211,11 +216,11 @@ public class PlayerMovement : MonoBehaviour
 
             if (wallRun.LeftWall)
             {
-                cam.DOTilt(5f);
+                cam.DOTilt(-10f);
             }
             else
             {
-                cam.DOTilt(-5f);
+                cam.DOTilt(10f);
             }
         }
         else if (dashing)
@@ -283,8 +288,9 @@ public class PlayerMovement : MonoBehaviour
                 cam.DOFOV(dashFovChange + normalFov);
                 cam.DOTilt(0f);
             }
-        }
-        // In Air
+        }      
+
+         // In Air
         else
         {
             state = MovementState.Air;
@@ -359,17 +365,21 @@ public class PlayerMovement : MonoBehaviour
 
     private void PlayerMove()
     {
+        if(Swinging)
+        {
+            return;
+        }
+
         moveDirection = orientation.forward * vertical + orientation.right * horizontal;
 
         // On slope
         if (OnSlope() && !exitingSlope)
         {
-            rb.AddForce(GetSlopeMoveDirection(moveDirection) * moveSpeed * 20f, ForceMode.Force);
+            Vector3 slopeMoveDirection = GetSlopeMoveDirection(moveDirection);
+            rb.AddForce(slopeMoveDirection * moveSpeed * 20f, ForceMode.Force);
 
-            if (rb.velocity.y < 0)
-            {
-                rb.AddForce(Vector3.down * 100f, ForceMode.Force);
-            }
+            // Apply a downward force to prevent bouncing
+            rb.AddForce(Vector3.down * 10f, ForceMode.Force);
         }
         // On ground
         else if (onGround)
@@ -391,6 +401,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void SpeedControl()
     {
+
         // Limit speed on slope
         if (OnSlope() && !exitingSlope)
         {
@@ -451,6 +462,7 @@ public class PlayerMovement : MonoBehaviour
         return Vector3.ProjectOnPlane(direction, slopeHit.normal).normalized;
     }
 
+
     private void HandleJumpPad()
     {
         if (onJumpPad)
@@ -468,17 +480,7 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    private void WallSlideDown()
-    {
-        if (wallRun.FrontWall && Input.GetKey(keybindManager.GetKeyCode("Forward")))
-        {
-            vertical = 0f;
-        }
-        if (wallRun.RightWall && Input.GetKey(keybindManager.GetKeyCode("Right")) || wallRun.LeftWall && Input.GetKey(keybindManager.GetKeyCode("Left")))
-        {
-            horizontal = 0f;
-        }
-    }
+
 
     // Getters and Setters for all fields
     public float MoveSpeed
@@ -785,6 +787,13 @@ public class PlayerMovement : MonoBehaviour
     {
         get { return dashing; }
         set { dashing = value; }
+    }
+
+
+    public bool Swinging
+    {
+        get { return swinging; }
+        set { swinging = value; }
     }
 
     public bool WallRunning

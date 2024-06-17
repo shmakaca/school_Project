@@ -28,9 +28,11 @@ public class WallRun : MonoBehaviour
     private RaycastHit LeftWallHit;
     private RaycastHit RightWallHit;
     private RaycastHit FrontWallHit;
+    private RaycastHit BackWallHit;
     public bool RightWall;
     public bool LeftWall;
     public bool FrontWall;
+    public bool BehindWall;
 
     [Header("Exiting Wall")]
     public bool ExitingWall;
@@ -80,9 +82,10 @@ public class WallRun : MonoBehaviour
         RightWall = Physics.Raycast(transform.position, Orientation.right, out RightWallHit, WallCheckDistance, Wall);
         LeftWall = Physics.Raycast(transform.position, -Orientation.right, out LeftWallHit, WallCheckDistance, Wall);
         FrontWall = Physics.Raycast(transform.position, Orientation.forward,out FrontWallHit, WallCheckDistance, Wall);
+        BehindWall = Physics.Raycast(transform.position, -Orientation.forward, out BackWallHit, WallCheckDistance, Wall);
     }
 
-    private bool AboveGround()
+    public bool AboveGround()
     {
         return !Physics.Raycast(transform.position, Vector3.down, MinJumpHeight, Ground);
     }
@@ -137,6 +140,12 @@ public class WallRun : MonoBehaviour
             {
                 ExitingWall = false;
             }
+        }
+
+        // wall runnig but not above the ground(Fix bug)
+        else if ((LeftWall || RightWall) && Vertical == 1f && !AboveGround() && !ExitingWall)
+        {
+            
         }
         // State 3 - Not Wall Running, regenerate stamina
         else

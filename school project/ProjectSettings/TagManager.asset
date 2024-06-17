@@ -16,6 +16,8 @@ TagManager:
   - Electro
   - Fire
   - Snow
+  - FxTemporaire
+  - Enemy
   layers:
   - Default
   - TransparentFX
@@ -29,8 +31,8 @@ TagManager:
   - player
   - JumpPad
   - Weapons
-  - 
-  - 
+  - Enemy
+  - Boss
   - 
   - 
   - 

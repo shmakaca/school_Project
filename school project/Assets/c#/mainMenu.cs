@@ -1,125 +1,163 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
-
-public class mainMenu : MonoBehaviour
+public class MainMenu : MonoBehaviour
 {
-    [Header("sliders")]
-    public Slider soundSlider;
-    public Slider FovSlider;
+    [Header("GameObjects")]
+    public GameObject SettingsMenu;
+    public GameObject PauseMenu;
+    public GameObject ControlSidemenu;
+    public GameObject SoundSidemenu;
+    public GameObject KeybindsMiddleMenu;
+    public GameObject MouseMiddleMenu;
+    public GameObject SoundMiddleMenu;
+    public GameObject Player;
 
-    public GameObject setMenu;
-    public GameObject menu;
-    public GameObject player ,cam;
-    public GameObject KeybindsMenu;
-    public GameObject MouseMenu;
-    public GameObject AudioMenu;
-    public GameObject ConfeirmResetMenu;
+    [Header("Components")]
+    public Camera Cam;
+    public PlayerMovement PlayerMovementScript;
 
+    [Header("Buttons")]
+    public Button ControlsButton;
+    public Button SoundButton;
+    public Button KeybindsButton;
+    public Button MouseButton;
+    public Button SoundSettingsButton;
+
+    [Header("Bools")]
     public bool InPauseMenu;
-    public bool InSetMenu;
-    public bool InKeyBindMenu;
-    public bool InMouseMenu;
-    // Start is called before the first frame update
+
     void Start()
     {
-        menu.SetActive(false);
-        setMenu.SetActive(false);
-        KeybindsMenu.SetActive(false);
-        MouseMenu.SetActive(false);
-        AudioMenu.SetActive(false);
-        ConfeirmResetMenu.SetActive(false);
+
+        PauseMenu.SetActive(false);
+        SettingsMenu.SetActive(false);
+        SoundSidemenu.SetActive(false);
+        ControlSidemenu.SetActive(false);
+        KeybindsMiddleMenu.SetActive(false);
+        MouseMiddleMenu.SetActive(false);
+        SoundMiddleMenu.SetActive(false);
+
         InPauseMenu = false;
     }
 
-    // Update is called once per frame
-    void Update()
+    private void Update()
     {
+
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            if(!InSetMenu)
-            {
-                PauseMenu();
-
-                 Cursor.visible = true;
-                 Cursor.lockState = CursorLockMode.Confined;
-            }
-            
+            TogglePauseMenu();
         }
+    }
+
+    public void TogglePauseMenu()
+    {
+        InPauseMenu = !InPauseMenu;
+
+        PauseMenu.SetActive(InPauseMenu);
+        PlayerMovementScript.enabled = !InPauseMenu;
+
+
+        SettingsMenu.SetActive(false);
+        SoundSidemenu.SetActive(false);
+        ControlSidemenu.SetActive(false);
+        KeybindsMiddleMenu.SetActive(false);
+        MouseMiddleMenu.SetActive(false);
+        SoundMiddleMenu.SetActive(false);
+
+        // Show/hide mouse cursor
+        Cursor.visible = InPauseMenu;
+        Cursor.lockState = InPauseMenu ? CursorLockMode.None : CursorLockMode.Locked;
+    }
+
+
+    public void OpenSettingsMenu()
+    {
+        SettingsMenu.SetActive(true);
+        PauseMenu.SetActive(false);
+
+
+        ShowControlsMenu();
+        ShowKeybindsMenu();
+
+        ControlsButton.Select();
+        KeybindsButton.Select();
+    }
+
+    public void ShowControlsMenu()
+    {
+        ControlSidemenu.SetActive(true);
+        SoundSidemenu.SetActive(false);
+
+        ShowKeybindsMenu();
+
         
-        
+        ControlsButton.Select();
     }
-    public void PauseMenu() //open main menu
+
+   
+    public void ShowSoundMenu()
     {
-        InSetMenu = false;
-        InPauseMenu = true;
-        menu.SetActive(true);
-        setMenu.SetActive(false);
-        player.SetActive(false);
-        cam.SetActive(false);
+        ControlSidemenu.SetActive(false);
+        SoundSidemenu.SetActive(true);
 
-    }
-    public void settings() //open settings from main menu
-    {
-        InSetMenu = true;
-        setMenu.SetActive(true);
-        menu.SetActive(false);
-        AudioMenu.SetActive(false);
-        KeybindsMenu.SetActive(false);
+       
+        ShowSoundSettings();
+
+       
+        SoundButton.Select();
     }
 
-    public void KeyBinds()
-    {
-        ConfeirmResetMenu.SetActive(false);
-        KeybindsMenu.SetActive(true);
-        setMenu.SetActive(false);
-        MouseMenu.SetActive(false);
-    }
-
-    public void Audio()
-    {
-        AudioMenu.SetActive(true);
-        setMenu.SetActive(false);
-    }
-    public void Mouse()
-    {
-        MouseMenu.SetActive(true);
-        KeybindsMenu.SetActive(false);
-    }
-    public void Resume() //exit GUI
-    {
-        InPauseMenu = false;
-        InSetMenu= false;
-
-        player.SetActive(true);
-        cam.SetActive(true);
-
-        menu.SetActive(false);
-        setMenu.SetActive(false);
-
-        Cursor.visible = false;
-        Cursor.lockState = CursorLockMode.Locked;
-
-    }
     
-    public void ConfermResetMenu()
+    public void ShowKeybindsMenu()
     {
-        ConfeirmResetMenu.SetActive(true);
-        KeybindsMenu.SetActive(false );
+        KeybindsMiddleMenu.SetActive(true);
+        MouseMiddleMenu.SetActive(false);
+        SoundMiddleMenu.SetActive(false);
+
+        
+        KeybindsButton.Select();
     }
-    public void quit() //public function that exit the game (only works on a working game not in unity)
+
+    
+    public void ShowMouseMenu()
+    {
+        KeybindsMiddleMenu.SetActive(false);
+        MouseMiddleMenu.SetActive(true);
+        SoundMiddleMenu.SetActive(false);
+
+        
+        MouseButton.Select();
+    }
+
+
+    public void ShowSoundSettings()
+    {
+        KeybindsMiddleMenu.SetActive(false);
+        MouseMiddleMenu.SetActive(false);
+        SoundMiddleMenu.SetActive(true);
+
+       
+        SoundSettingsButton.Select();
+    }
+
+   
+    public void ResumeGame()
+    {
+        TogglePauseMenu();
+    }
+
+
+    public void QuitGame()
     {
         Application.Quit();
     }
-    public float GetVol() //public function that returnes the value of the sound slider from the settings menu
+
+
+    public void LeaveGame()
     {
-        return soundSlider.value;
-    }
-    public float GetFov() //public function that returnes the value of the Fov slider from the settings menu
-    {
-        return FovSlider.value;
+
     }
 }

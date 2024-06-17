@@ -1,31 +1,31 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 
-public class bossHealth : MonoBehaviour
+public class EnemyClass : MonoBehaviour
 {
-    public GameObject healthBar;
-    public GameObject boss;
-    public int bossHP;
-    public ParticleSystem deathPar;
+    public float enemyHealth = 50f;
+    public Animator dieAnimator;
+    public AnimationClip dieAnimation;
 
-    public GameObject attacks;
-
-    public void Damage(int damage)
+    public void TakeDamage(float damageAmount)
     {
-        bossHP = bossHP - damage;
+        enemyHealth -= damageAmount;
+
+        if (enemyHealth <= 0)
+        {
+            ApplyDie();
+        }
     }
 
-    private void Update()
+    private void ApplyDie()
     {
-        if (bossHP <= 0 && boss != null && healthBar != null && deathPar != null)
-        {
-            attacks.SetActive(false);
-            deathPar.Play();
-            Destroy(boss, 5.4f);
-            Destroy(healthBar);
-        }
-        healthBar.GetComponent<Slider>().value = bossHP;
+        StartCoroutine(Die());
+    }
+
+    private IEnumerator Die()
+    {
+        dieAnimator.SetTrigger("Die");
+        yield return new WaitForSeconds(dieAnimation.length + 0.2f);
+        Destroy(gameObject);
     }
 }

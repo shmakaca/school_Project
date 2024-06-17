@@ -60,18 +60,18 @@ public class AudioApply : MonoBehaviour
 
     [Header("Script References")]
     private PlayerMovement PlayerMovement;
-    private gunShot gunShot;
+    private GunShot gunShot;
     private PlayerDamaging Swing;
     private SwapGun SwapGun;
-    private static mainMenu mainMenu;
+    private static MainMenu mainMenu;
     private static TimeMange TimeManage;
     private KeybindManager KeybindManager;
 
     [Header("Sliders References")]
     public Slider BackGroundVolumeSlider;
-    public Slider ActionEffectsVolumeSlider;
+    public Slider PlayerActionsVolumeSlider;
     public Slider SoundEffectVolumeSlider;
-    public Slider WeaponsVolumeSlider;
+    public Slider MasterVolumeSlider;
 
     [Header("Volume")]
     public float bossMusicVolume;
@@ -92,18 +92,18 @@ public class AudioApply : MonoBehaviour
 
     [Header("Audio Settings GUI")]
     private float BackGroundVolume = 0f;
-    private float ActionEffectsVolume = 0f;
+    private float PlayerActionsVolume = 0f;
     private float SoundEffectVolume = 0f;
-    private float WeaponsVolume = 0f;
+    private float MasterVolume = 0f;
 
     void Start()
     {
         TimeManage = Player.GetComponent<TimeMange>();
         PlayerMovement = Player.GetComponent<PlayerMovement>();
-        gunShot = Pistol.GetComponent<gunShot>();
+        gunShot = Player.GetComponent<GunShot>();
         Swing = Sword.GetComponent<PlayerDamaging>();
         SwapGun = Player.GetComponent<SwapGun>();
-        mainMenu = MainMenu.GetComponent<mainMenu>();
+        mainMenu = MainMenu.GetComponent<MainMenu>();
         KeybindManager = KeyBindMenu.GetComponent<KeybindManager>();
 
         SlidingSpeedingPitch = NormalSlidingSpeedingPitch;
@@ -125,10 +125,10 @@ public class AudioApply : MonoBehaviour
 
     private void UpdateVolumeFromSliders()
     {
-        BackGroundVolume = BackGroundVolumeSlider.value;
-        ActionEffectsVolume = ActionEffectsVolumeSlider.value;
-        SoundEffectVolume = SoundEffectVolumeSlider.value;
-        WeaponsVolume = WeaponsVolumeSlider.value;
+        BackGroundVolume = BackGroundVolumeSlider.value / 20f;
+        PlayerActionsVolume = PlayerActionsVolumeSlider.value / 20f;
+        SoundEffectVolume = SoundEffectVolumeSlider.value / 20f;
+        MasterVolume = MasterVolumeSlider.value / 100f;
     }
 
     public void BackGroundMusic()
@@ -136,7 +136,7 @@ public class AudioApply : MonoBehaviour
         if (!BackGroundAudioSource.isPlaying)
         {
             BackGroundAudioSource.Play();
-            BackGroundAudioSource.volume = bossMusicVolume * BackGroundVolume;
+            BackGroundAudioSource.volume = bossMusicVolume * BackGroundVolume * MasterVolume;
         }
 
         if (mainMenu.InPauseMenu)
@@ -158,33 +158,33 @@ public class AudioApply : MonoBehaviour
                 PlayerMovementAudioSource.pitch = WalkingPitch;
 
                 if (!PlayerMovementAudioSource.isPlaying)
-                    PlayerMovementAudioSource.PlayOneShot(WalkingSoundEffect, WalkingVolume * ActionEffectsVolume);
+                    PlayerMovementAudioSource.PlayOneShot(WalkingSoundEffect, WalkingVolume * PlayerActionsVolume * MasterVolume);
             }
             else if (PlayerMovement.State == PlayerMovement.MovementState.Sprinting && (PlayerMovement.Horizontal != 0 || PlayerMovement.Vertical != 0))
             {
                 PlayerMovementAudioSource.pitch = SprintingPitch;
 
                 if (!PlayerMovementAudioSource.isPlaying)
-                    PlayerMovementAudioSource.PlayOneShot(WalkingSoundEffect, SprintingVolume * ActionEffectsVolume);
+                    PlayerMovementAudioSource.PlayOneShot(WalkingSoundEffect, SprintingVolume * PlayerActionsVolume * MasterVolume);
             }
             else if (PlayerMovement.State == PlayerMovement.MovementState.Crouching && (PlayerMovement.Horizontal != 0 || PlayerMovement.Vertical != 0))
             {
                 PlayerMovementAudioSource.pitch = CrouchingPitch;
 
                 if (!PlayerMovementAudioSource.isPlaying)
-                    PlayerMovementAudioSource.PlayOneShot(WalkingSoundEffect, CrouchingVolume * ActionEffectsVolume);
+                    PlayerMovementAudioSource.PlayOneShot(WalkingSoundEffect, CrouchingVolume * PlayerActionsVolume * MasterVolume);
             }
             else if (PlayerMovement.WallRunning)
             {
                 PlayerMovementAudioSource.pitch = WallRunningPitch;
 
                 if (!PlayerMovementAudioSource.isPlaying)
-                    PlayerMovementAudioSource.PlayOneShot(WalkingSoundEffect, WallRunningVolume * ActionEffectsVolume);
+                    PlayerMovementAudioSource.PlayOneShot(WalkingSoundEffect, WallRunningVolume * PlayerActionsVolume * MasterVolume);
             }
             else if (PlayerMovement.Sliding && !PlayerMovement.OnSlope())
             {
                 if (!PlayerMovementAudioSource.isPlaying)
-                    PlayerMovementAudioSource.PlayOneShot(SlidingOnGroundSoundEffect, SlidingVolume * ActionEffectsVolume);
+                    PlayerMovementAudioSource.PlayOneShot(SlidingOnGroundSoundEffect, SlidingVolume * PlayerActionsVolume * MasterVolume);
             }
             else
             {
@@ -202,42 +202,7 @@ public class AudioApply : MonoBehaviour
     {
         if (!mainMenu.InPauseMenu)
         {
-            if (gunShot.IsShooting)
-            {
-                WeaponsAudioSource.pitch = GunShotPitch;
-                WeaponsAudioSource.PlayOneShot(GunShotSoundEffect, GunShotVolume * WeaponsVolume);
-            }
-            else if (Swing.Swinging)
-            {
-                if (!WeaponsAudioSource.isPlaying)
-                    WeaponsAudioSource.PlayOneShot(SwingSoundEffect, SwingVolume * WeaponsVolume);
-            }
-            else if (gunShot.isReloading)
-            {
-                WeaponsAudioSource.pitch = ReloadPitch;
 
-                if (!WeaponsAudioSource.isPlaying)
-                    WeaponsAudioSource.PlayOneShot(ReloadSoundEffect, ReloadVolume * WeaponsVolume);
-            }
-            else if (gunShot.ErrorFullMag)
-            {
-                if (!WeaponsAudioSource.isPlaying)
-                    WeaponsAudioSource.PlayOneShot(ErrorSoundEffect, ErrorVolume * SoundEffectVolume);
-            }
-            else if (!SwapGun.InGunSlot)
-            {
-                if (Input.GetKeyDown(KeybindManager.GetKeyCode("GunSlot")))
-                {
-                    WeaponsAudioSource.PlayOneShot(ReloadSoundEffect, ReloadVolume * WeaponsVolume);
-                }
-            }
-            else if (!SwapGun.InSowrdSlot)
-            {
-                if (Input.GetKeyDown(KeybindManager.GetKeyCode("SwordSlot")))
-                {
-                    WeaponsAudioSource.PlayOneShot(SwingSoundEffect, SwingVolume * WeaponsVolume);
-                }
-            }
         }
         else
         {
@@ -256,7 +221,7 @@ public class AudioApply : MonoBehaviour
                 SpeedingAudioSource.pitch = SlidingSpeedingPitch;
 
                 if (!SpeedingAudioSource.isPlaying)
-                    SpeedingAudioSource.PlayOneShot(SpeedingSoundEffect, SpeedingVolume * SoundEffectVolume);
+                    SpeedingAudioSource.PlayOneShot(SpeedingSoundEffect, SpeedingVolume * SoundEffectVolume * MasterVolume);
             }
             else if (PlayerMovement.Dashing)
             {
@@ -264,7 +229,7 @@ public class AudioApply : MonoBehaviour
                 SpeedingAudioSource.pitch = DashingPitch;
 
                 if (!SpeedingAudioSource.isPlaying)
-                    SpeedingAudioSource.PlayOneShot(DashingSoundEffect, SpeedingVolume * SoundEffectVolume);
+                    SpeedingAudioSource.PlayOneShot(DashingSoundEffect, SpeedingVolume * SoundEffectVolume * MasterVolume);
             }
             else
             {
@@ -288,7 +253,7 @@ public class AudioApply : MonoBehaviour
                 TimeManagePitchChange();
 
                 if (!ParticlesAudioSource.isPlaying)
-                    ParticlesAudioSource.PlayOneShot(EnterSloMoSoundEffect, SlowMotionVolume * SoundEffectVolume);
+                    ParticlesAudioSource.PlayOneShot(EnterSloMoSoundEffect, SlowMotionVolume * SoundEffectVolume * MasterVolume);
             }
             else if (Input.GetKeyUp(KeybindManager.GetKeyCode("SlowMotion")) || Time.timeScale == 1f && TimeManage.WasInSlowmotion)
             {
@@ -305,7 +270,7 @@ public class AudioApply : MonoBehaviour
     {
         if (PlayerMovement.OnJumpPad)
         {
-            JumpsAudioSource.PlayOneShot(JumpPadSoundEffect, JumpPadVolume * SoundEffectVolume);
+            JumpsAudioSource.PlayOneShot(JumpPadSoundEffect, JumpPadVolume * SoundEffectVolume * MasterVolume);
         }
     }
 
@@ -340,23 +305,23 @@ public class AudioApply : MonoBehaviour
     public void SaveSettings()
     {
         PlayerPrefs.SetFloat("BackGroundVolume", BackGroundVolume);
-        PlayerPrefs.SetFloat("ActionEffectsVolume", ActionEffectsVolume);
+        PlayerPrefs.SetFloat("ActionEffectsVolume", PlayerActionsVolume);
         PlayerPrefs.SetFloat("SoundEffectVolume", SoundEffectVolume);
-        PlayerPrefs.SetFloat("WeaponsVolume", WeaponsVolume);
+        PlayerPrefs.SetFloat("MasterVolume", MasterVolume);
         PlayerPrefs.Save();
     }
 
     public void LoadSettings()
     {
         BackGroundVolume = PlayerPrefs.GetFloat("BackGroundVolume", 1f);
-        ActionEffectsVolume = PlayerPrefs.GetFloat("ActionEffectsVolume", 1f);
+        PlayerActionsVolume = PlayerPrefs.GetFloat("ActionEffectsVolume", 1f);
         SoundEffectVolume = PlayerPrefs.GetFloat("SoundEffectVolume", 1f);
-        WeaponsVolume = PlayerPrefs.GetFloat("WeaponsVolume", 1f);
+        MasterVolume = PlayerPrefs.GetFloat("WeaponsVolume", 1f);
 
         BackGroundVolumeSlider.value = BackGroundVolume;
-        ActionEffectsVolumeSlider.value = ActionEffectsVolume;
+        PlayerActionsVolumeSlider.value = PlayerActionsVolume;
         SoundEffectVolumeSlider.value = SoundEffectVolume;
-        WeaponsVolumeSlider.value = WeaponsVolume;
+        MasterVolumeSlider.value = MasterVolume;
     }
 
     private void OnApplicationQuit()
