@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -17,11 +16,13 @@ public class SwapGun : MonoBehaviour
     [Header("State")]
     private GameObject currentWeapon;
     private GameObject currentCrosshair;
-    private bool isPistolEquipped = false;  // New flag to track if the pistol's speed boost has been applied
+    private bool isPistolEquipped = false;
 
     [Header("References")]
     public GameObject KeyBindMenu;
+    public GameObject player;
     private KeybindManager KeybindManager;
+    private Animator parentAnimator;
 
     private PlayerMovement playerMovement;
 
@@ -33,8 +34,9 @@ public class SwapGun : MonoBehaviour
 
     void Start()
     {
-        playerMovement = GetComponent<PlayerMovement>();
+        playerMovement = player.GetComponent<PlayerMovement>();
         KeybindManager = KeyBindMenu.GetComponent<KeybindManager>();
+        parentAnimator = GetComponentInParent<Animator>(); // Get the Animator from the parent
 
         EquipWeapon(Pistol);
         ChangeCrosshair(PistolCrosshair);
@@ -44,31 +46,46 @@ public class SwapGun : MonoBehaviour
     {
         if (Input.GetKeyDown(KeybindManager.GetKeyCode("GunSlot")))
         {
-            EquipWeapon(Pistol);
-            ChangeCrosshair(PistolCrosshair);
+            if (currentWeapon != Pistol)
+            {
+                EquipWeapon(Pistol);
+                ChangeCrosshair(PistolCrosshair);
+            }
         }
 
         if (Input.GetKeyDown(KeybindManager.GetKeyCode("SwordSlot")))
         {
-            EquipWeapon(Sword);
+            if (currentWeapon != Sword)
+            {
+                EquipWeapon(Sword);
+            }
         }
 
         if (Input.GetKeyDown(KeybindManager.GetKeyCode("ShotGunSlot")))
         {
-            EquipWeapon(ShotGun);
-            ChangeCrosshair(shotgunCrosshair);
+            if (currentWeapon != ShotGun)
+            {
+                EquipWeapon(ShotGun);
+                ChangeCrosshair(shotgunCrosshair);
+            }
         }
 
         if (Input.GetKeyDown(KeybindManager.GetKeyCode("ARGunSlot")))
         {
-            EquipWeapon(ARGun);
-            ChangeCrosshair(ARCrosshair);
+            if (currentWeapon != ARGun)
+            {
+                EquipWeapon(ARGun);
+                ChangeCrosshair(ARCrosshair);
+            }
         }
 
         if (Input.GetKeyDown(KeybindManager.GetKeyCode("GrapplerSlot")))
         {
-            EquipWeapon(Grappler);
-            ChangeCrosshair(Grappler);
+            if (currentWeapon != Grappler)
+            {
+                EquipWeapon(Grappler);
+                ChangeCrosshair(Grappler);
+            }
         }
     }
 
@@ -76,20 +93,16 @@ public class SwapGun : MonoBehaviour
     {
         if (currentWeapon != null)
         {
-            Weapon currentWeaponScript = currentWeapon.GetComponent<Weapon>();
-            if (currentWeaponScript != null)
-            {
-                if (currentWeaponScript.ReloadAnimator != null) 
-                {
-                    currentWeaponScript.StopReload();
-                }
-                else
-                {
-                    Debug.LogError("ReloadAnimator is null on the current weapon.");
-                }
-            }
-
             currentWeapon.SetActive(false);
+        }
+
+        if (currentWeapon != weapon)
+        {
+            // Trigger the swap animation
+            if (parentAnimator != null)
+            {
+                parentAnimator.SetTrigger("Swap");
+            }
         }
 
         currentWeapon = weapon;
@@ -126,7 +139,7 @@ public class SwapGun : MonoBehaviour
             playerMovement.walkSpeed = playerMovement.defaultWalkSpeed;
             playerMovement.sprintSpeed = playerMovement.defaultSprintSpeed;
             playerMovement.wallRunSpeed = playerMovement.defaultWallRunSpeed;
-            isPistolEquipped = false;  
+            isPistolEquipped = false;
         }
     }
 }

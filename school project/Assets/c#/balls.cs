@@ -7,7 +7,7 @@ public class balls : MonoBehaviour
 
     private Transform playerRN;
     private Rigidbody rb;
-    private float speed = 200f;
+    private float speed = 1500f;
 
     // Start is called before the first frame update
     void Start()

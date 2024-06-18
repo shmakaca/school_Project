@@ -28,11 +28,10 @@ public class Pistol : Weapon
         RaycastHit hit;
         if (Physics.Raycast(PlayerCamera.transform.position, PlayerCamera.transform.forward, out hit, Range))
         {
-            Debug.Log("Hit: " + hit.transform.name); 
+            Debug.Log("Hit: " + hit.transform.name);
             EnemyClass Enemy = hit.transform.GetComponent<EnemyClass>();
             if (Enemy != null)
             {
-                Debug.Log("Enemy hit, applying damage.");
                 Enemy.TakeDamage(Damage);
             }
             GameObject impact = Instantiate(ImpactHitEffect, hit.point, Quaternion.LookRotation(hit.normal));

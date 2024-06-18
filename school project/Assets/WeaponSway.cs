@@ -55,6 +55,7 @@ public class WeaponSway : MonoBehaviour
     [SerializeField] GameObject Player;
 
     public bool DisableSway = false;
+    private bool isReloading = false;
 
     private Vector3 initialPosition;
     private Quaternion initialRotation;
@@ -88,7 +89,7 @@ public class WeaponSway : MonoBehaviour
 
     private void Update()
     {
-        if (DisableSway) return;
+        if (DisableSway || isReloading) return;
 
         BobAdjustment();
         TiltAdjustment();
@@ -171,4 +172,5 @@ public class WeaponSway : MonoBehaviour
             sprintTilt = 0;
         }
     }
+
 }

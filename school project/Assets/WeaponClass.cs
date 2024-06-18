@@ -10,7 +10,7 @@ public abstract class Weapon : MonoBehaviour
     [SerializeField] public int CurrentAmmo;
     [SerializeField] public float Range;
     [SerializeField] public bool IsReloading = false;
-    [SerializeField] public VisualEffect MuzzelFlash;
+    [SerializeField] public VisualEffect MuzzleFlash;
     [SerializeField] public GameObject ImpactHitEffect;
     [SerializeField] public AnimationClip ReloadAnimation;
     [SerializeField] public Animator ReloadAnimator;
@@ -25,16 +25,6 @@ public abstract class Weapon : MonoBehaviour
         KeybindManager = FindObjectOfType<KeybindManager>();
         WeaponSway = FindObjectOfType<WeaponSway>();
 
-        if (KeybindManager == null)
-        {
-            Debug.LogError("KeybindManager not found!");
-        }
-
-        if (WeaponSway == null)
-        {
-            Debug.LogError("WeaponSway not found!");
-        }
-
         if (ReloadAnimator == null)
         {
             Debug.LogError("ReloadAnimator not assigned!");
@@ -47,9 +37,14 @@ public abstract class Weapon : MonoBehaviour
 
     protected virtual void Update()
     {
-        if ((CurrentAmmo < MagSize && Input.GetKeyDown(KeybindManager.GetKeyCode("Reload"))) || CurrentAmmo == 0 && Input.GetKeyDown(KeybindManager.GetKeyCode("Shoot")))
+        if ((CurrentAmmo < MagSize && Input.GetKeyDown(KeybindManager.GetKeyCode("Reload"))) || (CurrentAmmo == 0 && Input.GetKeyDown(KeybindManager.GetKeyCode("Shoot"))))
         {
             StartReload();
+        }
+
+        if (!IsReloading)
+        {
+            SetAnimatorState(false);
         }
     }
 
@@ -57,33 +52,27 @@ public abstract class Weapon : MonoBehaviour
 
     protected IEnumerator Reload()
     {
+        SetAnimatorState(true);
         IsReloading = true;
         if (ReloadAnimator != null)
         {
-            ReloadAnimator.enabled = true;
             ReloadAnimator.SetTrigger("Reload");
         }
-        else
-        {
-            Debug.LogError("ReloadAnimator is null during reload.");
-        }
-        yield return new WaitForSeconds(ReloadAnimation.length);
+
+        yield return new WaitForSeconds(ReloadAnimation.length - 0.05f);
+
         IsReloading = false;
         CurrentAmmo = MagSize;
-        if (ReloadAnimator != null)
-        {
-            ReloadAnimator.enabled = false;
-        }
+        SetAnimatorState(false);
     }
 
     public void StartReload()
     {
         if (!IsReloading)
         {
-            IsReloading = true;
             if (ReloadAnimator != null)
             {
-                ReloadAnimator.enabled = true;
+                SetAnimatorState(true);
                 ReloadAnimator.SetTrigger("Reload");
             }
             else
@@ -101,22 +90,15 @@ public abstract class Weapon : MonoBehaviour
             StopCoroutine(reloadCoroutine);
             IsReloading = false;
             reloadCoroutine = null;
-            if (ReloadAnimator != null)
-            {
-                ReloadAnimator.enabled = false;
-            }
-            else
-            {
-                Debug.LogError("ReloadAnimator is null during StopReload.");
-            }
+            SetAnimatorState(false);
         }
     }
 
     protected void TriggerMuzzleFlash()
     {
-        if (MuzzelFlash != null)
+        if (MuzzleFlash != null)
         {
-            MuzzelFlash.SendEvent("OnPlay");
+            MuzzleFlash.SendEvent("OnPlay");
         }
     }
 
@@ -124,6 +106,7 @@ public abstract class Weapon : MonoBehaviour
     {
         if (CurrentAmmo > 0 && !IsReloading && Time.time >= TimeToShootAgain)
         {
+            Debug.Log("Shooting...");
             TriggerMuzzleFlash();
             TimeToShootAgain = Time.time + 1f / Firerate;
             Shoot();
@@ -139,6 +122,14 @@ public abstract class Weapon : MonoBehaviour
         if (ReloadAnimator != null)
         {
             ReloadAnimator.SetFloat("ReloadProgress", 1f);
+        }
+    }
+
+    private void SetAnimatorState(bool state)
+    {
+        if (ReloadAnimator != null)
+        {
+            ReloadAnimator.enabled = state;
         }
     }
 }
