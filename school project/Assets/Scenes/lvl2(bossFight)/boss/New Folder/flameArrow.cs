@@ -8,7 +8,7 @@ public class flameArrow : MonoBehaviour
     private float cd = 4;
     Vector3 playerPos;
     public Rigidbody rb;
-    public int speed = 6;
+    public int speed = 3;
     // Start is called before the first frame update
     void Start()
     {

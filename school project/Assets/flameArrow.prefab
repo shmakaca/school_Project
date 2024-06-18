@@ -49,7 +49,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 0}
   rb: {fileID: 8510953473953631246}
-  speed: 100
+  speed: 40
 --- !u!54 &8510953473953631246
 Rigidbody:
   m_ObjectHideFlags: 0
