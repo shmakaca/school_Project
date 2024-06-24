@@ -19,6 +19,7 @@ TagManager:
   - FxTemporaire
   - Enemy
   - bamboozled
+  - Grenade
   layers:
   - Default
   - TransparentFX
@@ -34,8 +35,8 @@ TagManager:
   - Weapons
   - Enemy
   - Boss
-  - 
-  - 
+  - PlayerLayer
+  - GrenadeLayer
   - 
   - 
   - 

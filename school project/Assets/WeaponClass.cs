@@ -14,7 +14,10 @@ public abstract class Weapon : MonoBehaviour
     [SerializeField] public GameObject ImpactHitEffect;
     [SerializeField] public AnimationClip ReloadAnimation;
     [SerializeField] public Animator ReloadAnimator;
-    private KeybindManager KeybindManager;
+    [SerializeField] public GameObject KeybindManagerObject;
+
+
+    protected KeybindManager KeybindManager;
     private WeaponSway WeaponSway;
 
     public float TimeToShootAgain;
@@ -22,17 +25,14 @@ public abstract class Weapon : MonoBehaviour
     protected virtual void Start()
     {
         CurrentAmmo = MagSize;
-        KeybindManager = FindObjectOfType<KeybindManager>();
+        KeybindManager = KeybindManagerObject.GetComponent<KeybindManager>();
         WeaponSway = FindObjectOfType<WeaponSway>();
 
-        if (ReloadAnimator == null)
-        {
-            Debug.LogError("ReloadAnimator not assigned!");
-        }
-        else
+        if(ReloadAnimator != null)
         {
             ReloadAnimator.enabled = false;
         }
+        
     }
 
     protected virtual void Update()
@@ -44,7 +44,7 @@ public abstract class Weapon : MonoBehaviour
 
         if (!IsReloading)
         {
-            SetAnimatorState(false);
+            ReloadAnimator.enabled = false;
         }
     }
 
@@ -52,7 +52,7 @@ public abstract class Weapon : MonoBehaviour
 
     protected IEnumerator Reload()
     {
-        SetAnimatorState(true);
+        ReloadAnimator.enabled = true;
         IsReloading = true;
         if (ReloadAnimator != null)
         {
@@ -63,7 +63,7 @@ public abstract class Weapon : MonoBehaviour
 
         IsReloading = false;
         CurrentAmmo = MagSize;
-        SetAnimatorState(false);
+        ReloadAnimator.enabled = false;
     }
 
     public void StartReload()
@@ -72,7 +72,7 @@ public abstract class Weapon : MonoBehaviour
         {
             if (ReloadAnimator != null)
             {
-                SetAnimatorState(true);
+                ReloadAnimator.enabled = true;
                 ReloadAnimator.SetTrigger("Reload");
             }
             else
@@ -90,7 +90,7 @@ public abstract class Weapon : MonoBehaviour
             StopCoroutine(reloadCoroutine);
             IsReloading = false;
             reloadCoroutine = null;
-            SetAnimatorState(false);
+            ReloadAnimator.enabled = false;
         }
     }
 
@@ -106,7 +106,7 @@ public abstract class Weapon : MonoBehaviour
     {
         if (CurrentAmmo > 0 && !IsReloading && Time.time >= TimeToShootAgain)
         {
-            Debug.Log("Shooting...");
+
             TriggerMuzzleFlash();
             TimeToShootAgain = Time.time + 1f / Firerate;
             Shoot();
@@ -125,11 +125,32 @@ public abstract class Weapon : MonoBehaviour
         }
     }
 
-    private void SetAnimatorState(bool state)
+
+    public void OnEnable()
     {
-        if (ReloadAnimator != null)
+        IsReloading = false; // Reset the reloading state when the weapon is enabled
+        if (reloadCoroutine != null)
         {
-            ReloadAnimator.enabled = state;
+            StopCoroutine(reloadCoroutine);
+        }
+        ReloadAnimator.enabled = false; // Ensure the animator is in a default state
+
+        // Debug logging for Animator state
+        if (ReloadAnimator == null)
+        {
+            Debug.LogError($"{name} Animator is null on enable");
+        }
+        else
+        {
+            Debug.Log($"{name} Animator is assigned and active on enable");
+        }
+    }
+
+    public void OnDisable()
+    {
+        if (ReloadAnimator == null)
+        {
+            Debug.LogError($"{name} Animator is null on disable");
         }
     }
 }

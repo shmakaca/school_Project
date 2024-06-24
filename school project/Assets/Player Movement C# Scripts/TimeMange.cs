@@ -6,7 +6,7 @@ using UnityEngine.UIElements;
 public class TimeMange : MonoBehaviour
 {
     [Header("Time Mange")]
-    public float SlowDownFactor;// how much time willslow down
+    public float SlowDownFactor;
     private float BackToNormalTime;
     public float Focus;
     private float SlowDownLenght;

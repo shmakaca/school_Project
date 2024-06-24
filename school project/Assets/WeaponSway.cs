@@ -64,9 +64,6 @@ public class WeaponSway : MonoBehaviour
     private float bobbingTime;
     private Vector3 recoilOffset;
     private Quaternion recoilRotation;
-    private bool isHiding = false;
-    private bool isShowing = false;
-    private float hideShowProgress = 0f;
 
     private void Reset()
     {
@@ -95,8 +92,16 @@ public class WeaponSway : MonoBehaviour
         TiltAdjustment();
 
         var angularVelocity = Quaternion.Inverse(lastRot) * transform.rotation;
+
+        if (float.IsNaN(angularVelocity.x) || float.IsNaN(angularVelocity.y) || float.IsNaN(angularVelocity.z) || float.IsNaN(angularVelocity.w))
+        {
+            Debug.LogError($"Invalid angular velocity calculated: {angularVelocity}");
+            return;
+        }
+
         float mouseX = FixAngle(angularVelocity.eulerAngles.y) * swayAmount;
         float mouseY = -FixAngle(angularVelocity.eulerAngles.x) * swayAmount;
+
         lastRot = transform.rotation;
         sway = Vector2.MoveTowards(sway, Vector2.zero, swayCurve.Evaluate(Time.deltaTime * swaySmoothCounteraction * sway.magnitude * swaySmooth));
         sway = Vector2.ClampMagnitude(new Vector2(mouseX, mouseY) + sway, maxSwayAmount);
@@ -111,7 +116,29 @@ public class WeaponSway : MonoBehaviour
 
         // Applying Transformations
         Vector3 newPosition = Vector3.Lerp(weaponTransform.localPosition, new Vector3(sway.x + idleSwayOffsetX, sway.y + idleSwayOffsetY + bobbingOffset, 0) * positionSwayMultiplier * Mathf.Deg2Rad + initialPosition + recoilOffset, swayCurve.Evaluate(Time.deltaTime * swaySmooth));
-        Quaternion newRotation = Quaternion.Slerp(weaponTransform.localRotation, initialRotation * Quaternion.Euler(Mathf.Rad2Deg * rotationSwayMultiplier * new Vector3(-sway.y, sway.x, 0) + new Vector3(0, 0, -sprintTilt)) * recoilRotation, swayCurve.Evaluate(Time.deltaTime * swaySmooth));
+
+        Quaternion swayRotation = Quaternion.Euler(Mathf.Rad2Deg * rotationSwayMultiplier * new Vector3(-sway.y, sway.x, 0) + new Vector3(0, 0, -sprintTilt));
+        if (float.IsNaN(swayRotation.x) || float.IsNaN(swayRotation.y) || float.IsNaN(swayRotation.z) || float.IsNaN(swayRotation.w))
+        {
+            Debug.LogError($"Invalid sway rotation calculated: {swayRotation}");
+            return;
+        }
+
+        float lerpFactor = swayCurve.Evaluate(Time.deltaTime * swaySmooth);
+        if (float.IsNaN(lerpFactor) || Mathf.Approximately(lerpFactor, 0.0f))
+        {
+            Debug.LogError($"Invalid lerp factor: {lerpFactor}");
+            return;
+        }
+
+        Quaternion newRotation = initialRotation * swayRotation * recoilRotation;
+        newRotation = Quaternion.Slerp(weaponTransform.localRotation, newRotation, lerpFactor);
+
+        if (float.IsNaN(newRotation.x) || float.IsNaN(newRotation.y) || float.IsNaN(newRotation.z) || float.IsNaN(newRotation.w))
+        {
+            Debug.LogError($"Invalid final rotation calculated: {newRotation}");
+            return;
+        }
 
         weaponTransform.localPosition = newPosition;
         weaponTransform.localRotation = newRotation;
@@ -172,5 +199,4 @@ public class WeaponSway : MonoBehaviour
             sprintTilt = 0;
         }
     }
-
 }

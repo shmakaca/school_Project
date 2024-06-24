@@ -1,84 +1,76 @@
 using UnityEngine;
-using UnityEngine.UI;
 
 public class GrenadeLauncher : Weapon
 {
-    public GameObject grenadePrefab;
-    public Transform launchPoint;
-    private KeybindManager keybindManager;
-    public GameObject keybindManagerObject;
-    public Canvas playerUI;
+    [SerializeField] private GameObject grenadePrefab;
+    [SerializeField] private Transform grenadeSpawnPoint;
+    [SerializeField] private float throwForce = 10f;
+    [SerializeField] private float throwUpforce = 4f;
+    [SerializeField] private float explosionRadius = 5f;
+    [SerializeField] private float explosionForce = 700f;
+    [SerializeField] private float explosionDamage = 100f;
+    public Transform playerCamera;
+    [SerializeField] private LayerMask damageableLayers;
 
     private new void Start()
     {
         base.Start();
-        if (keybindManagerObject != null)
+    }
+
+    protected override void Shoot()
+    {
+        // Instantiate the grenade only when shooting
+        GameObject grenadeInstance = Instantiate(grenadePrefab, grenadeSpawnPoint.position, playerCamera.rotation);
+
+        // Ignore collision with all GameObjects tagged as "Player"
+        Collider grenadeCollider = grenadeInstance.GetComponent<Collider>();
+        GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
+        foreach (GameObject player in players)
         {
-            keybindManager = keybindManagerObject.GetComponent<KeybindManager>();
+            Collider playerCollider = player.GetComponent<Collider>();
+            if (playerCollider != null)
+            {
+                Physics.IgnoreCollision(grenadeCollider, playerCollider);
+            }
         }
-        else
+
+        // Set grenade parameters and activate it
+        Grenade grenadeScript = grenadeInstance.GetComponent<Grenade>();
+        if (grenadeScript != null)
         {
-            Debug.LogError("KeybindManagerObject is not assigned in the inspector.");
+            grenadeScript.explosionRadius = explosionRadius;
+            grenadeScript.explosionForce = explosionForce;
+            grenadeScript.explosionDamage = explosionDamage;
+            grenadeScript.damageableLayers = damageableLayers;
+            grenadeScript.explosionEffect = ImpactHitEffect;
+            grenadeScript.ActivateGrenade();
+            grenadeScript.Autoexplode();
         }
+
+        Rigidbody grenadeRigidbody = grenadeInstance.GetComponent<Rigidbody>();
+
+        Vector3 forceDirection = playerCamera.transform.forward;
+
+        RaycastHit hit;
+
+        if (Physics.Raycast(playerCamera.position, playerCamera.forward, out hit, 100f))
+        {
+            forceDirection = (hit.point - grenadeSpawnPoint.position).normalized;
+            Debug.Log("GrenadeLauncher will hit: " + hit.collider.gameObject.name);
+        }
+
+        Vector3 throwForceToAdd = forceDirection * throwForce + transform.up * throwUpforce;
+
+        grenadeRigidbody.AddForce(throwForceToAdd, ForceMode.Impulse);
     }
 
     private new void Update()
     {
         base.Update();
 
-        if (keybindManager != null && Input.GetKeyDown(keybindManager.GetKeyCode("Shoot")))
+        if (Input.GetKeyDown(KeybindManager.GetKeyCode("Shoot")))
         {
             HandleShooting();
-        }
-    }
-
-    protected override void Shoot()
-    {
-        if (grenadePrefab != null && launchPoint != null)
-        {
-            GameObject grenade = Instantiate(grenadePrefab, launchPoint.position, launchPoint.rotation);
-
-            if (playerUI != null)
-            {
-                RectTransform uiRectTransform = playerUI.GetComponent<RectTransform>();
-                if (uiRectTransform != null)
-                {
-                    Vector3 uiCenter = uiRectTransform.position;
-                    Vector3 targetPosition = Camera.main.ScreenToWorldPoint(new Vector3(uiCenter.x, uiCenter.y, Camera.main.nearClipPlane));
-                    Vector3 direction = (targetPosition - launchPoint.position).normalized;
-
-                    Rigidbody rb = grenade.GetComponent<Rigidbody>();
-                    if (rb != null)
-                    {
-                        Grenade grenadeComponent = grenade.GetComponent<Grenade>();
-                        if (grenadeComponent != null)
-                        {
-                            grenadeComponent.Launcher = this; // Pass the launcher reference
-                            rb.velocity = direction * grenadeComponent.speed;
-                        }
-                        else
-                        {
-                            Debug.LogWarning("Grenade component is missing!");
-                        }
-                    }
-                    else
-                    {
-                        Debug.LogWarning("Rigidbody component is missing on the grenade!");
-                    }
-                }
-                else
-                {
-                    Debug.LogWarning("RectTransform component is missing on player UI!");
-                }
-            }
-            else
-            {
-                Debug.LogWarning("Player UI is missing!");
-            }
-        }
-        else
-        {
-            Debug.LogWarning("Grenade prefab or launch point is missing!");
         }
     }
 }

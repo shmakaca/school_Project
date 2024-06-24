@@ -1,7 +1,5 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 public class SwapGun : MonoBehaviour
 {
@@ -12,6 +10,7 @@ public class SwapGun : MonoBehaviour
     public GameObject ARGun;
     public GameObject GrenadeLauncher;
     public GameObject Grappler;
+    public GameObject Rocketlauncher;
 
     [Header("State")]
     private GameObject currentWeapon;
@@ -31,15 +30,23 @@ public class SwapGun : MonoBehaviour
     public GameObject ARCrosshair;
     public GameObject GrenadelauncherCrosshair;
     public GameObject shotgunCrosshair;
+    public GameObject RocketlauncherCrosshair;
 
     void Start()
     {
         playerMovement = player.GetComponent<PlayerMovement>();
         KeybindManager = KeyBindMenu.GetComponent<KeybindManager>();
-        parentAnimator = GetComponentInParent<Animator>(); // Get the Animator from the parent
+        parentAnimator = GetComponentInParent<Animator>();
 
         EquipWeapon(Pistol);
         ChangeCrosshair(PistolCrosshair);
+
+        Grappler.SetActive(false);
+        GrenadeLauncher.SetActive(false);
+        ShotGun.SetActive(false);
+        ARGun.SetActive(false);
+        Rocketlauncher.SetActive(false);
+
     }
 
     void Update()
@@ -87,6 +94,24 @@ public class SwapGun : MonoBehaviour
                 ChangeCrosshair(Grappler);
             }
         }
+
+        if (Input.GetKeyDown(KeybindManager.GetKeyCode("GLSlot")))
+        {
+            if (currentWeapon != GrenadeLauncher)
+            {
+                EquipWeapon(GrenadeLauncher);
+                ChangeCrosshair(GrenadelauncherCrosshair);
+            }
+        }
+
+        if (Input.GetKeyDown(KeybindManager.GetKeyCode("RocketLauncherSlot")))
+        {
+            if (currentWeapon != Rocketlauncher)
+            {
+                EquipWeapon(Rocketlauncher);
+                ChangeCrosshair(RocketlauncherCrosshair);
+            }
+        }
     }
 
     private void EquipWeapon(GameObject weapon)
@@ -101,14 +126,35 @@ public class SwapGun : MonoBehaviour
             // Trigger the swap animation
             if (parentAnimator != null)
             {
-                parentAnimator.SetTrigger("Swap");
+                StartCoroutine(SwapAnimationCoroutine());
             }
         }
 
         currentWeapon = weapon;
         currentWeapon.SetActive(true);
 
+        // Re-initialize the weapon's animator if it has one
+        Weapon weaponScript = currentWeapon.GetComponent<Weapon>();
+        if (weaponScript != null && weaponScript.ReloadAnimator != null)
+        {
+            weaponScript.ReloadAnimator.Rebind();
+            weaponScript.ReloadAnimator.Update(0f);
+        }
+
         ApplyWeaponAbilities();
+    }
+
+    private IEnumerator SwapAnimationCoroutine()
+    {
+
+        parentAnimator.SetTrigger("Swap");
+
+        // Wait for the swap animation to finish
+        AnimatorStateInfo stateInfo = parentAnimator.GetCurrentAnimatorStateInfo(0);
+        float animationLength = stateInfo.length;
+        yield return new WaitForSeconds(animationLength);
+
+
     }
 
     private void ChangeCrosshair(GameObject Crosshair)

@@ -20,7 +20,6 @@ public class playercamera : MonoBehaviour
 
         // Apply the current sensitivity settings at startup
         ApplySensitivitySettings();
-
     }
 
     private void Update()
@@ -29,8 +28,8 @@ public class playercamera : MonoBehaviour
         Vector2 sensitivity = mouseSettings.GetCurrentSensitivity();
 
         // Get mouse input
-        float mouseX = Input.GetAxisRaw("Mouse X") * Time.deltaTime * sensitivity.x;
-        float mouseY = Input.GetAxisRaw("Mouse Y") * Time.deltaTime * sensitivity.y;
+        float mouseX = Input.GetAxisRaw("Mouse X") * sensitivity.x;
+        float mouseY = Input.GetAxisRaw("Mouse Y") * sensitivity.y;
 
         yRotation += mouseX;
         xRotation -= mouseY;
@@ -41,10 +40,9 @@ public class playercamera : MonoBehaviour
     }
 
     private void ApplySensitivitySettings()
-
     {
         Vector2 sensitivity = mouseSettings.GetCurrentSensitivity();
-
+        // Apply the sensitivity settings if needed
     }
 
     public void DOFOV(float endValue)

@@ -11,9 +11,9 @@ public class WallRun : MonoBehaviour
     public float WallSlideForce;
     public float WallCimbSpeed;
     public float WallRunStamina;
-    private float currentWallRunStamina; // Current stamina
+    private float currentWallRunStamina; 
     public float WallRunTimer;
-    public float StaminaRegenRate; // Stamina regeneration rate per second
+    public float StaminaRegenRate; 
     private bool WasRanOutOfStamina;
 
     [Header("Input")]

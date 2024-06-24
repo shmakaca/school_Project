@@ -10,12 +10,11 @@ public class Enemy : MonoBehaviour
 
     [Header("ShotsKind")]
     public GameObject FireBall, ElectroBall, SnowBall;
-    [Header ("ShotsDetails")]
-    
-    public float cooldown;
 
+    [Header ("ShotsDetails")]
+    public float cooldown;
     public bool IsCoolDownDone = false;
-   public bool IsInRange = false;
+    public bool IsInRange = false;
 
     [Header("animation")]
     public Animator Animator;

@@ -3,14 +3,11 @@ using UnityEngine;
 
 public class Pistol : Weapon
 {
-    private KeybindManager KeybindManager;
-    public GameObject Keybindmanager;
     public Camera PlayerCamera;
 
     private new void Start()
     {
         base.Start();
-        KeybindManager = Keybindmanager.GetComponent<KeybindManager>();
     }
 
     private new void Update()

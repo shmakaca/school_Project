@@ -3,8 +3,6 @@ using UnityEngine;
 
 public class Shotgun : Weapon
 {
-    private KeybindManager KeybindManager;
-    public GameObject Keybindmanager;
     public GameObject Player;
     public Camera PlayerCamera;
     private Rigidbody Rigidbody;
@@ -15,7 +13,6 @@ public class Shotgun : Weapon
     private new void Start()
     {
         base.Start();
-        KeybindManager = Keybindmanager.GetComponent<KeybindManager>();
         Rigidbody = Player.GetComponent<Rigidbody>();
 
     }
